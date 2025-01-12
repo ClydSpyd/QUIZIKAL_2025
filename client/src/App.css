@@ -1,0 +1,53 @@
+
+
+.chatWrapper{
+  width:600px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border:1px solid ;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+
+.messagesWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 1;
+  height: fit-content;
+  overflow: hidden;
+  overflow-y: auto;
+  border:3px solid purple;
+}
+
+.formInput {
+  display: flex;
+  align-items: stretch;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.formInput input {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.message {
+  width: 80%;
+  padding: 5px;
+  background-color: white;
+  color: #2b2b2b;
+  border-radius: 8px;
+  border-bottom-left-radius: 0;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.message.isMine {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 0;
+  background-color: rgb(94, 172, 228);
+  align-self: flex-end;
+}

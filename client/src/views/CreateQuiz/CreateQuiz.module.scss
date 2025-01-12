@@ -1,0 +1,243 @@
+@import '../../styles/index.scss';
+
+.createWrapper{
+  box-sizing: border-box;
+  padding: 30px 0 0;
+  width: 90vw;
+  max-width: 900px;
+
+  p{
+    margin: 5px;
+    color: #cacaca;
+  }
+
+}
+
+.iconsBarTop{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 20px;
+  gap: 8px;
+}
+
+.startRoundBtn{
+  display: flex;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 8px;
+  background-color: $black;
+  transition: .2s linear border-color;
+
+  &:hover{
+    border-color: $main1;
+  }
+
+  p{
+    color: white;
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  img.shuttle{
+    height:16px;
+    width:16px;
+  }
+}
+
+.sectionWrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+
+  p.sectionTitle{
+    color: $main1;
+  }
+
+  .btn{ 
+    border-radius: 5px;
+    margin: 0 4px;
+    height: 40px; 
+    cursor: pointer;
+    min-width: 100px;
+    pointer-events: all;
+    align-self: flex-end;
+    margin: 10px 0 0;
+    
+    button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      p{
+        color: white;
+        margin: 0;
+        margin-right: 8px;
+        position: relative;
+        bottom: 1px;
+      }
+
+    }
+  
+    &.disabled{
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  .nameInputWrapper{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #383838;
+    box-sizing: border-box;
+    padding: 10px;
+  
+    input{
+      height: 100%;
+      width: 100%;
+      font-size: 2rem;
+      background-color: transparent;
+    }
+  }
+
+  .questionsList{
+    border: 2px solid $grey2;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .questionWrapper{
+      background-color: #383838;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px;
+      border-radius: 5px;
+      position: relative;
+
+      .number{
+        margin: 0;
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $main1;
+        
+
+        @media(max-width: 660px){
+          display: none;
+        }
+      }
+
+      .icons{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 20px;
+        top: 55%;
+        transform: translateY(-50%);
+        gap: 5px;
+        
+        .icon{
+          border: 1px solid transparent;
+          padding: 3px;
+          border-radius: 3px;
+          height: 20px;
+          width: 20px;
+          transition: .2s linear all;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.3;
+          cursor: pointer;
+
+          &:hover{
+            border-color: $main1;
+            opacity: 1;
+          }
+        }
+        svg{
+          height: 20px;
+          width: 20px;
+          color: #cacaca;
+        }
+
+        @media(max-width: 660px){
+          position: relative;
+          right: initial;
+          transform: initial;
+        }
+      }
+
+      p{
+        line-height: 1.3em;
+        margin: 0px;
+
+        // &.questionText{
+        //   color: $main1;
+        // }
+      }
+
+      .options{
+        gap: 5px;
+        margin: 5px 0;
+        width: 450px;
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p.option{
+          width: 60%;
+          padding: 2px 8px;
+          border-radius: 20px;
+          background-color: $grey3;
+          color: $grey2;
+          color: white;
+          font-weight: 400;
+          font-size: 0.9rem;
+
+          span{
+            display: none;
+            font-size: 0.7rem;
+            color:#6a6969;
+          }
+
+          @media(max-width: 660px){
+            width: 70%;
+          }
+        }
+
+        &.PICTURE{
+          flex-direction: row;
+          justify-content: center;
+
+        }
+
+        .img{
+          height: 45px;
+          width: 55px;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+  
+  @media(max-width: 660px){
+    padding: 0;
+  }
+}

@@ -1,0 +1,197 @@
+@use './global.scss' as *;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h5{ margin: 5px;}
+
+#root {
+  /* max-width: 1280px; */
+  width: 100vw;
+  margin: 0 auto;
+  box-sizing: border-box;
+  // padding: 0 2rem 2rem 2rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 0 0 auto;
+  background-color: #ffffff;
+  background-color: #2e2e2e;
+  font-weight: 500;
+  color: #191919;
+  color: white;
+  text-align: left;
+  overflow-y: auto;
+  overflow-x: hidden;
+  // font-family: 'DM Sans', sans-serif;
+}
+
+input{
+  border: none;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+button:hover{
+  border-color: $main1;
+}
+
+input::selection,
+select::selection,
+textarea::selection,
+button::selection {
+    background-color: #ff8f1c;
+    color: white;
+}
+
+textarea {
+  font-weight: 400;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.topBar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  position: relative;
+
+  a.login, button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 60px;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid $black;
+    background-color: $black;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: .35s ease-out all;
+
+    svg{
+      color: white;
+    }
+
+    &:hover{
+      border-color: $main1;
+    }
+  }
+
+  button{
+    color: white;
+  }
+}
+
+.logoContainer{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h4.logo-text {
+    margin: 0;
+    font-size: 1.3rem;
+    position: relative;
+    left: 5px;
+    font-weight: 700;
+    background: rgb(255,143,28);
+    background: linear-gradient(190deg, rgba(255,143,28,1) 40%, rgba(144,255,46,1) 75%);
+    background-size: 100%;
+    background-repeat: repeat;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+}
+
+.mainLogo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+}
+
+.bgLogo{
+  position: fixed;
+  height: auto;
+  width: 80vw;
+  max-width: 1100px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.viewWrapper{
+  width: 90vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  box-sizing: border-box;
+  padding: 10px;
+  // padding-bottom: 20%;
+
+  @media(max-width: 600px){
+    height: fit-content;
+  }
+}

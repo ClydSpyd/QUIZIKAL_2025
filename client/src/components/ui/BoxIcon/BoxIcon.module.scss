@@ -1,0 +1,29 @@
+@use '../../../styles/global.scss' as *;
+
+.boxIconContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  padding: 3px;
+  border-radius: 5px;
+  height: 25px;
+  width: 25px;
+  transition: .2s linear border-color;
+  cursor: pointer;
+
+  &.border{
+    border-color: white;
+  }
+
+  &:hover{
+    border-color: $main1;
+  }
+}
+
+svg{
+  color: white;            
+  position: relative;
+  height: 20px;
+  width: 20px;
+}

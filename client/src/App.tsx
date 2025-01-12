@@ -1,0 +1,33 @@
+import { Route, Routes } from "react-router-dom";
+import "./styles/index.scss";
+import HostDash from "./views/HostDash/HostDash";
+import { AnimatePresence } from "framer-motion";
+import ProtectedLayout from "./components/utilityComps/ProtectedLayout";
+import Landing from "./views/Landing/Landing";
+import Signup from "./views/Landing/Signup";
+import HostLogin from "./views/Landing/HostLogin";
+import LogoLayout from "./layouts/LogoLayout";
+import { AuthProvider } from "./context/authContext";
+
+function App() {
+  return (
+    <>
+      <AuthProvider>
+        <AnimatePresence mode={"wait"}>
+          <Routes>
+            <Route element={<LogoLayout />}>
+              <Route index element={<Landing />} />
+              <Route path={"/signup"} element={<Signup />} />
+              <Route path={"/login"} element={<HostLogin />} />
+              <Route element={<ProtectedLayout />}>
+                <Route path={"/dashboard"} element={<HostDash />} />
+              </Route>
+            </Route>
+          </Routes>
+        </AnimatePresence>
+      </AuthProvider>
+    </>
+  );
+}
+
+export default App;

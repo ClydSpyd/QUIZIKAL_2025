@@ -1,0 +1,168 @@
+@use 'styles/global.scss' as *;
+
+form.card{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $grey2;
+  padding: 8px 16px 16px;
+  gap: 8px;
+  border-radius: 16px;
+  position: relative;
+
+  .loaderDiv{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $greyOpaque2;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+
+    img{
+      height:75px;
+      width:75px;
+      position: relative;
+      bottom: 5%;
+    }
+  }
+
+  h1{
+    margin: 0 0 5px 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    color: $main1;
+  }
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px $grey2 inset;
+  }
+
+  .hiddenInput{
+    // visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+  input {
+    font-size: 1rem;
+    box-sizing: border-box;
+    height: 35px;
+    width: 300px;
+    background-color: $grey2;
+    border-radius: 3px;
+    padding: 8px;
+    transition: .2s ease-out background;
+
+
+    &[type="submit"]{
+      background-color: $black;
+      box-sizing:border-box;
+      border:1px solid $black;
+      cursor: pointer;
+      transition: .15s ease-out border-color;
+
+      &:hover{
+        border-color: $main1;
+      }
+    }
+  }
+
+  &.join{
+    h1{
+      color: $main3;
+    }
+
+    input[type="submit"]{
+
+      &:hover{
+        border-color: $main3;
+      }
+    }
+  }
+}
+
+
+.titleRow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  h1{
+    font-weight: 900;
+
+    &.orange{
+      color: $main1;
+    }
+
+    &.yellow{
+      color: $main3;
+    }
+  }
+
+  svg{
+    height: 40px;
+    width: 30px;
+    color: $main1;
+    position: relative;
+    bottom: 2px;
+    left: -3px;
+  }
+
+  img{
+    height:35px;
+    width:35px;
+    object-fit: contain;
+  }
+}
+
+
+.revealWrapper{
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: .3s ease-out all;
+  margin-bottom: 0;
+  
+  &.open{
+    height: 36px;
+    opacity: 1;
+    margin-bottom: 5px;
+  }
+}
+
+.errorDiv{
+  transition: .1s ease-out all;
+  overflow: hidden;
+  opacity: 0;
+  height: 0;
+
+  &.show{
+    opacity: 1;
+    height: 20px;
+  }
+
+p{
+  font-size: 0.7rem;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: 300;
+  
+  &.error{
+    color: red;
+  }
+
+  a{
+    color: $main1;
+    font-weight: 700;
+
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}
+}
