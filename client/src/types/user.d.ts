@@ -1,7 +1,7 @@
 declare interface Host {
   _id: string,
   username:string,
-  activeSession: string,
+  activeSession: SessionData,
   quizzes: string[],
 }
 

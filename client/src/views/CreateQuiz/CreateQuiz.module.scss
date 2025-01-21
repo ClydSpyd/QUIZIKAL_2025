@@ -1,3 +1,4 @@
+@use '../../styles/global.scss' as *;
 @import '../../styles/index.scss';
 
 .createWrapper{
@@ -47,6 +48,11 @@
     height:16px;
     width:16px;
   }
+
+  // &.disabled{
+  //   pointer-events: none;
+  //   opacity: 0.6;
+  // };
 }
 
 .sectionWrapper {

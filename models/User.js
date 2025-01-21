@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
-  activeQuiz: {
+  activeSession: {
     type: mongoose.Schema.Types.ObjectId || null,
     ref: "Session",
     default: null,
@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
   quizzes: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Quiz",
-    default: null,
+    default: [],
   },
 });
 

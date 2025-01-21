@@ -5,7 +5,6 @@ import { CgEye, CgTrashEmpty } from "react-icons/cg";
 import loader from "assets/loaders/spin_orange.svg";
 import Image from 'components/ui/Image';
 import { RefObject } from 'react';
-import { useQuiz } from '@/context/QuizContext';
 import axios from 'axios';
 import { queryClient } from '@/main';
 
@@ -20,7 +19,8 @@ const Loader = () => {
 };
 
 const QuestionItem = ({ question, idx, modalRef }: Props) => {
-  const { setQuestionIdx } = useQuiz()
+  // const { setQuestionIdx } = useQuiz()
+  const setQuestionIdx = (val:number) => console.log(val)
 
   const handleDelete = async () => {
     const { data } = await axios.post("/api/questions/delete", {

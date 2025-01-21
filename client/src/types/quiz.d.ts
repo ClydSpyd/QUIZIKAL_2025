@@ -11,7 +11,5 @@ declare interface QuestionData {
 declare interface QuizData {
   _id: string
   quizName: string,
-  questions: QuestionData[],
   rounds:QuestionData[][]
-  quizId: string,
 }

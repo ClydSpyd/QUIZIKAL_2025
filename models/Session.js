@@ -5,13 +5,34 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sessionStatus: {
+  sessionCode: {
     type: String,
-    default: "pending"
+    required: true,
+  },
+  sidecarCode: {
+    type: String,
+    required: true,
+  },
+  roundIdx: {
+    type: Number,
+    default: 0,
+  },
+  questionIdx: {
+    type: Number,
+    default: 0,
   },
   participants: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    default: [],
+    type: Map,
+    of: String,
+    default: new Map(),
+  },
+  responses: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {},
+  },
+  sessionStatus: {
+    type: String,
+    default: "pending",
   },
   quizId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,20 +44,8 @@ const schema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  createdAt: { type: Date, required: true, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   endedAt: { type: Date, required: false },
-  responses: {
-    type: mongoose.Schema.Types.Mixed,
-    default: {},
-  },
-  roundIdx: {
-    type: Number,
-    default: 0
-  },
-  questionIdx: {
-    type: Number,
-    default: 0
-  },
 });
 
 module.exports = Session = mongoose.model("Session", schema);

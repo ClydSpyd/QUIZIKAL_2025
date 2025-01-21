@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
       .json({ error: "Username or email should be provided" });
 
   let user = await User.findOne({ username: username.toLowerCase() })
-    // .populate("activeQuiz", "sessionName sessionCode")
+    // .populate("activeSession", "sessionName sessionCode")
 
   if (!user) {
     return res.status(404).json({ error: "User not found"});

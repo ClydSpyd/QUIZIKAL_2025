@@ -34,14 +34,14 @@ export const userSlice = createSlice({
       action: PayloadAction<{
         username: string;
         _id: string;
-        activeQuiz: SessionData | null;
+        activeSession: SessionData | null;
       }>
     ) => {
       console.log("PAYLOAD: ", action.payload)
       state.isHost = true;
       state.username = action.payload.username;
       state.userId = action.payload._id;
-      state.activeSession = action.payload.activeQuiz;
+      state.activeSession = action.payload.activeSession;
     },
     clearUserData: (state) => {
       state.activeSession = initialState.activeSession;

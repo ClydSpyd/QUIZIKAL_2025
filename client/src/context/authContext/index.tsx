@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         console.log(data);
         setTimeout(() => {
-          setUser(data.username)
+          setUser(data)
           navigate("/dashboard");
           setLoading(false);
         }, 1000);

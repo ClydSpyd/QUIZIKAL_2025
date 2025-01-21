@@ -8,6 +8,8 @@ import Signup from "./views/Landing/Signup";
 import HostLogin from "./views/Landing/HostLogin";
 import LogoLayout from "./layouts/LogoLayout";
 import { AuthProvider } from "./context/authContext";
+import CreateQuiz from "./views/CreateQuiz/CreateQuiz";
+import SessionContainer from "./views/Session/SessionContainer";
 
 function App() {
   return (
@@ -21,8 +23,10 @@ function App() {
               <Route path={"/login"} element={<HostLogin />} />
               <Route element={<ProtectedLayout />}>
                 <Route path={"/dashboard"} element={<HostDash />} />
+                <Route path={"/quiz/edit/:quizId?"} element={<CreateQuiz />} />
               </Route>
             </Route>
+            <Route path={"/play/:sessionSlug/:sidecar?"} element={<SessionContainer />} />
           </Routes>
         </AnimatePresence>
       </AuthProvider>

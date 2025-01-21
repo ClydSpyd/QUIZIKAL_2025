@@ -47,10 +47,8 @@ h5{ margin: 5px;}
   align-items: center;
   position: relative;
   flex: 0 0 auto;
-  background-color: #ffffff;
   background-color: #2e2e2e;
   font-weight: 500;
-  color: #191919;
   color: white;
   text-align: left;
   overflow-y: auto;
@@ -193,5 +191,31 @@ textarea {
 
   @media(max-width: 600px){
     height: fit-content;
+  }
+}
+
+p.sectionTitle{
+  align-self: flex-start;
+  color: $main1;
+  margin: 5px 10px;
+}
+
+.sectionTitleWrapper{
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  align-self: flex-start;
+
+  img{
+    margin-right: 10px;
+    height: 30px;
+    width: 30px;
+  }
+
+  p{
+    margin: 0;
+    color: $main1;
+    font-size: 1rem;
   }
 }

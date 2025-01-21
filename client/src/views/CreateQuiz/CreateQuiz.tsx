@@ -4,15 +4,20 @@ import axios from "axios";
 import { debounce } from "../../utilities/debounce";
 import { BiTrash } from "react-icons/bi";
 import { RiPlayListAddLine } from "react-icons/ri";
-import RoundPicker from "components/RoundPicker/RoundPicker";
+// import RoundPicker from "components/RoundPicker/RoundPicker";
 import DeleteModal from "components/ui/DeleteModal/DeleteModal";
 import BoxIcon from "components/ui/BoxIcon/BoxIcon";
 import Modal from "components/ui/Modal";
 import QuestionItem from "./QuestionItem";
 import LoadingScreen from "components/utilityComps/LoadingScreen/LoadingScreen";
-import Question from "components/Question/Question";
+// import Question from "components/Question/Question";
 import styles from "./CreateQuiz.module.scss";
 import shuttle from 'assets/images/shuttle_white.png';
+import { useQuizData } from "@/queries/quizData";
+import CreateSessionModal from "@/components/ui/CreateSessionModal";
+import { useUserData } from "@/queries/userData";
+// import { useQuiz } from "@/context/QuizContext";
+// import SessionNameModal from "../ui/SessionNameModal/SessionNameModal";
 
 const saveQuiz = async (quizData: QuizData) => {
   console.log("SAVE")
@@ -31,17 +36,20 @@ const CreateQuiz = () => {
   const { quizId } = useParams();
   const [deleteError, setDeleteError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const roundIdx = 0;
+  const {
+    data: quizData,
+    isLoading,
+  } = useQuizData({ quizId: quizId ?? "" });
+  const { data: userData } = useUserData();
+
+  const activeSession = !!userData?.activeSession;
+  console.log({userData, activeSession})
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log({e})
-    // debounceSave(newValues)
+    const newValues = { ...quizData, quizName: e.target.value }
+    debounceSave(newValues)
   };
-
-  const handleLaunch = async (sessionName: string) => {
-    console.log("LAUNCH SESSION")
-    // const sesisonCode = await createQuizSession(quizId!, sessionName);
-    navigate(`/play/${sesisonCode}`)
-  }
 
   const handleCloseModal = (modal: 'delete' | 'name') => {
     if (modal === 'delete'){
@@ -69,7 +77,9 @@ const CreateQuiz = () => {
         <div className={`${styles.iconsBarTop}`}>
           <div
             onClick={() => nameModalRef.current?.open()}
-            className={`${styles.startRoundBtn}`}
+            className={`${styles.startRoundBtn} ${
+              activeSession ? styles.disabled : ""
+            }`}
           >
             <p>Launch Quiz</p>
             <img src={shuttle} className={`${styles.shuttle}`} />
@@ -91,7 +101,7 @@ const CreateQuiz = () => {
             />
           </div>
         </section>
-        <RoundPicker rounds={quizData?.rounds?.length} />
+        {/* <RoundPicker rounds={quizData?.rounds?.length} /> */}
         <section className={`${styles.sectionWrapper}`}>
           <div className={`${styles.questionsList}`}>
             {!quizData.rounds[roundIdx]?.length ? (
@@ -125,7 +135,8 @@ const CreateQuiz = () => {
         handleConfirm={handleDelete}
       />
 
-      <SessionNameModal
+      <CreateSessionModal
+        quizId={quizId}
         ref={nameModalRef}
         handleConfirm={(sessionName: string) => handleLaunch(sessionName)}
         handleClose={() => handleCloseModal("name")}
@@ -133,7 +144,7 @@ const CreateQuiz = () => {
 
       {quizData && (
         <Modal ref={questionModalRef}>
-          <Question preview questions={quizData.rounds[roundIdx]} />
+          {/* <Question preview questions={quizData.rounds[roundIdx]} /> */}
         </Modal>
       )}
     </>
