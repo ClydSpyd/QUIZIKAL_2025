@@ -2,6 +2,7 @@
 import spinner from "assets/loaders/spin_green.svg";
 import styles from "./CardForm.module.scss";
 import { Link } from "react-router-dom";
+import { cn } from "@/utilities/cn";
 
 interface Props {
   inputs: InputType[];
@@ -44,25 +45,32 @@ const CardForm = ({
   const Icon = icon;
 
   return (
-    <form onSubmit={onSubmit} className={`${styles.card} ${className}`}>
+    <form
+      onSubmit={onSubmit}
+      className={`flex flex-col border-2 border-grey2 p-[16px] pt-[8px] gap-[8px] rounded-md relative ${className}`}
+    >
       {loading && (
-        <div className={`${styles.loaderDiv}`}>
-          <img src={spinner} />
+        <div className={`absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-greyOpaque2 z-10 backdrop-blur-md`}>
+          <img src={spinner} className="h-[75px] w-[75px] relative bottom-[5%]" />
         </div>
       )}
-      <div className={`${styles.titleRow}`}>
-        <h1 className={`${styles[titleColor]}`}>{title}</h1>
+      <div className={`flex justify-center items-center gap-[10px]`}>
+        <h1
+          className={cn(titleColor == "orange" ? "text-main1" : "text-main3")}
+        >
+          {title}
+        </h1>
         {Icon && Icon}
       </div>
       {!allowAutofill && (
         <>
           <input
-            className={`${styles.hiddenInput}`}
+            className={`hidden absolute pointer-events-none`}
             type="text"
             name="username"
           />
           <input
-            className={`${styles.hiddenInput}`}
+            className={`hidden absolute pointer-events-none`}
             type="password"
             name="fake-password"
           />
@@ -70,6 +78,7 @@ const CardForm = ({
       )}
       {inputs.map((input: InputType, idx: number) => (
         <input
+          className="box-border bg-grey2 px-2 h-[40px]"
           key={idx}
           type={input.type}
           onChange={input.onChange}

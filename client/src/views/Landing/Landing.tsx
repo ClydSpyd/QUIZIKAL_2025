@@ -53,7 +53,7 @@ const Landing = () => {
       <CardForm
         inputs={inputs}
         title={"Join Session"}
-        icon={<img src={joinIcon} />}
+        icon={<img src={joinIcon} className="h-[25px] w-[40px] object-contain" />}
         onSubmit={onSubmit}
         error={error}
         btnRef={btnRef}

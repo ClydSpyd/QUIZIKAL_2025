@@ -58,9 +58,6 @@ export default function SessionProvider({
     }
   }, [sessionData]);
 
-  console.log({ sessionSlug });
-  console.log("HELLO");
-
   if (!sessionData || !sessionCode) return <h1>Ö</h1>;
   
   if (uiState.error || queryError)

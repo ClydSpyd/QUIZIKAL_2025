@@ -42,7 +42,7 @@ const HostLogin = () => {
     >
       <CardForm
         title={"Host login"}
-        icon={<TbLogin2 />}
+        icon={<TbLogin2 className="text-main1 h-[25px] w-[25px]" />}
         inputs={inputs}
         onSubmit={onSubmit}
         btnText="GO"

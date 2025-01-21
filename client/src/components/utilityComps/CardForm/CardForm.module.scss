@@ -1,26 +1,7 @@
 @use 'styles/global.scss' as *;
 
-form.card{
-  display: flex;
-  flex-direction: column;
-  border: 2px solid $grey2;
-  padding: 8px 16px 16px;
-  gap: 8px;
-  border-radius: 16px;
-  position: relative;
 
   .loaderDiv{
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $greyOpaque2;
-    z-index: 10;
-    backdrop-filter: blur(2px);
 
     img{
       height:75px;
@@ -41,12 +22,6 @@ form.card{
       -webkit-box-shadow: 0 0 0px 1000px $grey2 inset;
   }
 
-  .hiddenInput{
-    // visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-  }
   input {
     font-size: 1rem;
     box-sizing: border-box;
@@ -54,7 +29,7 @@ form.card{
     width: 300px;
     background-color: $grey2;
     border-radius: 3px;
-    padding: 8px;
+    padding: 8px 16px;
     transition: .2s ease-out background;
 
 
@@ -71,54 +46,6 @@ form.card{
     }
   }
 
-  &.join{
-    h1{
-      color: $main3;
-    }
-
-    input[type="submit"]{
-
-      &:hover{
-        border-color: $main3;
-      }
-    }
-  }
-}
-
-
-.titleRow{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  h1{
-    font-weight: 900;
-
-    &.orange{
-      color: $main1;
-    }
-
-    &.yellow{
-      color: $main3;
-    }
-  }
-
-  svg{
-    height: 40px;
-    width: 30px;
-    color: $main1;
-    position: relative;
-    bottom: 2px;
-    left: -3px;
-  }
-
-  img{
-    height:35px;
-    width:35px;
-    object-fit: contain;
-  }
-}
 
 
 .revealWrapper{
