@@ -1,14 +1,11 @@
-import { useRef } from "react";
-import styles from "./Landing.module.scss";
-// import { useSelector } from "react-redux";
+import { useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
-// import { RootState } from "@/reduxConfig/Store";
 import { motion } from "framer-motion";
 import joinIcon from "assets/images/join_yellow2.png";
-// import { useSessionUtilities } from "@/hooks/useSessionUtilities";
 import CardForm from "@/components/utilityComps/CardForm/CardForm";
 import { useSessionUtilities } from "@/hooks/useSessionUtilities";
 import { useAuth } from "@/context/authContext";
+import LandingLayout from "@/components/utilityComps/LandingLayout";
 
 const Landing = () => {
   const codeRef = useRef<HTMLInputElement>(null);
@@ -17,7 +14,7 @@ const Landing = () => {
   const { user } = useAuth();
   // const { sessionCode } = useSelector((state: RootState) => state.quiz);
   const { handleJoinSession, error, setError } = useSessionUtilities();
-
+  const [sessionCode, setSessionCode] = useState("");
   const onSubmit = (e: React.FormEvent) =>
     handleJoinSession(e, nameRef, btnRef);
 
@@ -31,7 +28,7 @@ const Landing = () => {
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
         setError(null);
         console.log("ö: ", e.target.value);
-        // setSessionCode(e.target.value);
+        setSessionCode(e.target.value);
       },
     },
   ];
@@ -42,34 +39,29 @@ const Landing = () => {
   // if (username && sessionCode && !isHost) return <Navigate to={`/play/${sessionCode}`} />;
 
   return (
-    <motion.div
-      key={"dash"}
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 20, opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`${styles.landingWrapper}`}
-    >
+    <LandingLayout>
       <CardForm
         inputs={inputs}
         title={"Join Session"}
-        icon={<img src={joinIcon} className="h-[25px] w-[40px] object-contain" />}
+        icon={
+          <img src={joinIcon} className="h-[25px] w-[40px] object-contain" />
+        }
         onSubmit={onSubmit}
         error={error}
         btnRef={btnRef}
         titleColor="yellow"
         loading={false}
-        // conditionalInput={{
-        //   condition: !!(sessionCode && sessionCode.length > 3),
-        //   input: {
-        //     placeholder: "your name",
-        //     ref: nameRef,
-        //     type: "text",
-        //     name: "nameInput",
-        //   },
-        // }}
+        conditionalInput={{
+          condition: !!(sessionCode && sessionCode.length > 3),
+          input: {
+            placeholder: "your name",
+            ref: nameRef,
+            type: "text",
+            name: "nameInput",
+          },
+        }}
       />
-    </motion.div>
+    </LandingLayout>
   );
 };
 

@@ -7,12 +7,11 @@ import { RiPlayListAddLine } from "react-icons/ri";
 // import RoundPicker from "components/RoundPicker/RoundPicker";
 import DeleteModal from "components/ui/DeleteModal/DeleteModal";
 import BoxIcon from "components/ui/BoxIcon/BoxIcon";
-import Modal from "components/ui/Modal";
 import QuestionItem from "./QuestionItem";
 import LoadingScreen from "components/utilityComps/LoadingScreen/LoadingScreen";
 // import Question from "components/Question/Question";
 import styles from "./CreateQuiz.module.scss";
-import shuttle from 'assets/images/shuttle_white.png';
+import shuttle from "assets/images/shuttle_white.png";
 import { useQuizData } from "@/queries/quizData";
 import CreateSessionModal from "@/components/ui/CreateSessionModal";
 import { useUserData } from "@/queries/userData";
@@ -20,52 +19,49 @@ import { useUserData } from "@/queries/userData";
 // import SessionNameModal from "../ui/SessionNameModal/SessionNameModal";
 
 const saveQuiz = async (quizData: QuizData) => {
-  console.log("SAVE")
+  console.log("SAVE");
   axios.post(`/api/quiz/${quizData._id}/update`, {
     quizData,
   });
 };
 
-const debounceSave = debounce(saveQuiz, 1000)
+const debounceSave = debounce(saveQuiz, 1000);
 
 const CreateQuiz = () => {
-  const questionModalRef = useRef<ModalRef>(null)
-  const deleteModalRef = useRef<ModalRef>(null)
-  const nameModalRef = useRef<ModalRef>(null)
+  const questionModalRef = useRef<ModalRef>(null);
+  const deleteModalRef = useRef<ModalRef>(null);
+  const nameModalRef = useRef<ModalRef>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { quizId } = useParams();
   const [deleteError, setDeleteError] = useState<boolean>(false);
   const navigate = useNavigate();
   const roundIdx = 0;
-  const {
-    data: quizData,
-    isLoading,
-  } = useQuizData({ quizId: quizId ?? "" });
+  const { data: quizData, isLoading } = useQuizData({ quizId: quizId ?? "" });
   const { data: userData } = useUserData();
 
   const activeSession = !!userData?.activeSession;
-  console.log({userData, activeSession})
+  console.log({ userData, activeSession });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValues = { ...quizData, quizName: e.target.value }
-    debounceSave(newValues)
+    const newValues = { ...quizData, quizName: e.target.value };
+    debounceSave(newValues);
   };
 
-  const handleCloseModal = (modal: 'delete' | 'name') => {
-    if (modal === 'delete'){
+  const handleCloseModal = (modal: "delete" | "name") => {
+    if (modal === "delete") {
       deleteModalRef.current?.close();
       setDeleteError(false);
     } else {
-      nameModalRef.current?.close()
+      nameModalRef.current?.close();
     }
-  }
+  };
 
   const handleDelete = async () => {
-    console.log(quizData)
+    console.log(quizData);
     const { data } = await axios.post(`/api/quiz/${quizData._id}/delete`);
-    if(data.error) return setDeleteError(true);
+    if (data.error) return setDeleteError(true);
     navigate("/");
-  }
+  };
 
   if (!quizId) return <Navigate to={"/"} />;
 
@@ -138,15 +134,8 @@ const CreateQuiz = () => {
       <CreateSessionModal
         quizId={quizId}
         ref={nameModalRef}
-        handleConfirm={(sessionName: string) => handleLaunch(sessionName)}
         handleClose={() => handleCloseModal("name")}
       />
-
-      {quizData && (
-        <Modal ref={questionModalRef}>
-          {/* <Question preview questions={quizData.rounds[roundIdx]} /> */}
-        </Modal>
-      )}
     </>
   );
 };

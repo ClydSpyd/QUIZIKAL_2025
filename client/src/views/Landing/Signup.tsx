@@ -1,9 +1,9 @@
-import styles from "./Landing.module.scss";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import CardForm from "@/components/utilityComps/CardForm/CardForm";
 import { useLogin } from "@/hooks/useLogin";
+import LandingLayout from "@/components/utilityComps/LandingLayout";
 
 const Signup = () => {
   const btnRef = useRef<HTMLInputElement>(null);
@@ -40,13 +40,7 @@ const Signup = () => {
     },
   ];
   return (
-    <motion.div
-      key={"dash"}
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className={`${styles.landingWrapper}`}
-    >
+    <LandingLayout>
       <CardForm
         title={"New User"}
         icon={<FaUserPlus />}
@@ -62,7 +56,7 @@ const Signup = () => {
         loading={loading}
         btnRef={btnRef}
       />
-    </motion.div>
+    </LandingLayout>
   );
 };
 

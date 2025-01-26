@@ -1,19 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useSession } from "@/context/sessionContext";
 import SessionViewHost from "./SessionViewHost";
-// import SessionViewSidecar from "./SessionViewSidecar";
 import SessionViewParticipant from "./SessionViewParticipant";
+import { motion } from "framer-motion";
 
-const SessionView = () => {
+const SessionView = ({ isHost }: { isHost?: boolean }) => {
   // const { sidecar } = useParams();
-  const { isHost, userId } = useSession();
 
   // if (sidecar && sidecar === sidecarCode) return <SessionViewSidecar />;
 
-  return isHost ? (
-    <SessionViewHost />
-  ) : userId && (
-    <SessionViewParticipant userId={userId}/>
+  return (
+    <motion.div
+      key={"dash"}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -20, opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {isHost ? <SessionViewHost /> : <SessionViewParticipant />};
+    </motion.div>
   );
 };
 

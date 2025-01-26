@@ -1,12 +1,11 @@
-import styles from "./LoadingScreen.module.scss";
-import loader from "../../../assets/loaders/spin_orange.svg";
+import loader from "@/assets/loaders/spin_orange.svg";
 
 const LoadingScreen = () => {
   return (
-    <div className={`${styles.container}`}>
-      <div className={`${styles.loaderContainer}`}>
-        <img className={`${styles.loader}`} src={loader} />
-      </div>
+    <div
+      className={`h-screen w-screen flex flex-col items-center justify-center pb-[20%]`}
+    >
+      <img className={`h-[65px] w-[65px]`} src={loader} />
     </div>
   );
 };

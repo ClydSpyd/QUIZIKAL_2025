@@ -4,11 +4,18 @@ declare interface SessionData {
   sessionCode: string;
   roundIdx: number;
   questionIdx: number;
-  participants: Record<string, string>; // {[userId]:[username]} userId to be UUID which serves as session access code for user.
+  participants: Record<string, Participant>; // {[userId]:[username]} userId to be UUID which serves as session access code for user.
   responses: Record<string, [number][]>; // array of optionIdx values for each round e.g [[0,3,1,1],[2,1,3]]
   sessionStatus: SessionStatus;
   questions: object[][]; // @todo define question format & create interface
   quizId: string;
+}
+
+declare interface ParticipantSessionData {
+  userData: Participant,
+  roundIdx: number,
+  questionIdx: number,
+  sessionStatus: SessionStatus
 }
 
 declare type SessionStatus =
@@ -19,6 +26,11 @@ declare type SessionStatus =
   | "result" // show quiz results to all users
   | "ended"; // session finalized
 
+declare type RoundStatus =
+  | "pendingResponse" // user has not responded to current active round
+  | "waiting" // user has responded to current active round
+  | "inactive"; // round finalized
+
 // <--- interfaces to be used for socket
 declare interface ConnectedUser {
   _id: string;
@@ -26,9 +38,4 @@ declare interface ConnectedUser {
   isHost: boolean;
 }
 
-declare interface Participant {
-  _id: string;
-  username: string;
-  roundStatus: string;
-}
 // <---

@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useContext } from "react";
-import { useSessionStorage } from 'usehooks-ts'
+import { useLocalStorage } from 'usehooks-ts'
 import { AuthContextType, AuthProviderProps } from "./types";
 import { addAnimation } from "@/utilities/addAnimation";
 import axios from "axios";
@@ -11,7 +11,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useSessionStorage<AuthUserData | null>(
+  const [user, setUser] = useLocalStorage<AuthUserData | null>(
     "QUIZIKAL_USER",
     null
   );
@@ -59,6 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem("QUIZIKAL_USER")
     navigate('/');
   };
 

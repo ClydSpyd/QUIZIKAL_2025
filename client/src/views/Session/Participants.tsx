@@ -1,86 +1,64 @@
-import { useSession } from "@/context/sessionContext";
-import styles from "./SessionView.module.scss";
-import { MdDeleteForever, MdPersonAddAlt1 } from "react-icons/md";
+import { useHostSession } from "@/context/hostSessionContext";
+import { MdPersonAddAlt1 } from "react-icons/md";
 import { useSessionData } from "@/queries/sessionData";
 import { API } from "@/api";
-import { FaRegCopy } from "react-icons/fa";
-import TooltipWrapper from "@/components/utilityComps/TooltipWrapper";
-
-const ListRow = ({name, code}:{name:string, code:string}) => {
-  const { sessionCode } = useSession();
-
-  const handleCopyCode = async () => {
-    const textToCopy = `${window.location.host}/play/${sessionCode}${code}`;
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(textToCopy);
-        console.log("Text copied to clipboard!");
-      } else {
-        // Fallback for environments without Clipboard API
-        const textarea = document.createElement("textarea");
-        textarea.value = textToCopy;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-        console.log("Text copied using fallback!");
-      }
-    } catch (error) {
-      console.error("Failed to copy text: ", error);
-    }
-  };
-
-  return (
-    <div className={`${styles.row}`}>
-      <div>{name}</div>
-      <div>{code}</div>
-      <div className={styles.icons}>
-        <TooltipWrapper message="copy participant link">
-          <div onClick={handleCopyCode} className={styles.iconContainer}>
-            <FaRegCopy style={{ height: "17px", width: "17px" }} />
-          </div>
-        </TooltipWrapper>
-        <TooltipWrapper message="delete participant">
-          <div className={styles.iconContainer}>
-            <MdDeleteForever style={{ height: "20px", width: "20px" }} />
-          </div>
-        </TooltipWrapper>
-      </div>
-    </div>
-  );
-};
+import spinner from "@/assets/loaders/spin_orange.svg";
+import { useState } from "react";
+import ParticipantListItem from "./components/ParticipantListItem";
 
 export default function Participants() {
-  const { sessionCode, participants: listItems } = useSession();
+  const { sessionCode, participants: listItems } = useHostSession();
   const { refetch } = useSessionData({ sessionCode });
-
-  console.log({ listItems });
+  const [loading, setLoading] = useState(false);
 
   const handleNewParticipant = async () => {
+    setLoading(true);
     const { data, error } = await API.session.addParticipant(sessionCode);
     console.log({ data, error });
+    refetch().then(() => setLoading(false));
+  };
+
+  const handleDeleteParticipant = async (userCode: string) => {
+    await API.session.removeParticipant(sessionCode, userCode);
     refetch();
   };
 
   return (
-    <div className={styles.participantsContainer}>
+    <div className="w-[700px] flex flex-col items-center">
       <h3>PARTICIPANTS</h3>
-      <div className={styles.participantList}>
-        <div className={`${styles.topBar} ${styles.row}`}>
-          <div>NAME</div>
-          <div>CODE</div>
+      <div className="w-full border-2 border-black1 rounded-md text-sm">
+        <div className={`w-full flex  bg-black1 py-1`}>
+          <div className="w-1/2 flex items-center justify-center">NAME</div>
+          <div className="w-1/4 flex items-center justify-center">CODE</div>
           <div />
         </div>
         {!Object.entries(listItems).length ? (
-          <h4>NO PARTICIPANTS FOUND</h4>
+          <h4 className="w-full text-center py-2">NO SESSION PARTICIPANTS</h4>
         ) : (
-          Object.entries(listItems).map(([code, name]: [string, string]) => (
-            <ListRow name={name} code={code} />
-          ))
+          Object.entries(listItems).map(
+            ([code, userData]: [string, Participant]) => (
+              <ParticipantListItem
+                key={code}
+                name={userData.username ?? userData.defaultName}
+                code={code}
+                handleDelete={() => handleDeleteParticipant(code)}
+              />
+            )
+          )
         )}
       </div>
-      <button onClick={handleNewParticipant} className={styles.addUserBtn}>
-        Add <MdPersonAddAlt1 />
+      <button
+        onClick={handleNewParticipant}
+        className="mt-1 w-[90px] h-[40px] py-0 flex items-center justify-center"
+      >
+        {loading ? (
+          <img src={spinner} className="h-[35px] w -[35px]" />
+        ) : (
+          <>
+            {" "}
+            Add <MdPersonAddAlt1 />
+          </>
+        )}
       </button>
     </div>
   );

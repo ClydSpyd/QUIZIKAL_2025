@@ -1,4 +1,4 @@
-export interface SessionContextData {
+export interface HostSessionContextData {
   sessionName: string,
   quizData: QuizData;
   sessionCode: string;
@@ -9,6 +9,6 @@ export interface SessionContextData {
   sessionStatus: SessionStatus;
   error: string | null;
   loading: boolean;
-  participants: Record<string, string>;
+  participants: Record<string, Participant>;
   userId: string | undefined;
 }

@@ -4,3 +4,6 @@ export interface ApiResponse<T = any>{
   error?: string;
 }
 
+export interface ErrorResponse {
+  error: string; // Match the structure of your API's error response
+}

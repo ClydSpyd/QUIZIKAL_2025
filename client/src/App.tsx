@@ -9,7 +9,8 @@ import HostLogin from "./views/Landing/HostLogin";
 import LogoLayout from "./layouts/LogoLayout";
 import { AuthProvider } from "./context/authContext";
 import CreateQuiz from "./views/CreateQuiz/CreateQuiz";
-import SessionContainer from "./views/Session/SessionContainer";
+import SessionView from "./views/Session/SessionView";
+import LandingLayout from "./components/utilityComps/LandingLayout";
 
 function App() {
   return (
@@ -25,8 +26,12 @@ function App() {
                 <Route path={"/dashboard"} element={<HostDash />} />
                 <Route path={"/quiz/edit/:quizId?"} element={<CreateQuiz />} />
               </Route>
+              <Route
+                path={"/host/:sessionSlug/:sidecar?"}
+                element={<SessionView isHost />}
+              />
             </Route>
-            <Route path={"/play/:sessionSlug/:sidecar?"} element={<SessionContainer />} />
+            <Route path={"/play/:multiCode"} element={<SessionView />} />
           </Routes>
         </AnimatePresence>
       </AuthProvider>

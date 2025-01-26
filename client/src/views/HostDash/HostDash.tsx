@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import sessionIcon from "assets/images/session.png";
 import styles from "./HostDash.module.scss";
 import { motion } from "framer-motion";
@@ -8,6 +6,7 @@ import MyQuizzes from "@/components/MyQuizzes";
 import { useAuth } from "@/context/authContext";
 import { BsArrowRightSquareFill } from "react-icons/bs";
 import { useUserData } from "@/queries/userData";
+import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
 
 const HostDash = () => {
   const { user } = useAuth();
@@ -25,10 +24,10 @@ const HostDash = () => {
   
     const goToSession = async () => {
       if(!userData?.activeSession) return;
-      navigate(`/play/${userData.activeSession.sessionCode}`);
+      navigate(`/host/${userData.activeSession.sessionCode}`);
     };
   
-  if(isLoading) return <h1>LOADING</h1>
+  if(isLoading) return <LoadingScreen />
 
   return (
     // welcome {user}
@@ -46,7 +45,7 @@ const HostDash = () => {
         <section>
           <div className={`${styles.sectionTitleWrapper}`}>
             <img
-              className={`${styles.sessionIcon}`}
+              className=""
               src={sessionIcon}
               alt={"session-icon"}
             />
@@ -59,7 +58,7 @@ const HostDash = () => {
           </h3>
           <button onClick={goToSession}>
             <p>Go To Session</p>{" "}
-            <BsArrowRightSquareFill className={`${styles.fixed15}`} />
+            <BsArrowRightSquareFill className={`h-[15px] w-[15px] ml-2`} />
           </button>
         </section>
         <MyQuizzes userId={user?.id ?? ""} />

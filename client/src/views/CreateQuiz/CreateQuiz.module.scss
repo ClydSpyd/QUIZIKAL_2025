@@ -1,5 +1,4 @@
-@use '../../styles/global.scss' as *;
-@import '../../styles/index.scss';
+@use '../../styles/index.scss' as *;
 
 .createWrapper{
   box-sizing: border-box;
@@ -31,11 +30,11 @@
   border-radius: 5px;
   cursor: pointer;
   padding: 5px 8px;
-  background-color: $black;
+  background-color: var(--black);
   transition: .2s linear border-color;
 
   &:hover{
-    border-color: $main1;
+    border-color: var(--main1);
   }
 
   p{
@@ -63,7 +62,7 @@
   margin-bottom: 20px;
 
   p.sectionTitle{
-    color: $main1;
+    color: var(--main1);
   }
 
   .btn{ 
@@ -115,7 +114,7 @@
   }
 
   .questionsList{
-    border: 2px solid $grey2;
+    border: 2px solid var(--grey2);
     border-radius: 5px;
     box-sizing: border-box;
     padding: 10px;
@@ -140,7 +139,7 @@
         left: 20px;
         top: 50%;
         transform: translateY(-50%);
-        color: $main1;
+        color: var(--main1);
         
 
         @media(max-width: 660px){
@@ -171,7 +170,7 @@
           cursor: pointer;
 
           &:hover{
-            border-color: $main1;
+            border-color: var(--main1);
             opacity: 1;
           }
         }
@@ -193,7 +192,7 @@
         margin: 0px;
 
         // &.questionText{
-        //   color: $main1;
+        //   color: var(--main1);
         // }
       }
 
@@ -211,8 +210,8 @@
           width: 60%;
           padding: 2px 8px;
           border-radius: 20px;
-          background-color: $grey3;
-          color: $grey2;
+          background-color: var(--grey3);
+          color: var(--grey2);
           color: white;
           font-weight: 400;
           font-size: 0.9rem;

@@ -90,11 +90,12 @@ const CardForm = ({
       ))}
       {conditionalInput && (
         <div
-          className={`${styles.revealWrapper} ${
+          className={cn(`${styles.revealWrapper} ${
             conditionalInput.condition && styles.open
-          }`}
+          }`)}
         >
           <input
+          className="px-2"
             placeholder={conditionalInput.input.placeholder}
             ref={conditionalInput.input.ref ?? null}
             type={conditionalInput.input.type}
@@ -107,8 +108,8 @@ const CardForm = ({
         <p className={`${styles.error}`}>{error ?? ""}</p>
       </div>
       {link && (
-        <p>
-          {link.text} <Link to={link.route}>{link.linkText}</Link>
+        <p className="text-xs my-[5px] w-full text-center font-500">
+          {link.text} <Link className="text-main1 hover:text-main1 hover:underline" to={link.route}>{link.linkText}</Link>
         </p>
       )}
     </form>

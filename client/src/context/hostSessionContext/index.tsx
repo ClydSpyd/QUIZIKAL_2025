@@ -2,16 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import { SessionContextData } from "./types";
+import { HostSessionContextData } from "./types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSessionData } from "@/queries/sessionData";
 import { useAuth } from "../authContext";
+import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
 
-const SessionContext = createContext<SessionContextData>(
-  {} as SessionContextData
+const SessionContext = createContext<HostSessionContextData>(
+  {} as HostSessionContextData
 );
 
-export default function SessionProvider({
+export default function HostSessionProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -28,13 +29,13 @@ export default function SessionProvider({
 
   const {
     data: sessionData,
-    // isLoading,
+    isLoading,
     error: queryError,
   } = useSessionData({ sessionCode: sessionCode });
 
   const { sessionSlug } = useParams();
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const [sessionCodeParam, userIdParam] = [
       sessionSlug!.slice(0, 5),
@@ -44,7 +45,6 @@ export default function SessionProvider({
     setUserId(userIdParam);
     setIsHost(!userIdParam);
   }, [sessionSlug]);
-
 
   useEffect(() => {
     if (
@@ -58,33 +58,37 @@ export default function SessionProvider({
     }
   }, [sessionData]);
 
-  if (!sessionData || !sessionCode) return <h1>Ö</h1>;
-  
+  if (!isLoading && (!sessionData || !sessionCode))
+    return <LoadingScreen />;
+
   if (uiState.error || queryError)
     return <h1>{uiState.error ?? queryError?.message}</h1>;
 
   return (
-    <SessionContext.Provider
-      value={{
-        sessionName: sessionData.session.sessionName,
-        quizData: sessionData.quizData,
-        sessionCode,
-        sidecarCode: sessionData.session.sessionCode,
-        sessionStatus: sessionData.session.sessionStatus,
-        isHost,
-        roundIdx: indexes[0],
-        questionIdx: indexes[1],
-        loading: uiState.loading,
-        error: uiState.error,
-        participants: sessionData.session.participants,
-        userId
-      }}
-    >
-      {children}
-    </SessionContext.Provider>
+    sessionData &&
+    sessionCode && (
+      <SessionContext.Provider
+        value={{
+          sessionName: sessionData.session.sessionName,
+          quizData: sessionData.quizData,
+          sessionCode,
+          sidecarCode: sessionData.session.sessionCode,
+          sessionStatus: sessionData.session.sessionStatus,
+          isHost,
+          roundIdx: indexes[0],
+          questionIdx: indexes[1],
+          loading: uiState.loading,
+          error: uiState.error,
+          participants: sessionData.session.participants,
+          userId,
+        }}
+      >
+        {children}
+      </SessionContext.Provider>
+    )
   );
 }
-export const useSession = (): SessionContextData => {
+export const useHostSession = (): HostSessionContextData => {
   const context = useContext(SessionContext);
   if (!context) {
     throw new Error("useSession must be used within a SessionProvider");

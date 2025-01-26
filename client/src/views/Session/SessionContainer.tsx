@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate } from "react-router-dom";
-import styles from "./SessionView.module.scss";
 import { useSessionUtilities } from "@/hooks/useSessionUtilities";
 import SessionView from "./SessionView";
 import bouncy from "assets/loaders/bounce_orange.svg";
-import SessionProvider, { useSession } from "@/context/sessionContext";
+import SessionProvider, { useSession } from "@/context/hostSessionContext";
 
 const Content = () => {
   const { handleExitSession } = useSessionUtilities();
@@ -16,7 +15,7 @@ const Content = () => {
   // if (!username && !sidecar) return <NameInput />;
 
   return (
-    <div className={`${styles.viewWrapper}`}>
+    <div className="">
       <div
         style={{
           position: "absolute",
@@ -29,10 +28,13 @@ const Content = () => {
           justifyContent: "flex-end",
         }}
       >
-        {isHost && <button onClick={() => navigate("/")}>Home</button>}
-        <button onClick={handleExitSession} className={`${styles.exit}`}>
-          Exit
-        </button>
+        {isHost ? (
+          <button onClick={() => navigate("/")}>Home</button>
+        ) : (
+          <button onClick={handleExitSession} className={`exit`}>
+            Exit
+          </button>
+        )}
       </div>
       {/* <SocketProvider
         username={username}

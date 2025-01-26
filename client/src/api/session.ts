@@ -34,6 +34,30 @@ export const sessionQueryHandlers = {
       const err = error as AxiosError;
       return { error: err.message };
     }
-
+  },
+  removeParticipant: async (
+    sessionCode: string,
+    userId: string
+  ): Promise<ApiResponse<{ userId: string, username: string }>> => {
+    try {
+      const { data } = await baseClient.patch(`/session/${sessionCode}/participant/${userId}`);
+      return { data };
+    } catch (error) {
+      console.log("ERROR DELETING PARTICIPANT");
+      const err = error as AxiosError;
+      return { error: err.message };
+    }
+  },
+  fetchParticipantSession: async (
+    multiCode:string
+  ): Promise<ApiResponse<ParticipantSessionData>> => {
+    try {
+      const { data } = await baseClient.get(`/session/participant/${multiCode}`);
+      return { data };
+    } catch (error) {
+      console.log("ERROR FETCHING PARTICIPANT DATA");
+      const err = error as AxiosError;
+      return { error: err.message };
+    }
   },
 };

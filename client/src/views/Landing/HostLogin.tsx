@@ -1,9 +1,9 @@
-import styles from "./Landing.module.scss";
 import { motion } from "framer-motion";
 import React, { useRef } from "react";
 import { TbLogin2 } from "react-icons/tb";
 import CardForm from "@/components/utilityComps/CardForm/CardForm";
 import { useAuth } from "@/context/authContext";
+import LandingLayout from "@/components/utilityComps/LandingLayout";
 
 const HostLogin = () => {
   const btnRef = useRef<HTMLInputElement>(null);
@@ -33,13 +33,7 @@ const HostLogin = () => {
   ];
 
   return (
-    <motion.div
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 20, opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`${styles.landingWrapper}`}
-    >
+    <LandingLayout>
       <CardForm
         title={"Host login"}
         icon={<TbLogin2 className="text-main1 h-[25px] w-[25px]" />}
@@ -55,7 +49,7 @@ const HostLogin = () => {
         loading={loading}
         btnRef={btnRef}
       />
-    </motion.div>
+    </LandingLayout>
   );
 };
 
