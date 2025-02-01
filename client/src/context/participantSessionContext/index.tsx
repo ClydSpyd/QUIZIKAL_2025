@@ -1,9 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { ParticipantSessionData } from "./types";
 import { useParticipantSessionData } from "@/queries/sessionData";
 import { useNavigate, useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/api/types";
+import { RefetchOptions } from "@tanstack/react-query";
 
 const ParticipantContext = createContext<ParticipantSessionData>(
   {} as ParticipantSessionData
@@ -32,8 +34,10 @@ export default function ParticipantSessionProvider({
   }, []);
 
   const { multiCode } = useParams();
-  const { data, error: queryError } = useParticipantSessionData({ multiCode });
-
+  const { data, error: queryError, refetch } = useParticipantSessionData({ multiCode });
+  const wrappedRefetch = async (options?: RefetchOptions): Promise<void> => {
+    await refetch(options); // Await and ignore the result
+  };
   useEffect(() => {
     console.log({ queryError });
     if (queryError) {
@@ -49,6 +53,8 @@ export default function ParticipantSessionProvider({
     <ParticipantContext.Provider
       value={{
         userData: data?.userData ?? null,
+        sessionName: data?.sessionName ?? "",
+        sessionCode: data?.sessionCode ?? "",
         roundIdx,
         questionIdx,
         currentQuestion,
@@ -56,6 +62,7 @@ export default function ParticipantSessionProvider({
         sessionStatus,
         loading,
         error,
+        refetch: wrappedRefetch,
       }}
     >
       {children}

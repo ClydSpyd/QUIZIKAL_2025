@@ -1,4 +1,8 @@
+import { RefetchOptions } from "@tanstack/react-query";
+
 export interface ParticipantSessionData {
+  sessionName: string;
+  sessionCode: string;
   userData: Participant | null;
   roundIdx: number;
   questionIdx: number;
@@ -7,4 +11,5 @@ export interface ParticipantSessionData {
   sessionStatus: SessionStatus;
   loading: boolean;
   error: string | null;
+  refetch: (options?: RefetchOptions) => Promise<void>;
 }

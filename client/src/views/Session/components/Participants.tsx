@@ -4,7 +4,7 @@ import { useSessionData } from "@/queries/sessionData";
 import { API } from "@/api";
 import spinner from "@/assets/loaders/spin_orange.svg";
 import { useState } from "react";
-import ParticipantListItem from "./components/ParticipantListItem";
+import ParticipantListItem from "./ParticipantListItem";
 
 export default function Participants() {
   const { sessionCode, participants: listItems } = useHostSession();

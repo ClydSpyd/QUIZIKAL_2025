@@ -23,7 +23,7 @@ const schema = new mongoose.Schema({
   },
   participants: {
     type: Map,
-    of: String,
+    of: Object,
     default: new Map(),
   },
   responses: {

@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import HostSessionProvider, { useHostSession } from "@/context/hostSessionContext";
-import Participants from "./Participants";
+import HostSessionProvider, {
+  useHostSession,
+} from "@/context/hostSessionContext";
+import Participants from "./components/Participants";
+import { motion } from "framer-motion";
 
 const Content = () => {
   const { sessionName } = useHostSession();
 
   return (
-    <div className="h-screen w-full flex flex-col items-center pt-20">
+    <div className="w-full overflow-hidden flex flex-col items-center pt-20 box-border">
       <h1 className="mb-4 text-2xl font-bold">{sessionName}</h1>
       <Participants />
     </div>
@@ -16,7 +19,15 @@ const Content = () => {
 export default function SessionViewHost() {
   return (
     <HostSessionProvider>
-      <Content />
+      <motion.div
+        key={"dash"}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -20, opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Content />
+      </motion.div>
     </HostSessionProvider>
   );
 }

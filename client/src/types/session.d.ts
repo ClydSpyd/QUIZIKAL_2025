@@ -15,7 +15,9 @@ declare interface ParticipantSessionData {
   userData: Participant,
   roundIdx: number,
   questionIdx: number,
-  sessionStatus: SessionStatus
+  sessionStatus: SessionStatus,
+  sessionName: string,
+  sessionCode: string,
 }
 
 declare type SessionStatus =

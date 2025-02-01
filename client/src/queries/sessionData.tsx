@@ -33,7 +33,7 @@ export const useParticipantSessionData = ({
   };
 
   return useQuery({
-    queryKey: ["sessionData", multiCode],
+    queryKey: ["sessionDataParticipant", multiCode],
     queryFn: getSession,
     enabled: !!multiCode,
     select: (data) => data,
