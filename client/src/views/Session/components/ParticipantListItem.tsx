@@ -8,14 +8,15 @@ import { useRef, useState } from "react";
 import { cn } from "@/utilities/cn";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import spinner from '@/assets/loaders/spin_white.svg'
+import { useSocket } from "@/context/socketContext";
 
 export default function ParticipantListItem({
   name,
-  code,
+  userId,
   handleDelete,
 }: {
   name: string;
-  code: string;
+  userId: string;
   handleDelete: () => void;
 }) {
   const { sessionCode } = useHostSession();
@@ -24,9 +25,15 @@ export default function ParticipantListItem({
   const [ deleting, setDeleting ] = useState<boolean>(false);
 
   const { handleCopy, copied } = useClipboard();
+  const { connectedUsers } = useSocket();
+
+  console.log({connectedUsers, userId})
+  const isConnected = connectedUsers.some(
+    (user: SocketUser) => user.userId == userId
+  );
 
   const handleCopyBtn = async () => {
-    const textToCopy = `${window.location.host}/play/${sessionCode}${code}`;
+    const textToCopy = `${window.location.host}/play/${sessionCode}${userId}`;
     handleCopy(textToCopy);
   };
 
@@ -39,12 +46,18 @@ export default function ParticipantListItem({
 
   return (
     <div
-      key={code}
+      key={userId}
       ref={contRef}
-      className={`w-full h-[40px] flex items-center box-border px-[15px] border-t-2 border-black1 m-0 relative`}
+      className={`w-full h-[40px] flex items-center box-border pr-[15px] border-t-2 border-black1 m-0 relative`}
     >
-      <div className="flex items-center justify-center w-1/2">{name}</div>
-      <div className="flex items-center justify-center w-1/4">{code}</div>
+      <div
+        className={cn(
+          "absolute center-vert left-5 h-[10px] w-[10px] rounded-full",
+          isConnected ? "bg-lime-400" : "bg-red-600"
+        )}
+      />
+      <div className="flex items-center justify-center w-1/3">{name}</div>
+      <div className="flex items-center justify-center w-1/4">{userId}</div>
       <div className="grow flex items-center justify-end">
         <div className="h-[40px] w-[40px] flex items-center justify-center">
           {!copied ? (

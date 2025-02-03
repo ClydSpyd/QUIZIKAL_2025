@@ -3,9 +3,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { ParticipantSessionData } from "./types";
 import { useParticipantSessionData } from "@/queries/sessionData";
 import { useNavigate, useParams } from "react-router-dom";
-import { AxiosError } from "axios";
-import { ErrorResponse } from "@/api/types";
 import { RefetchOptions } from "@tanstack/react-query";
+import { SocketProvider } from "../socketContext";
 
 const ParticipantContext = createContext<ParticipantSessionData>(
   {} as ParticipantSessionData
@@ -17,15 +16,14 @@ export default function ParticipantSessionProvider({
   children: React.ReactNode;
 }) {
   const navigate = useNavigate();
-  const [loading, setLoading ] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [roundIdx, setRoundIdx] = useState<number>(0);
   const [questionIdx, setQuestionIdx] = useState<number>(0);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionData | null>(
     null
   );
   const [roundStatus, setRoundStatus] =
-    useState<RoundStatus>("pendingResponse");
+    useState<RoundStatus>("waiting");
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>("pending");
 
   useEffect(() => {
@@ -34,20 +32,28 @@ export default function ParticipantSessionProvider({
   }, []);
 
   const { multiCode } = useParams();
-  const { data, error: queryError, refetch } = useParticipantSessionData({ multiCode });
+  const {
+    data,
+    error: queryError,
+    refetch,
+  } = useParticipantSessionData({ multiCode });
+  
   const wrappedRefetch = async (options?: RefetchOptions): Promise<void> => {
     await refetch(options); // Await and ignore the result
   };
-  useEffect(() => {
-    console.log({ queryError });
-    if (queryError) {
-      const err = queryError as AxiosError<ErrorResponse>;
-      console.log({ error: err.response?.data.error });
-      setError(err.response?.data.error ?? "Something went wrong :(");
-    } else {
-      setError(null);
-    }
-  }, [queryError]);
+
+  const handleSessionUpdate = async (
+    payload: Partial<SessionClientPayload>
+  ) => {
+    const { roundIdx, questionIdx, sessionStatus, roundStatus } = payload;
+    roundIdx && setRoundIdx(roundIdx);
+    questionIdx && setQuestionIdx(questionIdx);
+    roundStatus && setRoundStatus(roundStatus);
+    sessionStatus && setSessionStatus(sessionStatus);
+  };
+
+  if (queryError)
+    return <h1>{queryError?.message}</h1>;
 
   return (
     <ParticipantContext.Provider
@@ -61,11 +67,19 @@ export default function ParticipantSessionProvider({
         roundStatus,
         sessionStatus,
         loading,
-        error,
         refetch: wrappedRefetch,
+        handleSessionUpdate,
       }}
     >
-      {children}
+      <SocketProvider
+        sessionCode={data?.sessionCode ?? ""}
+        userData={{
+          userId: data?.userData.id ?? "",
+          username: data?.userData.username ?? "",
+        }}
+      >
+        {children}
+      </SocketProvider>
     </ParticipantContext.Provider>
   );
 }

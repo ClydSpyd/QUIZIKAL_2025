@@ -5,9 +5,12 @@ const {
   sessionCodeFromName,
 } = require("../utilities/stringUtils");
 const User = require("../models/User");
-const { addNewSession } = require("../services/session.service");
+const {
+  addNewSession,
+  getSessionDataParticipant,
+  getSessionData,
+} = require("../services/session.service");
 const router = express.Router();
-const { getQuizById } = require("../utilities/QuizUtilities");
 
 // POST create session
 router.post("/create", async (req, res) => {
@@ -22,10 +25,12 @@ router.post("/create", async (req, res) => {
     quizId,
     createdBy: userId,
   });
-
-  console.log("NEWSESSION:", newSession);
-
+  
+  // Explicitly set a non-empty default value
+  newSession.responses = { }; 
+  
   await newSession.save();
+
   addNewSession(newSession);
 
   const user = await User.findById(userId);
@@ -43,28 +48,9 @@ router.get("/:sessionCode", async (req, res) => {
   const { sessionCode } = req.params;
 
   try {
-    const session = await Session.findOne({ sessionCode }).lean();
+   const payload = await getSessionData(sessionCode);
 
-    if (!session) {
-      return res
-        .status(400)
-        .json({ error: `Session ${sessionCode} not found` });
-    }
-
-    const participants = Object.fromEntries(
-      Object.entries(session.participants).filter(
-        ([key, value]) => value.status == "active"
-      )
-    );
-    const { quizData } = await getQuizById(session.quizId);
-
-    res.json({
-      session: {
-        ...session,
-        participants,
-      },
-      quizData,
-    });
+    res.json(payload);
   } catch (error) {
     console.log(error);
     res.json({ error: error });
@@ -77,28 +63,10 @@ router.get("/participant/:combiCode", async (req, res) => {
   const [sessionCode, userId] = [combiCode.slice(0, 5), combiCode.slice(5)];
 
   try {
-    const session = await Session.findOne({ sessionCode });
-    if (!session) {
-      return res.status(404).json({ error: "Session not found" });
-    }
-    const { roundIdx, questionIdx, sessionStatus, sessionName } = session;
-
-    const userData = session.participants.get(userId);
-    if (!userData || userData.status !== "active") {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const payload = {
-      sessionCode,
-      sessionName,
-      userData,
-      roundIdx,
-      questionIdx,
-      sessionStatus,
-    };
-
+    const { payload } = await getSessionDataParticipant(sessionCode, userId);
     res.json(payload);
   } catch (error) {
+    console.log("ERROR!!!");
     console.log(error);
     res.json({ error: error });
   }
@@ -108,7 +76,7 @@ router.get("/participant/:combiCode", async (req, res) => {
 router.post("/:sessionCode/participant", async (req, res) => {
   const { sessionCode } = req.params;
   try {
-    const session = await Session.findOne({ sessionCode });
+    const session = await Session.findOne({ sessionCode }).populate("quizId");
 
     if (!session) {
       return res.status(404).json({ error: "Session not found" });
@@ -127,6 +95,12 @@ router.post("/:sessionCode/participant", async (req, res) => {
     };
 
     session.participants.set(userId, userData);
+
+    session.responses.set(
+      userId,
+      session.quizId.rounds.map((round) => Array(round.length).fill(null))
+    );
+
 
     await session.save();
 
@@ -157,11 +131,9 @@ router.patch("/:sessionCode/participant/:userId", async (req, res) => {
 
       for (const key of Object.keys(payload)) {
         if (!allowedKeys.includes(key)) {
-          return res
-            .status(400)
-            .json({
-              error: `Invalid key: ${key}. Only existing keys can be updated.`,
-            });
+          return res.status(400).json({
+            error: `Invalid key: ${key}. Only existing keys can be updated.`,
+          });
         }
 
         if (key === "id") {

@@ -27,8 +27,9 @@ const schema = new mongoose.Schema({
     default: new Map(),
   },
   responses: {
-    type: mongoose.Schema.Types.Mixed,
-    default: {},
+    type: Map,
+    of: [[String]], // Each userId maps to an array of arrays
+    default: () => new Map(),
   },
   sessionStatus: {
     type: String,

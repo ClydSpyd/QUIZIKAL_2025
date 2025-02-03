@@ -1,5 +1,5 @@
 declare interface Host {
-  _id: string,
+  id: string,
   username:string,
   activeSession: SessionData,
   quizzes: string[],
@@ -16,4 +16,17 @@ declare interface Participant {
 declare interface AuthUserData {
   username: string;
   id: string;
+}
+
+declare interface SocketUser {
+  id: string;
+  userId: string;
+  username: string;
+}
+
+declare interface SessionClientPayload {
+  roundIdx: number;
+  questionIdx: number;
+  roundStatus: RoundStatus;
+  sessionStatus: SessionStatus;
 }

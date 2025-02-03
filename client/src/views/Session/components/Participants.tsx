@@ -28,7 +28,7 @@ export default function Participants() {
       <h3>PARTICIPANTS</h3>
       <div className="w-full border-2 border-black1 rounded-md text-sm">
         <div className={`w-full flex  bg-black1 py-1`}>
-          <div className="w-1/2 flex items-center justify-center">NAME</div>
+          <div className="w-1/3 flex items-center justify-center">NAME</div>
           <div className="w-1/4 flex items-center justify-center">CODE</div>
           <div />
         </div>
@@ -36,12 +36,12 @@ export default function Participants() {
           <h4 className="w-full text-center py-2">NO SESSION PARTICIPANTS</h4>
         ) : (
           Object.entries(listItems).map(
-            ([code, userData]: [string, Participant]) => (
+            ([userId, userData]: [string, Participant]) => (
               <ParticipantListItem
-                key={code}
+                key={userId}
                 name={userData.username ?? userData.defaultName}
-                code={code}
-                handleDelete={() => handleDeleteParticipant(code)}
+                userId={userId}
+                handleDelete={() => handleDeleteParticipant(userId)}
               />
             )
           )

@@ -6,12 +6,14 @@ import Participants from "./components/Participants";
 import { motion } from "framer-motion";
 
 const Content = () => {
-  const { sessionName } = useHostSession();
+  const { sessionName, roundIdx, questionIdx } = useHostSession();
 
   return (
     <div className="w-full overflow-hidden flex flex-col items-center pt-20 box-border">
       <h1 className="mb-4 text-2xl font-bold">{sessionName}</h1>
       <Participants />
+      <h3>ROUND {roundIdx+1}</h3>
+      <h3>QUESTION {questionIdx+1}</h3>
     </div>
   );
 };

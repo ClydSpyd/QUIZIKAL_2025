@@ -8,6 +8,10 @@ declare interface QuestionData {
   questionType: QuestionType
 }
 
+declare interface RoundQuestion extends QuestionData {
+  myResponse: number | null;
+} 
+
 declare interface QuizData {
   _id: string
   quizName: string,

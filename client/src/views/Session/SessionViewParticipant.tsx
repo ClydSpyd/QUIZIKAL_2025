@@ -32,7 +32,7 @@ function Content() {
 export default function SessionViewParticipant() {
   return (
     <ParticipantSessionProvider>
-      <Content />
+        <Content />
     </ParticipantSessionProvider>
-  )
+  );
 }

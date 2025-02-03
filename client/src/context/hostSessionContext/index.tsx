@@ -3,10 +3,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { HostSessionContextData } from "./types";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSessionData } from "@/queries/sessionData";
 import { useAuth } from "../authContext";
 import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
+import { SocketProvider } from "../socketContext";
 
 const SessionContext = createContext<HostSessionContextData>(
   {} as HostSessionContextData
@@ -19,14 +20,10 @@ export default function HostSessionProvider({
 }) {
   const { user } = useAuth();
   const [sessionCode, setSessionCode] = useState<string | undefined>(undefined);
+  const [sessionStatus, setSessionStatus] = useState<SessionStatus>("pending");
   const [userId, setUserId] = useState<string | undefined>(undefined);
-  const [isHost, setIsHost] = useState<boolean>(!!user);
-  const [indexes, setIndexes] = useState<[number, number]>([0, 0]);
-  const [uiState, setUiState] = useState<{
-    loading: boolean;
-    error: string | null;
-  }>({ error: null, loading: false });
-
+  const [roundIdx, setRoundIdx] = useState<number>(0)
+  const [questionIdx, setQuestionIdx] = useState<number>(0);
   const {
     data: sessionData,
     isLoading,
@@ -34,7 +31,6 @@ export default function HostSessionProvider({
   } = useSessionData({ sessionCode: sessionCode });
 
   const { sessionSlug } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const [sessionCodeParam, userIdParam] = [
@@ -43,26 +39,23 @@ export default function HostSessionProvider({
     ];
     setSessionCode(sessionCodeParam);
     setUserId(userIdParam);
-    setIsHost(!userIdParam);
   }, [sessionSlug]);
 
-  useEffect(() => {
-    if (
-      sessionData &&
-      userId &&
-      !Object.keys(sessionData.session.participants).includes(userId)
-    ) {
-      console.log({ userId, sessionData });
-      setUiState((prev) => ({ ...prev, error: "USER NOT FOUND" }));
-      navigate("/");
-    }
-  }, [sessionData]);
+  const handleSessionUpdate = async (
+    payload: Partial<SessionClientPayload>
+  ) => {
+    const { roundIdx, questionIdx, sessionStatus } = payload;
+    roundIdx && setRoundIdx(roundIdx);
+    questionIdx && setQuestionIdx(questionIdx);
+    sessionStatus && setSessionStatus(sessionStatus);
+  };
 
-  if (!isLoading && (!sessionData || !sessionCode))
+
+  if (isLoading || (!sessionData || !sessionCode))
     return <LoadingScreen />;
 
-  if (uiState.error || queryError)
-    return <h1>{uiState.error ?? queryError?.message}</h1>;
+  if (queryError)
+    return <h1>{queryError?.message}</h1>;
 
   return (
     sessionData &&
@@ -70,20 +63,24 @@ export default function HostSessionProvider({
       <SessionContext.Provider
         value={{
           sessionName: sessionData.session.sessionName,
-          quizData: sessionData.quizData,
           sessionCode,
+          sessionStatus,
+          roundIdx,
+          questionIdx,
+          quizData: sessionData.quizData,
           sidecarCode: sessionData.session.sessionCode,
-          sessionStatus: sessionData.session.sessionStatus,
-          isHost,
-          roundIdx: indexes[0],
-          questionIdx: indexes[1],
-          loading: uiState.loading,
-          error: uiState.error,
           participants: sessionData.session.participants,
           userId,
+          handleSessionUpdate
         }}
       >
-        {children}
+        <SocketProvider
+          isHost
+          sessionCode={sessionCode}
+          userData={{ username: user?.username ?? "", userId: user?.id ?? "" }}
+        >
+          {children}
+        </SocketProvider>
       </SessionContext.Provider>
     )
   );

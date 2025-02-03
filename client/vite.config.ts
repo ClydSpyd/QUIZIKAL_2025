@@ -16,19 +16,23 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        '/api': {
-          target: `${env.VITE_SERVER_URL}/api`,
+        "/api": {
+          target: `${env.VITE_SERVER_URL}`,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+        "/socket": {
+          target: `${env.VITE_SERVER_URL}`,
+          changeOrigin: true,
+          ws: true,
         },
       },
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src/'),
-        assets: path.resolve(__dirname, './src/assets/'),
-        styles: path.resolve(__dirname, './src/styles/'),
-        components: path.resolve(__dirname, './src/components/'),
+        "@": path.resolve(__dirname, "./src/"),
+        assets: path.resolve(__dirname, "./src/assets/"),
+        styles: path.resolve(__dirname, "./src/styles/"),
+        components: path.resolve(__dirname, "./src/components/"),
       },
     },
   };

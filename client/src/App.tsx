@@ -25,13 +25,13 @@ function App() {
               <Route element={<ProtectedLayout />}>
                 <Route path={"/dashboard"} element={<HostDash />} />
                 <Route path={"/quiz/edit/:quizId?"} element={<CreateQuiz />} />
+                <Route
+                  path={"/host/:sessionSlug/:sidecar?"}
+                  element={<SessionView isHost />}
+                />
               </Route>
-              <Route
-                path={"/host/:sessionSlug/:sidecar?"}
-                element={<SessionView isHost />}
-              />
+              <Route path={"/play/:multiCode"} element={<SessionView />} />
             </Route>
-            <Route path={"/play/:multiCode"} element={<SessionView />} />
           </Routes>
         </AnimatePresence>
       </AuthProvider>
