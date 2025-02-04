@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { ParticipantSessionData } from "./types";
 import { useParticipantSessionData } from "@/queries/sessionData";
 import { useNavigate, useParams } from "react-router-dom";
@@ -51,6 +51,14 @@ export default function ParticipantSessionProvider({
     roundStatus && setRoundStatus(roundStatus);
     sessionStatus && setSessionStatus(sessionStatus);
   };
+  const memoizedSessionCode = useMemo(() => data?.sessionCode ?? "", [data?.sessionCode]);
+  const memoizedUserData = useMemo(
+    () => ({
+      userId: data?.userData?.id ?? "",
+      username: data?.userData?.username ?? "",
+    }),
+    [data?.userData?.id, data?.userData?.username]
+  );
 
   if (queryError)
     return <h1>{queryError?.message}</h1>;
@@ -72,11 +80,8 @@ export default function ParticipantSessionProvider({
       }}
     >
       <SocketProvider
-        sessionCode={data?.sessionCode ?? ""}
-        userData={{
-          userId: data?.userData.id ?? "",
-          username: data?.userData.username ?? "",
-        }}
+        sessionCode={memoizedSessionCode}
+        userData={memoizedUserData}
       >
         {children}
       </SocketProvider>

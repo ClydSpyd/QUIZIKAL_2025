@@ -53,6 +53,11 @@ module.exports = function initSocket(server) {
         }, 500);
       }
     });
+
+    socket.on("round-update", (payload) => {
+        console.log({ payload, socket: socket.handshake.query.sessionCode });
+        socket.broadcast.emit("session-data-client", payload);
+    })
   });
 
   return io;

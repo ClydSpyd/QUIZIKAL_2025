@@ -35,7 +35,7 @@ const schema = new mongoose.Schema({
     type: String,
     default: "pending",
   },
-  quizId: {
+  quizData: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Quiz",
     required: true,

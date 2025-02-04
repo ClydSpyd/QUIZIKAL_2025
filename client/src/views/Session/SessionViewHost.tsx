@@ -4,16 +4,22 @@ import HostSessionProvider, {
 } from "@/context/hostSessionContext";
 import Participants from "./components/Participants";
 import { motion } from "framer-motion";
+import RoundPicker from "./components/RoundPicker";
+import RoundDisplay from "./components/RoundDisplay";
+import RoundControls from "./components/RoundControls";
 
 const Content = () => {
   const { sessionName, roundIdx, questionIdx } = useHostSession();
 
   return (
     <div className="w-full overflow-hidden flex flex-col items-center pt-20 box-border">
-      <h1 className="mb-4 text-2xl font-bold">{sessionName}</h1>
+      <div className="mb-4 flex flex-col items-center gap-2">
+        <h1 className="text-2xl font-bold">{sessionName}</h1>
+        <RoundDisplay />
+        <RoundControls />
+      </div>
       <Participants />
-      <h3>ROUND {roundIdx+1}</h3>
-      <h3>QUESTION {questionIdx+1}</h3>
+      <RoundPicker />
     </div>
   );
 };

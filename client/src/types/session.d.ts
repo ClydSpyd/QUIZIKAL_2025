@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare interface SessionData {
   _id: string;
   sessionName: string;
@@ -9,6 +10,7 @@ declare interface SessionData {
   sessionStatus: SessionStatus;
   questions: object[][]; // @todo define question format & create interface
   quizId: string;
+  quizData: Record<any, any>;
 }
 
 declare interface ParticipantSessionData {

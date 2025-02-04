@@ -14,7 +14,7 @@ router.get(
   async (req, res) => {
     console.log("GET QUESTION");
     const { participantId, sessionCode, roundIdx, questionIdx } = req.params;
-    const { session } = await getSessionByCode(sessionCode, "quizId");
+    const { session } = await getSessionByCode(sessionCode, "quizData");
     console.log("Ö", session);
 
     if (!session) {
@@ -23,13 +23,13 @@ router.get(
         .json({ error: `Session ${sessionCode} not found` });
     }
 
-    if (+roundIdx > session?.quizId?.rounds.length - 1)
+    if (+roundIdx > session?.quizData?.rounds.length - 1)
       return res.json({ error: "invalid roundIdx" });
 
-    if (questionIdx > session?.quizId?.rounds[roundIdx]?.length - 1)
+    if (questionIdx > session?.quizData?.rounds[roundIdx]?.length - 1)
       return res.json({ error: "invalid questionIdx" });
 
-    const questionId = session.quizId.rounds[roundIdx]?.[questionIdx];
+    const questionId = session.quizData.rounds[roundIdx]?.[questionIdx];
     const questionData = await QuizQuestion.findOne(questionId);
 
     return res.json({ questionData, session });

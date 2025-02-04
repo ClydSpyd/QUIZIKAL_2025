@@ -22,7 +22,7 @@ router.post("/create", async (req, res) => {
     sessionName,
     sessionCode,
     sidecarCode,
-    quizId,
+    quizData: quizId,
     createdBy: userId,
   });
   
@@ -76,8 +76,8 @@ router.get("/participant/:combiCode", async (req, res) => {
 router.post("/:sessionCode/participant", async (req, res) => {
   const { sessionCode } = req.params;
   try {
-    const session = await Session.findOne({ sessionCode }).populate("quizId");
-
+    const session = await Session.findOne({ sessionCode }).populate("quizData");
+    console.log({ X: session });
     if (!session) {
       return res.status(404).json({ error: "Session not found" });
     }
@@ -98,7 +98,7 @@ router.post("/:sessionCode/participant", async (req, res) => {
 
     session.responses.set(
       userId,
-      session.quizId.rounds.map((round) => Array(round.length).fill(null))
+      session.quizData.rounds.map((round) => Array(round.length).fill(null))
     );
 
 

@@ -4,14 +4,14 @@ import ParticipantSessionProvider, {
 import ParticipantNameView from "./components/ParticipantNameView";
 
 function Content() {
-  const { userData, error, loading, sessionName, sessionCode } = useParticipantSession();
+  const { userData, error, loading, sessionName, sessionCode, sessionStatus } = useParticipantSession();
 
   return userData ? (
     userData.username ? (
       <div className="min-h-[700px] w-screen flex flex-col items-cente justify-center pb-[20%]">
         <h1 className="text-[40px] font-bold mb-4 text-main2">{sessionName}</h1>
         <h1>{sessionCode}</h1>
-        <h1>{userData.id}</h1>
+        <h1>{sessionStatus}</h1>
         <h1>{userData.username ?? userData.defaultName}</h1>
       </div>
     ) : (

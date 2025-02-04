@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { HostSessionContextData } from "./types";
 import { useParams } from "react-router-dom";
 import { useSessionData } from "@/queries/sessionData";
@@ -49,6 +49,11 @@ export default function HostSessionProvider({
     questionIdx && setQuestionIdx(questionIdx);
     sessionStatus && setSessionStatus(sessionStatus);
   };
+    const memoizedSessionCode = useMemo(() => sessionCode ?? "", []);
+    const memoizedUserData = useMemo(
+      () => ({ username: user?.username ?? "", userId: user?.id ?? "" }),
+      []
+    );
 
 
   if (isLoading || (!sessionData || !sessionCode))
@@ -71,13 +76,13 @@ export default function HostSessionProvider({
           sidecarCode: sessionData.session.sessionCode,
           participants: sessionData.session.participants,
           userId,
-          handleSessionUpdate
+          handleSessionUpdate,
         }}
       >
         <SocketProvider
           isHost
-          sessionCode={sessionCode}
-          userData={{ username: user?.username ?? "", userId: user?.id ?? "" }}
+          sessionCode={memoizedSessionCode}
+          userData={memoizedUserData}
         >
           {children}
         </SocketProvider>

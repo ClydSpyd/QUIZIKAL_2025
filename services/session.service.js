@@ -34,7 +34,7 @@ const getSessionData = async (sessionCode) => {
   const session = await Session.findOne({ sessionCode }).lean();
   console.log({session})
   if (!session) {
-    return res.status(400).json({ error: `Session ${sessionCode} not found` });
+    return { error: `Session ${sessionCode} not found` };
   }
 
   const participants = Object.fromEntries(
@@ -43,7 +43,7 @@ const getSessionData = async (sessionCode) => {
     )
   );
   
-  const { quizData } = await getQuizById(session.quizId);
+  const { quizData } = await getQuizById(session.quizData);
   return { session: { ...session, participants }, quizData };
 };
 
@@ -119,9 +119,7 @@ const handleClientConnection = async (socket) => {
         questionData
       });
 
-      console.log({roundData})
 
-      socket.broadcast.emit("users", Object.values(connectedUsers));
     }
   } catch (error) {
     console.log("ÖÖ->ERROR", error);
