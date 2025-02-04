@@ -119,7 +119,7 @@ const handleClientConnection = async (socket) => {
         questionData
       });
 
-
+      socket.broadcast.emit("users", Object.values(connectedUsers));
     }
   } catch (error) {
     console.log("ÖÖ->ERROR", error);
