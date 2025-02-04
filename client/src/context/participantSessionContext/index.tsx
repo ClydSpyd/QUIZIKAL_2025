@@ -46,11 +46,18 @@ export default function ParticipantSessionProvider({
     payload: Partial<SessionClientPayload>
   ) => {
     const { roundIdx, questionIdx, sessionStatus, roundStatus } = payload;
-    roundIdx && setRoundIdx(roundIdx);
-    questionIdx && setQuestionIdx(questionIdx);
-    roundStatus && setRoundStatus(roundStatus);
-    sessionStatus && setSessionStatus(sessionStatus);
+
+    console.log({ questionIdx });
+
+    if ("roundIdx" in payload) setRoundIdx(roundIdx!);
+    if ("questionIdx" in payload) {
+      console.log("Ö");
+      setQuestionIdx(questionIdx!);
+    }
+    if ("roundStatus" in payload) setRoundStatus(roundStatus!);
+    if ("sessionStatus" in payload) setSessionStatus(sessionStatus!);
   };
+  
   const memoizedSessionCode = useMemo(() => data?.sessionCode ?? "", [data?.sessionCode]);
   const memoizedUserData = useMemo(
     () => ({

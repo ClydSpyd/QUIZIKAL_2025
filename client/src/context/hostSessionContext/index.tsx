@@ -45,9 +45,9 @@ export default function HostSessionProvider({
     payload: Partial<SessionClientPayload>
   ) => {
     const { roundIdx, questionIdx, sessionStatus } = payload;
-    roundIdx && setRoundIdx(roundIdx);
-    questionIdx && setQuestionIdx(questionIdx);
-    sessionStatus && setSessionStatus(sessionStatus);
+    if ("roundIdx" in payload) setRoundIdx(roundIdx!);
+    if ("questionIdx" in payload) setQuestionIdx(questionIdx!);
+    if ("sessionStatus" in payload) setSessionStatus(sessionStatus!);
   };
     const memoizedSessionCode = useMemo(() => sessionCode ?? "", []);
     const memoizedUserData = useMemo(

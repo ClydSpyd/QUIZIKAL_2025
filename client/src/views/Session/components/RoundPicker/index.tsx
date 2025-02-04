@@ -1,11 +1,13 @@
 import { useHostSession } from "@/context/hostSessionContext";
+import { useSocket } from "@/context/socketContext";
 import { cn } from "@/utilities/cn";
 import { useEffect, useState } from "react";
 
 export default function RoundPicker() {
-  const { roundIdx, questionIdx, quizData, sessionStatus } = useHostSession();
+  const { roundIdx, questionIdx, quizData, sessionStatus, handleSessionUpdate } = useHostSession();
   const [roundSelect, setRoundSelect] = useState<number>(roundIdx);
   const [questionSelect, setQuestionSelect] = useState<number>(questionIdx);
+  const { socket } = useSocket();
 
   useEffect(() => {
     setRoundSelect(roundIdx);
@@ -22,6 +24,12 @@ export default function RoundPicker() {
   console.log({ questionIdx, questionSelect });
 
   console.log({ quizData, ö: quizData.rounds[roundSelect].length });
+
+  const handleUpdate = () => {
+    handleSessionUpdate({ roundIdx: roundSelect, questionIdx: questionSelect });
+    socket?.emit("round-update", { roundIdx: roundSelect, questionIdx: questionSelect });
+  };
+
   return (
     <div
       className={cn(
@@ -65,6 +73,7 @@ export default function RoundPicker() {
         )}
       </div>
       <button
+        onClick={handleUpdate}
         className={cn(
           "mx-auto transition-all duration-300 ease-out",
           localChange ? "opacity-100" : "opacity-60 pointer-events-none"

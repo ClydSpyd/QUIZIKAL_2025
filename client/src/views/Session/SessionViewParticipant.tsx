@@ -4,8 +4,9 @@ import ParticipantSessionProvider, {
 import ParticipantNameView from "./components/ParticipantNameView";
 
 function Content() {
-  const { userData, error, loading, sessionName, sessionCode, sessionStatus } = useParticipantSession();
-
+  const { userData, loading, sessionName, sessionCode, sessionStatus, roundIdx, questionIdx } = useParticipantSession();
+  const error = null;
+  console.log({roundIdx, questionIdx})
   return userData ? (
     userData.username ? (
       <div className="min-h-[700px] w-screen flex flex-col items-cente justify-center pb-[20%]">
@@ -13,6 +14,9 @@ function Content() {
         <h1>{sessionCode}</h1>
         <h1>{sessionStatus}</h1>
         <h1>{userData.username ?? userData.defaultName}</h1>
+        <p className="w-full text-center">
+          round {roundIdx + 1} question {questionIdx + 1}
+        </p>
       </div>
     ) : (
       <ParticipantNameView />
