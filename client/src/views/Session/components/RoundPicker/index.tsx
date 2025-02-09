@@ -21,13 +21,21 @@ export default function RoundPicker() {
   const localChange =
     roundSelect !== roundIdx || questionSelect !== questionIdx;
 
-  console.log({ questionIdx, questionSelect });
 
-  console.log({ quizData, ö: quizData.rounds[roundSelect].length });
+
+  const longestRound = quizData.rounds.reduce(
+    (acc: number, curr: QuestionData[]) =>
+      curr.length > acc ? curr.length : acc,
+    0
+  );
 
   const handleUpdate = () => {
-    handleSessionUpdate({ roundIdx: roundSelect, questionIdx: questionSelect });
-    socket?.emit("round-update", { roundIdx: roundSelect, questionIdx: questionSelect });
+    handleSessionUpdate({ roundIdx: roundSelect, questionIdx: questionSelect, sessionStatus: "pendingRound" });
+    socket?.emit("round-update", {
+      roundIdx: roundSelect,
+      questionIdx: questionSelect,
+      sessionStatus: "pendingRound",
+    });
   };
 
   return (
@@ -37,40 +45,56 @@ export default function RoundPicker() {
         sessionStatus === "pending" ? "opacity-35 pointer-events-none" : ""
       )}
     >
-      <div className="flex items-center gap-1">
-        <p className="text-sx">ROUND</p>
-        {quizData.rounds.map((_: QuestionData[], idx: number) => (
-          <div
-            onClick={() => setRoundSelect(idx)}
-            className={cn(
-              "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
-              roundSelect === idx ? "bg-white/30 border-main1" : "",
-              roundIdx === idx ? "bg-white text-black border-whitee" : ""
-            )}
-          >
-            <p>{idx + 1}</p>
+      <div className="flex gap-2 mt-4">
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-xs w-fulltext-center">ROUND</p>
+          <div className="flex items-center gap-1 border border-black1 rounded-sm p-1">
+            {quizData.rounds.map((_: QuestionData[], idx: number) => (
+              <div
+                onClick={() => setRoundSelect(idx)}
+                className={cn(
+                  "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
+                  roundSelect === idx ? "bg-white/30 border-main1" : "",
+                  roundIdx === idx ? "bg-white text-black border-white" : ""
+                )}
+              >
+                <p>{idx + 1}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="flex items-center gap-1">
-        <p className="text-xs">QUESTION</p>
-        {Array.from(
-          { length: quizData.rounds[roundSelect].length },
-          (_, idx) => (
-            <div
-              onClick={() => setQuestionSelect(idx)}
-              className={cn(
-                "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
-                questionSelect === idx ? "bg-white/30 border-main1" : "",
-                roundSelect === roundIdx && questionIdx === idx
-                  ? "bg-white text-black border-white"
-                  : ""
-              )}
-            >
-              <p>{idx + 1}</p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-xs w-full text-center">QUESTION</p>
+          <div className="flex items-center gap-1 border border-black1 rounded-sm p-1 relative">
+            <div className="flex items-center gap-1 border border-transparent rounded-sm">
+              {Array.from({ length: longestRound }, (_, idx) => (
+                <div
+                  key={`ghost_${idx}`}
+                  className={"h-[30px] w-[30px] pointer-events-none border opacity-10"}
+                />
+              ))}
             </div>
-          )
-        )}
+            <div className="absolute left-1 top-1 flex items-center gap-1 border border-black1 rounded-sm z-10">
+              {Array.from(
+                { length: quizData.rounds[roundSelect].length },
+                (_, idx) => (
+                  <div
+                    onClick={() => setQuestionSelect(idx)}
+                    className={cn(
+                      "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
+                      questionSelect === idx ? "bg-white/30 border-main1" : "",
+                      roundSelect === roundIdx && questionIdx === idx
+                        ? "bg-white text-black border-white"
+                        : ""
+                    )}
+                  >
+                    <p>{idx + 1}</p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
       </div>
       <button
         onClick={handleUpdate}

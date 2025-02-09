@@ -45,17 +45,17 @@ export default function ParticipantSessionProvider({
   const handleSessionUpdate = async (
     payload: Partial<SessionClientPayload>
   ) => {
-    const { roundIdx, questionIdx, sessionStatus, roundStatus } = payload;
+    const { roundIdx, questionIdx, sessionStatus, roundStatus, questionData } =
+      payload;
 
-    console.log({ questionIdx });
 
     if ("roundIdx" in payload) setRoundIdx(roundIdx!);
     if ("questionIdx" in payload) {
-      console.log("Ö");
       setQuestionIdx(questionIdx!);
     }
     if ("roundStatus" in payload) setRoundStatus(roundStatus!);
     if ("sessionStatus" in payload) setSessionStatus(sessionStatus!);
+    if ("questionData" in payload) setCurrentQuestion(questionData!);
   };
   
   const memoizedSessionCode = useMemo(() => data?.sessionCode ?? "", [data?.sessionCode]);

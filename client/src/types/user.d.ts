@@ -29,4 +29,5 @@ declare interface SessionClientPayload {
   questionIdx: number;
   roundStatus: RoundStatus;
   sessionStatus: SessionStatus;
+  questionData: QuestionData;
 }

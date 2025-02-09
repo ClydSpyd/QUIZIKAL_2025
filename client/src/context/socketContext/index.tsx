@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import React, {
   createContext,
@@ -9,6 +10,7 @@ import io, { Socket } from "socket.io-client";
 import { defaultContextData, SocketContextData } from "./types";
 import { useParticipantSession } from "../participantSessionContext";
 import { useHostSession } from "../hostSessionContext";
+import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
 
 
 const SocketContext = createContext<SocketContextData>(defaultContextData);
@@ -28,17 +30,16 @@ export const SocketProvider = ({
   isHost?: boolean;
   children: React.ReactNode;
 }) => {
+  const [socketConected, setSocketConnected] = useState(false);
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
-  
   const { handleSessionUpdate } = useParticipantSession();
     const { handleSessionUpdate: hostSessionUpdate } = useHostSession();
 
   useEffect(() => {
-    console.log({ userData, isHost });
-      
-    if (userData) {
+
+    if (userData && sessionCode) {
       const baseUrl = window.location.origin;
       const query = {
         sessionCode,
@@ -54,7 +55,6 @@ export const SocketProvider = ({
 
       setSocket(socket);
 
-
       socket.on("connect_error", (err) => {
         console.error("Socket.IO connection error:", err);
         setError(err.message);
@@ -68,26 +68,20 @@ export const SocketProvider = ({
         console.log("Socket.IO connection established:", socket.id);
       });
 
-      socket.on("init-client", (data) => {
-        console.log("ÖÖ Received init-client data:", data);
-        handleSessionUpdate(data);
-      });
-
       socket.on(
         "session-data-client",
         (data: Partial<SessionClientPayload>) => {
           console.log("ÖÖ session-data-client:", data);
           handleSessionUpdate(data);
+          setSocketConnected(true);
         }
       );
 
-      socket.on(
-        "session-data-host",
-        (data: Partial<SessionClientPayload>) => {
-          console.log("ÖÖ session-data-host:", data);
-          hostSessionUpdate(data);
-        }
-      );
+      socket.on("session-data-host", (data: Partial<SessionClientPayload>) => {
+        console.log("ÖÖ session-data-host:", data);
+        hostSessionUpdate(data);
+        setSocketConnected(true);
+      });
 
       socket.on("disconnect", () => {
         console.log("Socket.IO connection closed:", socket.id);
@@ -111,7 +105,7 @@ export const SocketProvider = ({
         }
       };
     }
-  }, [userData, isHost]);
+  }, [userData, isHost, sessionCode]);
 
   useEffect(() => {
     console.log(socket);
@@ -129,7 +123,7 @@ export const SocketProvider = ({
 
   return (
     <SocketContext.Provider value={{ error, socket, connectedUsers }}>
-      {children}
+      {socketConected ? children : <LoadingScreen />}
     </SocketContext.Provider>
   );
 };

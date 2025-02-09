@@ -29,7 +29,6 @@ export default function HostSessionProvider({
     isLoading,
     error: queryError,
   } = useSessionData({ sessionCode: sessionCode });
-
   const { sessionSlug } = useParams();
 
   useEffect(() => {
@@ -49,10 +48,10 @@ export default function HostSessionProvider({
     if ("questionIdx" in payload) setQuestionIdx(questionIdx!);
     if ("sessionStatus" in payload) setSessionStatus(sessionStatus!);
   };
-    const memoizedSessionCode = useMemo(() => sessionCode ?? "", []);
+    const memoizedSessionCode = useMemo(() => sessionCode ?? "", [sessionCode]);
     const memoizedUserData = useMemo(
       () => ({ username: user?.username ?? "", userId: user?.id ?? "" }),
-      []
+      [user]
     );
 
 

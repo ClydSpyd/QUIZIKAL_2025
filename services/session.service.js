@@ -20,7 +20,7 @@ const getSessionByCode = async (sessionCode, populate) => {
   }
 
   return { session };
-  console.log("öö ", sessions);
+  
   return sessions[sessionCode];
 };
 
@@ -31,6 +31,7 @@ const addNewSession = (session) => {
 };
 
 const getSessionData = async (sessionCode) => {
+  console.log("GET SESSION DATA", sessionCode);
   const session = await Session.findOne({ sessionCode }).lean();
   console.log({session})
   if (!session) {
@@ -77,6 +78,8 @@ const handleHostConnection = async (io, socket) => {
   console.log("HöST CONNECTED");
   const { sessionCode } = socket.handshake.query;
   const { session } = await getSessionData(sessionCode);
+  socket.sessionCode = sessionCode;
+  socket.sessionId = session._id;
   socket.emit("session-data-host", {
     roundIdx: session?.roundIdx,
     questionIdx: session?.questionIdx,
@@ -126,6 +129,35 @@ const handleClientConnection = async (socket) => {
   }
 };
 
+/**
+ * update a session with the provided partial data.
+ * @param {String} sessionId - The ID of the session to update.
+ * @param {Object} updateData - The partial session object with the fields to update.
+ * @returns {Promise<Object>} - The updated session object.
+ */
+const updateSession = async (sessionId, updateData) => {
+  try {
+    if (!sessionId || typeof updateData !== "object") {
+      throw new Error("Invalid session ID or update data");
+    }
+
+    const updatedSession = await Session.findByIdAndUpdate(
+      sessionId,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSession) {
+      throw new Error("Session not found");
+    }
+
+    return updatedSession;
+  } catch (error) {
+    console.error("Error updating session:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   getSessionByCode,
   getConnectedUsers,
@@ -136,5 +168,6 @@ module.exports = {
   handleHostConnection,
   connectedUsers,
   socketToUserMap,
-  getSessionData
+  getSessionData,
+  updateSession,
 };

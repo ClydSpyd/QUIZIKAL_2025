@@ -5,7 +5,8 @@ declare interface QuestionData {
   questionText: string;
   options: string[],
   correctIndex: number,
-  questionType: QuestionType
+  questionType: QuestionType,
+  myResponse: number | null;
 }
 
 declare interface RoundQuestion extends QuestionData {

@@ -5,6 +5,7 @@ const {
   connectedUsers,
   socketToUserMap,
   handleHostConnection,
+  updateSession,
 } = require("../services/session.service");
 
 module.exports = function initSocket(server) {
@@ -21,7 +22,7 @@ module.exports = function initSocket(server) {
   io.on("connection", async (socket) => {
     const { isHost } = socket.handshake.query;
     const isHostBool = isHost === "true";
-    
+
     if (isHostBool) {
       handleHostConnection(io, socket);
     } else {
@@ -55,9 +56,9 @@ module.exports = function initSocket(server) {
     });
 
     socket.on("round-update", (payload) => {
-        console.log({ payload, socket: socket.handshake.query.sessionCode });
-        socket.broadcast.emit("session-data-client", payload);
-    })
+      updateSession(socket.sessionId, payload);
+      socket.broadcast.emit("session-data-client", payload);
+    });
   });
 
   return io;

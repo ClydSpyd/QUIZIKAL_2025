@@ -2,22 +2,15 @@ import ParticipantSessionProvider, {
   useParticipantSession,
 } from "@/context/participantSessionContext";
 import ParticipantNameView from "./components/ParticipantNameView";
+import SessionContentParticipant from "./components/SessionContentParticipant";
 
 function Content() {
-  const { userData, loading, sessionName, sessionCode, sessionStatus, roundIdx, questionIdx } = useParticipantSession();
+  const { userData, loading, roundIdx, questionIdx } = useParticipantSession();
   const error = null;
   console.log({roundIdx, questionIdx})
   return userData ? (
     userData.username ? (
-      <div className="min-h-[700px] w-screen flex flex-col items-cente justify-center pb-[20%]">
-        <h1 className="text-[40px] font-bold mb-4 text-main2">{sessionName}</h1>
-        <h1>{sessionCode}</h1>
-        <h1>{sessionStatus}</h1>
-        <h1>{userData.username ?? userData.defaultName}</h1>
-        <p className="w-full text-center">
-          round {roundIdx + 1} question {questionIdx + 1}
-        </p>
-      </div>
+      <SessionContentParticipant />
     ) : (
       <ParticipantNameView />
     )
