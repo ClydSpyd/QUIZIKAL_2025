@@ -61,8 +61,12 @@ router.post("/:quizId/update", async (req, res) => {
 
 // create new quiz
 router.post("/create", async (req, res) => {
+  const { userId } = req.body;
+  console.log({ userId })
   try {
-    const newQuiz = new Quiz();
+    const newQuiz = new Quiz({
+      createdBy: userId,
+    });
     console.log(newQuiz);
     res.json({ quizId: newQuiz.id });
     await newQuiz.save();
@@ -79,7 +83,7 @@ router.post("/:quizId/delete", async (req, res) => {
     const response = await Quiz.findByIdAndRemove(quizId);
     console.log(response);
     res.json(response);
-  } catch (error) {
+  } catch (error) { 
     res.json({ error: error.message });
   }
 });

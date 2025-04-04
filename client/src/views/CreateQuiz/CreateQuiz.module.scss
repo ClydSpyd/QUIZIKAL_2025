@@ -1,19 +1,19 @@
 @use '../../styles/index.scss' as *;
 
-.createWrapper{
+.createWrapper {
   box-sizing: border-box;
   padding: 30px 0 0;
   width: 90vw;
   max-width: 900px;
 
-  p{
+  p {
     margin: 5px;
     color: #cacaca;
   }
 
 }
 
-.iconsBarTop{
+.iconsBarTop {
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -23,7 +23,7 @@
   gap: 8px;
 }
 
-.startRoundBtn{
+.startRoundBtn {
   display: flex;
   align-items: center;
   border: 1px solid transparent;
@@ -33,25 +33,27 @@
   background-color: var(--black);
   transition: .2s linear border-color;
 
-  &:hover{
+  &:hover {
     border-color: var(--main1);
   }
 
-  p{
+  p {
     color: white;
     margin: 0;
     margin-right: 10px;
   }
 
-  img.shuttle{
-    height:16px;
-    width:16px;
+  img.shuttle {
+    height: 16px;
+    width: 16px;
   }
 
-  // &.disabled{
-  //   pointer-events: none;
-  //   opacity: 0.6;
-  // };
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  ;
 }
 
 .sectionWrapper {
@@ -61,26 +63,26 @@
   padding: 10px 20px;
   margin-bottom: 20px;
 
-  p.sectionTitle{
+  p.sectionTitle {
     color: var(--main1);
   }
 
-  .btn{ 
+  .btn {
     border-radius: 5px;
     margin: 0 4px;
-    height: 40px; 
+    height: 40px;
     cursor: pointer;
     min-width: 100px;
     pointer-events: all;
     align-self: flex-end;
     margin: 10px 0 0;
-    
-    button{
+
+    button {
       display: flex;
       align-items: center;
       justify-content: center;
-      
-      p{
+
+      p {
         color: white;
         margin: 0;
         margin-right: 8px;
@@ -89,14 +91,14 @@
       }
 
     }
-  
-    &.disabled{
+
+    &.disabled {
       opacity: 0.5;
       pointer-events: none;
     }
   }
 
-  .nameInputWrapper{
+  .nameInputWrapper {
     height: 60px;
     display: flex;
     align-items: center;
@@ -104,8 +106,8 @@
     background-color: #383838;
     box-sizing: border-box;
     padding: 10px;
-  
-    input{
+
+    input {
       height: 100%;
       width: 100%;
       font-size: 2rem;
@@ -113,7 +115,7 @@
     }
   }
 
-  .questionsList{
+  .questionsList {
     border: 2px solid var(--grey2);
     border-radius: 5px;
     box-sizing: border-box;
@@ -123,7 +125,7 @@
     flex-direction: column;
     gap: 10px;
 
-    .questionWrapper{
+    .questionWrapper {
       background-color: #383838;
       display: flex;
       flex-direction: column;
@@ -133,35 +135,82 @@
       border-radius: 5px;
       position: relative;
 
-      .number{
+      .deleteState {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(57, 57, 57, 0.656);
+        backdrop-filter: blur(4px);
+        transform: translateY(-15px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.15s ease-out all;
+
+        * {
+          pointer-events: none;
+        }
+
+        p span {
+          color: $main1;
+        }
+
+        .btns {
+          display: flex;
+          gap: 4px;
+
+          .btn {
+            height: 40px;
+            width: 120px;
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        &.display {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: all;
+
+          * {
+            pointer-events: all;
+          }
+        }
+      }
+
+      .number {
         margin: 0;
         position: absolute;
         left: 20px;
         top: 50%;
         transform: translateY(-50%);
         color: var(--main1);
-        
 
-        @media(max-width: 660px){
+
+        @media(max-width: 660px) {
           display: none;
         }
       }
 
-      .icons{
+      .icons {
         display: flex;
         align-items: center;
         position: absolute;
         right: 20px;
         top: 55%;
         transform: translateY(-50%);
-        gap: 5px;
-        
-        .icon{
+
+        .icon {
           border: 1px solid transparent;
           padding: 3px;
           border-radius: 3px;
-          height: 20px;
-          width: 20px;
+          height: 35px;
+          width: 35px;
           transition: .2s linear all;
           display: flex;
           align-items: center;
@@ -169,25 +218,32 @@
           opacity: 0.3;
           cursor: pointer;
 
-          &:hover{
+          &:hover {
             border-color: var(--main1);
             opacity: 1;
           }
         }
-        svg{
+
+        svg {
           height: 20px;
           width: 20px;
           color: #cacaca;
+
+          &.edit {
+            height: 18px;
+            width: 18px;
+            top: 1px;
+          }
         }
 
-        @media(max-width: 660px){
+        @media(max-width: 660px) {
           position: relative;
           right: initial;
           transform: initial;
         }
       }
 
-      p{
+      p {
         line-height: 1.3em;
         margin: 0px;
 
@@ -196,7 +252,7 @@
         // }
       }
 
-      .options{
+      .options {
         gap: 5px;
         margin: 5px 0;
         width: 450px;
@@ -206,7 +262,7 @@
         flex-direction: column;
         align-items: center;
 
-        p.option{
+        p.option {
           width: 60%;
           padding: 2px 8px;
           border-radius: 20px;
@@ -216,24 +272,24 @@
           font-weight: 400;
           font-size: 0.9rem;
 
-          span{
+          span {
             display: none;
             font-size: 0.7rem;
-            color:#6a6969;
+            color: #6a6969;
           }
 
-          @media(max-width: 660px){
+          @media(max-width: 660px) {
             width: 70%;
           }
         }
 
-        &.PICTURE{
+        &.PICTURE {
           flex-direction: row;
           justify-content: center;
 
         }
 
-        .img{
+        .img {
           height: 45px;
           width: 55px;
           border-radius: 8px;
@@ -241,8 +297,8 @@
       }
     }
   }
-  
-  @media(max-width: 660px){
+
+  @media(max-width: 660px) {
     padding: 0;
   }
 }

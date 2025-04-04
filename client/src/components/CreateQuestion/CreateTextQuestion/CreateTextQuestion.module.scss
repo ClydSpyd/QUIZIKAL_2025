@@ -1,0 +1,52 @@
+@use '../CreateQuestion.module.scss' as *;
+
+.textQuestionWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 40px;
+  
+  .loaderWrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-bottom: 50px;
+    img{
+      height:100px;
+      width:100px;
+    }
+  }
+}
+
+.questionTitle{
+  align-self: flex-start;
+}
+
+.inputs{
+  &.loading{
+    opacity: .3;
+  }
+}
+
+.inputWrapper{
+  position: relative;
+  margin-bottom: 10px;
+
+  .checkboxWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -40px;
+    cursor: pointer;
+    padding: 5px;
+  }
+}
+
+p{
+  margin: 5px 0 3px 0;
+}

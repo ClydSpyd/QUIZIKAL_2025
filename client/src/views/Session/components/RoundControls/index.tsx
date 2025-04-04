@@ -11,10 +11,10 @@ export default function RoundControls(){
     socket?.emit("round-update", { sessionStatus: "pendingRound" });
   };
 
-  // const pauseSession = () => {
-  //   handleSessionUpdate({sessionStatus:"pending"})
-  //   socket?.emit("round-update", { sessionStatus: "pending" });
-  // };
+  const pauseSession = () => {
+    handleSessionUpdate({sessionStatus:"pending"})
+    socket?.emit("round-update", { sessionStatus: "pending" });
+  };
 
   const setQuestion = (idx:number) => {
     handleSessionUpdate({ sessionStatus: "pendingRound", questionIdx: idx });

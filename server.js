@@ -6,10 +6,11 @@ const connectDB = require("./config/db");
 const initSocket = require("./socket");
 
 const app = express();
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 8888;
 const server = http.createServer(app);
 
 connectDB();
+
 
 app.use(cors());
 app.use(express.json({ extended: false })); //body parser
@@ -18,6 +19,7 @@ app.use("/api/quiz", require("./routes/quiz"));
 app.use("/api/session", require("./routes/session"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/question", require("./routes/question"));
+app.use("/api/trivia", require("./routes/trivia"));
 
 initSocket(server);
 

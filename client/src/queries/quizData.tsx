@@ -6,7 +6,10 @@ export const useQuizData = ({ quizId }:  {
 }) => {
   const getQuiz = async () => {
     console.log("GET QUIZ");
-    const { data } = await axios.get(`/api/quiz/${quizId}`);
+    const { data }: { data: QuizData } = await axios.get(
+      `/api/quiz/${quizId}`
+    );
+    console.log({ data })
     return data;
   };
 
@@ -17,6 +20,20 @@ export const useQuizData = ({ quizId }:  {
     select: (data) => data,
   });
 };
+
+export const useQuestions = () => {
+  const getQuestions = async () => {
+    console.log("GET QUESTIONS");
+    const { data }: { data: QuestionData[] } = await axios.get(`/api/question`);
+    console.log({ data })
+    return data;
+  };
+
+  return useQuery({
+    queryKey: ["allQuestions"],
+    queryFn: getQuestions,
+  });
+}
 
 export const useMyQuizzes = ({ userId }:  {
   userId: string;

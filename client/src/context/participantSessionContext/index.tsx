@@ -5,6 +5,7 @@ import { useParticipantSessionData } from "@/queries/sessionData";
 import { useNavigate, useParams } from "react-router-dom";
 import { RefetchOptions } from "@tanstack/react-query";
 import { SocketProvider } from "../socketContext";
+import { API } from "@/api";
 
 const ParticipantContext = createContext<ParticipantSessionData>(
   {} as ParticipantSessionData
@@ -22,8 +23,7 @@ export default function ParticipantSessionProvider({
   const [currentQuestion, setCurrentQuestion] = useState<QuestionData | null>(
     null
   );
-  const [roundStatus, setRoundStatus] =
-    useState<RoundStatus>("waiting");
+  const [roundStatus, setRoundStatus] = useState<RoundStatus>("waiting");
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>("pending");
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ParticipantSessionProvider({
     error: queryError,
     refetch,
   } = useParticipantSessionData({ multiCode });
-  
+
   const wrappedRefetch = async (options?: RefetchOptions): Promise<void> => {
     await refetch(options); // Await and ignore the result
   };
@@ -45,9 +45,9 @@ export default function ParticipantSessionProvider({
   const handleSessionUpdate = async (
     payload: Partial<SessionClientPayload>
   ) => {
+    console.log("PAYLOAD", payload);
     const { roundIdx, questionIdx, sessionStatus, roundStatus, questionData } =
       payload;
-
 
     if ("roundIdx" in payload) setRoundIdx(roundIdx!);
     if ("questionIdx" in payload) {
@@ -57,8 +57,27 @@ export default function ParticipantSessionProvider({
     if ("sessionStatus" in payload) setSessionStatus(sessionStatus!);
     if ("questionData" in payload) setCurrentQuestion(questionData!);
   };
-  
-  const memoizedSessionCode = useMemo(() => data?.sessionCode ?? "", [data?.sessionCode]);
+
+  const refetchQuestionData = async () => {
+    if (!data) return;
+    const { data: questionData } = await API.round.getClientQuestion({
+      userId: data?.userData?.id,
+      sessionCode: data?.sessionCode,
+      roundIdx,
+      questionIdx,
+    });
+    console.log({ questionData });
+    if (questionData) setCurrentQuestion(questionData);
+  };
+
+  useEffect(() => {
+    refetchQuestionData();
+  }, [roundIdx, questionIdx]);
+
+  const memoizedSessionCode = useMemo(
+    () => data?.sessionCode ?? "",
+    [data?.sessionCode]
+  );
   const memoizedUserData = useMemo(
     () => ({
       userId: data?.userData?.id ?? "",
@@ -67,8 +86,7 @@ export default function ParticipantSessionProvider({
     [data?.userData?.id, data?.userData?.username]
   );
 
-  if (queryError)
-    return <h1>{queryError?.message}</h1>;
+  if (queryError) return <h1>{queryError?.message}</h1>;
 
   return (
     <ParticipantContext.Provider

@@ -4,7 +4,6 @@ const getQuestionClient = async (sessionCode, roundIdx, questionIdx, userId) => 
   const session = await Session.findOne({ sessionCode })
     .populate("quizData")
     .lean();
-  console.log("Ö", session);
 
   if (!session) {
     return { error: `Session ${sessionCode} not found` };
@@ -19,7 +18,8 @@ const getQuestionClient = async (sessionCode, roundIdx, questionIdx, userId) => 
   const questionId = session.quizData.rounds[roundIdx]?.[questionIdx];
   const questionData = await QuizQuestion.findOne(questionId).lean();
 
-  delete questionData.correctIndex;
+  console.log({ questionData });
+  delete questionData?.correctIndex;
 
   const myResponse = session.responses[userId]?.[roundIdx][questionIdx];
 

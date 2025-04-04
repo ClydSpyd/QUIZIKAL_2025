@@ -4,40 +4,47 @@ import { FiEdit } from "react-icons/fi";
 import { CgEye, CgTrashEmpty } from "react-icons/cg";
 import loader from "assets/loaders/spin_orange.svg";
 import Image from 'components/ui/Image';
-import { RefObject } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import axios from 'axios';
 import { queryClient } from '@/main';
+import useOutsideClick from '@/hooks/useOutsideClick';
+import { useQuizData } from '@/queries/quizData';
 
 interface Props {
   question: QuestionData;
   idx: number;
+  roundIdx: number;
   modalRef: RefObject<ModalRef>;
+  quizId: string;
 }
 
 const Loader = () => {
   return <img style={{ height: "60px", width: "60px" }} src={loader} />;
 };
 
-const QuestionItem = ({ question, idx, modalRef }: Props) => {
-  // const { setQuestionIdx } = useQuiz()
-  const setQuestionIdx = (val:number) => console.log(val)
+const QuestionItem = ({ question, idx, roundIdx, modalRef, quizId }: Props) => {
+  const [deleteState, setDeleteState] = useState(false);
+  const contRef = useRef<HTMLDivElement>(null);
+  const { data: quizData } = useQuizData({ quizId });
 
   const handleDelete = async () => {
-    const { data } = await axios.post("/api/questions/delete", {
-      questionId: question._id,
-    });
-    if(!data.error){
+    const { data } = await axios.delete(
+      `/api/question/${quizId}/${roundIdx}/${idx}`
+    );
+    if (!data.error) {
       queryClient.refetchQueries({ queryKey: ["quizData"] });
+      setDeleteState(false);
     }
-  }
+  };
   const handleEye = () => {
-    setQuestionIdx(idx)
     modalRef.current?.open();
-  }
-  
+  };
+
+  useOutsideClick(contRef, () => setDeleteState(false));
+
   return (
     <>
-      <div className={`${styles.questionWrapper}`}>
+      <div ref={contRef} className={`${styles.questionWrapper}`}>
         <h5 className={`${styles.number}`}>{idx + 1}.</h5>
         <p className={`${styles.questionText}`}>{question.questionText}</p>
         <div className={`${styles.options} ${styles[question.questionType]}`}>
@@ -58,7 +65,10 @@ const QuestionItem = ({ question, idx, modalRef }: Props) => {
           )}
         </div>
         <div className={`${styles.icons}`}>
-          <div onClick={handleDelete} className={`${styles.delete} ${styles.icon}`}>
+          <div
+            onClick={() => setDeleteState(!deleteState)}
+            className={`${styles.delete} ${styles.icon}`}
+          >
             <CgTrashEmpty />
           </div>
           <Link to={`/question/edit/${question._id}`}>
@@ -70,9 +80,31 @@ const QuestionItem = ({ question, idx, modalRef }: Props) => {
             <CgEye />
           </div>
         </div>
+
+        <div
+          className={`${styles.deleteState} ${deleteState && styles.display}`}
+        >
+          <p>
+            Delete this item from <span>{quizData?.quizName}</span>?
+          </p>
+          <div className={`${styles.btns}`}>
+            <button
+              onClick={handleDelete}
+              className={`${styles.btn} ${styles.confirm}`}
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => setDeleteState(false)}
+              className={`${styles.btn} ${styles.cancel}`}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
-}
+};
 
 export default QuestionItem;

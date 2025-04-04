@@ -10,29 +10,44 @@ import LogoLayout from "./layouts/LogoLayout";
 import { AuthProvider } from "./context/authContext";
 import CreateQuiz from "./views/CreateQuiz/CreateQuiz";
 import SessionView from "./views/Session/SessionView";
-import LandingLayout from "./components/utilityComps/LandingLayout";
+import CreateQuestion from "./components/CreateQuestion";
+import EditQuestion from "./views/EditQuestion";
+import { NotificationProvider } from "./context/notification-context";
 
 function App() {
   return (
     <>
       <AuthProvider>
         <AnimatePresence mode={"wait"}>
-          <Routes>
-            <Route element={<LogoLayout />}>
-              <Route index element={<Landing />} />
-              <Route path={"/signup"} element={<Signup />} />
-              <Route path={"/login"} element={<HostLogin />} />
-              <Route element={<ProtectedLayout />}>
-                <Route path={"/dashboard"} element={<HostDash />} />
-                <Route path={"/quiz/edit/:quizId?"} element={<CreateQuiz />} />
-                <Route
-                  path={"/host/:sessionSlug/:sidecar?"}
-                  element={<SessionView isHost />}
-                />
+          <NotificationProvider>
+            <Routes>
+              <Route element={<LogoLayout />}>
+                <Route index element={<Landing />} />
+                <Route path={"/signup"} element={<Signup />} />
+                <Route path={"/login"} element={<HostLogin />} />
+                <Route element={<ProtectedLayout />}>
+                  <Route path={"/dashboard"} element={<HostDash />} />
+                  <Route
+                    path={"/quiz/edit/:quizId/:roundIdx?"}
+                    element={<CreateQuiz />}
+                  />
+                  <Route
+                    path={"/question/create/:quizId/:roundIdx"}
+                    element={<CreateQuestion />}
+                  />
+                  <Route
+                    path={"/question/edit/:questionId"}
+                    element={<EditQuestion />}
+                  />
+                  <Route
+                    path={"/host/:sessionSlug/:sidecar?"}
+                    element={<SessionView isHost />}
+                  />
+                </Route>
               </Route>
               <Route path={"/play/:multiCode"} element={<SessionView />} />
-            </Route>
-          </Routes>
+            </Routes>
+          </NotificationProvider>
         </AnimatePresence>
       </AuthProvider>
     </>
