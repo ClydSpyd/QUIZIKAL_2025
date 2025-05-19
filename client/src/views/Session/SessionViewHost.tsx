@@ -7,16 +7,22 @@ import { motion } from "framer-motion";
 import RoundPicker from "./components/RoundPicker";
 import RoundDisplay from "./components/RoundDisplay";
 import RoundControls from "./components/RoundControls";
+import QuestionPreview from "./components/QuestionPreview";
 
 const Content = () => {
-  const { sessionName, roundIdx, questionIdx } = useHostSession();
+  const { sessionName, roundIdx, questionIdx, quizData } = useHostSession();
 
   return (
-    <div className="w-full overflow-hidden flex flex-col items-center pt-20 box-border">
+    <div className="w-full overflow-hidden flex flex-col items-center py-10 box-border">
       <div className="mb-4 flex flex-col items-center gap-2">
         <h1 className="text-2xl font-bold">{sessionName}</h1>
         <RoundDisplay />
-        <RoundControls />
+        <div className="my-8 flex flex-col items-center gap-4">
+          <QuestionPreview
+            questionData={quizData?.rounds[roundIdx]?.[questionIdx] ?? null}
+          />
+          <RoundControls />
+        </div>
       </div>
       <Participants />
       <RoundPicker />

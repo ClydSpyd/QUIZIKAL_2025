@@ -7,6 +7,7 @@ import { useAuth } from "@/context/authContext";
 import { BsArrowRightSquareFill } from "react-icons/bs";
 import { useUserData } from "@/queries/userData";
 import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
+import TriviaWidget from "@/components/TriviaWidget/TriviaWidget";
 
 const HostDash = () => {
   const { user } = useAuth();
@@ -42,24 +43,23 @@ const HostDash = () => {
       transition={{ duration: 0.3 }}
     >
       <div className={`${styles.hostDashWrapper}`}>
-        <section>
+        <TriviaWidget />
+        <section className="mb-4 w-full p-4 relative rounded-lg border border-main2 bg-black1">
           <div className={`${styles.sectionTitleWrapper}`}>
-            <img
-              className=""
-              src={sessionIcon}
-              alt={"session-icon"}
-            />
+            <img className="" src={sessionIcon} alt={"session-icon"} />
             <p>Active Session</p>
           </div>
-          <h3>
-            {userData?.activeSession
-              ? userData.activeSession.sessionName
-              : "NO SESSION"}
-          </h3>
-          <button onClick={goToSession}>
-            <p>Go To Session</p>{" "}
-            <BsArrowRightSquareFill className={`h-[15px] w-[15px] ml-2`} />
-          </button>
+          <div className="my-2 flex items-center w-full justify-between">
+            <h3 className="text-xl">
+              {userData?.activeSession
+                ? userData.activeSession.sessionName
+                : "NO SESSION"}
+            </h3>
+            <button className="!text-sm bg-black" onClick={goToSession}>
+              <p className="!text-sm">Go To Session</p>{" "}
+              <BsArrowRightSquareFill className={`h-[18px] w-[18px] ml-2`} />
+            </button>
+          </div>
         </section>
         <MyQuizzes userId={user?.id ?? ""} />
       </div>

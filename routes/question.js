@@ -152,6 +152,7 @@ router.delete("/:quizId/:roundIdx/:questionIdx", async (req, res) => {
   }
 });
 
+// @POST get question for participant
 router.post("/participant", async (req, res) => {
   console.log("GET QUESTION");
   const { userId, sessionCode, roundIdx, questionIdx } = req.body;
@@ -171,7 +172,7 @@ router.post("/participant", async (req, res) => {
     questionIdx,
     userId
   );
-
+  console.log({ Ö: questionData });
   return res.json(questionData);
 });
 // router.get(
@@ -179,7 +180,7 @@ router.post("/participant", async (req, res) => {
 //   async (req, res) => {
 //     console.log("GET QUESTION");
 //     const { participantId, sessionCode, roundIdx, questionIdx } = req.params;
-//     const { session } = await getSessionByCode(sessionCode, "quizData");
+//     const session = await getSessionByCode(sessionCode, "quizData");
 //     console.log("Ö", session);
 
 //     if (!session) {

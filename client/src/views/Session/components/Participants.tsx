@@ -2,7 +2,7 @@ import { useHostSession } from "@/context/hostSessionContext";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { useSessionData } from "@/queries/sessionData";
 import { API } from "@/api";
-import spinner from "@/assets/loaders/spin_orange.svg";
+import spinner from "@/assets/loaders/spin_black.svg";
 import { useState } from "react";
 import ParticipantListItem from "./ParticipantListItem";
 
@@ -25,41 +25,44 @@ export default function Participants() {
 
   return (
     <div className="w-[700px] flex flex-col items-center">
-      <h3>PARTICIPANTS</h3>
-      <div className="w-full border-2 border-black1 rounded-md text-sm">
-        <div className={`w-full flex  bg-black1 py-1`}>
-          <div className="w-1/3 flex items-center justify-center">NAME</div>
-          <div className="w-1/4 flex items-center justify-center">CODE</div>
+      {/* <h3>PARTICIPANTS</h3> */}
+      <div className="w-full border-2 border-black1 rounded-lg text-sm">
+        <div
+          className={`w-full flex  bg-black1 py-[12px] px-4 justify-between border-b border-b-main1 rounded-t-lg`}
+        >
+          <div className="flex items-center justify-center text-lg">
+            PARTICIPANTS
+          </div>
           <div />
+          <button
+            onClick={handleNewParticipant}
+            className="w-[90px] h-[30px] py-0 flex gap-2 items-center justify-center bg-main2 text-black font-bold hover:border-white"
+          >
+            {loading ? (
+              <img src={spinner} className="h-[35px] w -[35px]" />
+            ) : (
+              <>
+                <MdPersonAddAlt1 className="text-black text-xl" size={"xl"} /> 
+              </>
+            )}
+          </button>
         </div>
         {!Object.entries(listItems).length ? (
           <h4 className="w-full text-center py-2">NO SESSION PARTICIPANTS</h4>
         ) : (
           Object.entries(listItems).map(
-            ([userId, userData]: [string, Participant]) => (
+            ([userId, userData]: [string, Participant], idx: number) => (
               <ParticipantListItem
                 key={userId}
                 name={userData.username ?? userData.defaultName}
                 userId={userId}
                 handleDelete={() => handleDeleteParticipant(userId)}
+                lastItem={idx === Object.entries(listItems).length - 1}
               />
             )
           )
         )}
       </div>
-      <button
-        onClick={handleNewParticipant}
-        className="mt-1 w-[90px] h-[40px] py-0 flex items-center justify-center"
-      >
-        {loading ? (
-          <img src={spinner} className="h-[35px] w -[35px]" />
-        ) : (
-          <>
-            {" "}
-            Add <MdPersonAddAlt1 />
-          </>
-        )}
-      </button>
     </div>
   );
 }

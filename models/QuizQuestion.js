@@ -18,6 +18,10 @@ const schema = new mongoose.Schema({
     type: Number,
     required: this.type !== "TEXT",
   },
+  myResponse: {
+    type: String,
+    required: false,
+  }
 });
 
 module.exports = QuizQuestion = mongoose.model("QuizQuestion", schema);

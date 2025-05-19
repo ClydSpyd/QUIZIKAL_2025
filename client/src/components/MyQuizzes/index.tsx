@@ -22,7 +22,9 @@ export default function MyQuizzes({ userId }: { userId: string }) {
   };
 
   return (
-    <section className={`${styles.myQuizzesWrapper}`}>
+    <section
+      className={`${styles.myQuizzesWrapper} rounded-lg border border-main3 p-4 bg-black1 relative`}
+    >
       <div className="w-full flex items-center gap-2">
         <img src={sheetIcon} alt={"quiz-icon"} className="w-[30px] h-[30px]" />
         <p>My Quizzes</p>
@@ -62,9 +64,11 @@ export default function MyQuizzes({ userId }: { userId: string }) {
           ))
         )}
       </div>
-      <button onClick={createQuiz}>
-        <p>Create Quiz</p> <TiDocumentAdd />{" "}
-      </button>
+      <div className="flex w-full justify-end">
+        <button onClick={createQuiz}>
+          <p>Create Quiz</p> <TiDocumentAdd />{" "}
+        </button>
+      </div>
     </section>
   );
 }

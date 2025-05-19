@@ -19,7 +19,7 @@ const getSessionByCode = async (sessionCode, populate) => {
     return { error: `Session ${sessionCode} not found` };
   }
 
-  return { session };
+  return session;
   
   return sessions[sessionCode];
 };
@@ -92,6 +92,7 @@ const handleClientConnection = async (socket) => {
   console.log("HANDLE CLIENT", "ÖÖÖ");
 
   const { sessionCode, username, userId } = socket.handshake.query;
+  console.log("öÖ", { sessionCode, username, userId });
   connectedUsers[userId] = { id: socket.id, username, userId };
   socketToUserMap[socket.id] = userId;
 
@@ -158,6 +159,23 @@ const updateSession = async (sessionId, updateData) => {
   }
 };
 
+const handleQuestionResponse = async (sessionCode, username, responseIdx) => {
+  const session = await getSessionByCode(sessionCode);
+  console.log("ÖÖÖÖ", { session });
+  if (!session) return;
+  console.log("Ö");
+  console.log({ username, responseIdx, questionIdx: session.questionIdx });
+  session.responses[username];
+  if (!session.responses[username]) session.responses[username] = {};
+  if (!session.responses[username][session.roundIdx])
+    session.responses[username][session.roundIdx] = {};
+
+  session.responses[username][session.roundIdx][session.questionIdx] =
+    responseIdx;
+
+  return {...session};
+};
+
 module.exports = {
   getSessionByCode,
   getConnectedUsers,
@@ -170,4 +188,5 @@ module.exports = {
   socketToUserMap,
   getSessionData,
   updateSession,
+  handleQuestionResponse,
 };

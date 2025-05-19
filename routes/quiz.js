@@ -76,6 +76,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
+// delete quiz
 router.post("/:quizId/delete", async (req, res) => {
   const { quizId } = req.params;
 
@@ -88,6 +89,7 @@ router.post("/:quizId/delete", async (req, res) => {
   }
 });
 
+// add new round to quiz
 router.post("/addRound/:quizId", async (req, res) => {
   const { quizId } = req.params;
   console.log("quizId: ", quizId);

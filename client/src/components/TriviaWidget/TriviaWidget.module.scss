@@ -1,0 +1,47 @@
+@import '../../styles/index.scss';
+
+.item {
+  text-align: center;
+  margin-bottom: 5px;
+  max-width: calc(100% - 100px);
+}
+
+p,
+h6 {
+  margin: 2px 0;
+}
+
+p {
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+}
+
+h6 {
+  font-weight: 500;
+  color: $main2;
+}
+
+.icons {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  svg {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 5px;
+    transition: .3s ease border-color;
+
+    &:hover {
+      border-color: $main1;
+    }
+  }
+}

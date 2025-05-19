@@ -7,6 +7,8 @@ const {
   handleHostConnection,
   updateSession,
 } = require("../services/session.service");
+const handleQuizEvents = require("./quizEvents");
+
 
 module.exports = function initSocket(server) {
   console.log("INIT SOCKET");
@@ -22,6 +24,8 @@ module.exports = function initSocket(server) {
   io.on("connection", async (socket) => {
     const { isHost } = socket.handshake.query;
     const isHostBool = isHost === "true";
+
+    handleQuizEvents(io, socket);
 
     if (isHostBool) {
       handleHostConnection(io, socket);

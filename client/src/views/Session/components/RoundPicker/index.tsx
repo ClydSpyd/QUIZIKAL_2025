@@ -47,15 +47,16 @@ export default function RoundPicker() {
     >
       <div className="flex gap-2 mt-4">
         <div className="flex flex-col items-center justify-center">
-          <p className="text-xs w-fulltext-center">ROUND</p>
-          <div className="flex items-center gap-1 border border-black1 rounded-sm p-1">
+          <p className="text-xs w-fulltext-center text-main1">ROUND</p>
+          <div className="flex items-center gap-1 rounded-sm p-1">
             {quizData.rounds.map((_: QuestionData[], idx: number) => (
               <div
+                key={idx}
                 onClick={() => setRoundSelect(idx)}
                 className={cn(
-                  "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
-                  roundSelect === idx ? "bg-white/30 border-main1" : "",
-                  roundIdx === idx ? "bg-white text-black border-white" : ""
+                  "h-[30px] w-[30px] cursor-pointer border border-main1 rounded-sm flex items-center justify-center text-main1 hover:bg-main1/10",
+                  roundSelect === idx ? "bg-main1/30 border-main1" : "",
+                  roundIdx === idx ? "bg-main1 text-black border-main1" : ""
                 )}
               >
                 <p>{idx + 1}</p>
@@ -64,8 +65,8 @@ export default function RoundPicker() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
-          <p className="text-xs w-full text-center">QUESTION</p>
-          <div className="flex items-center gap-1 border border-black1 rounded-sm p-1 relative">
+          <p className="text-xs w-full text-center text-main2">QUESTION</p>
+          <div className="flex items-center gap-1 rounded-sm p-1 relative">
             <div className="flex items-center gap-1 border border-transparent rounded-sm">
               {Array.from({ length: longestRound }, (_, idx) => (
                 <div
@@ -81,10 +82,10 @@ export default function RoundPicker() {
                   <div
                     onClick={() => setQuestionSelect(idx)}
                     className={cn(
-                      "h-[30px] w-[30px] cursor-pointer border rounded-sm flex items-center justify-center text-white hover:bg-white/10",
-                      questionSelect === idx ? "bg-white/30 border-main1" : "",
+                      "h-[30px] w-[30px] cursor-pointer border border-main2 rounded-sm flex items-center justify-center text-main2 hover:bg-main2/10",
+                      questionSelect === idx ? "bg-white/30 border-white pointer-events-none" : "",
                       roundSelect === roundIdx && questionIdx === idx
-                        ? "bg-white text-black border-white"
+                        ? "bg-main2 text-black border-main2"
                         : ""
                     )}
                   >

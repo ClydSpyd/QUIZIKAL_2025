@@ -25,7 +25,7 @@ const getQuestionClient = async (sessionCode, roundIdx, questionIdx, userId) => 
 
   console.log({ respoonses: session.responses[userId] });
 
-  return { ...questionData, myResponse };
+  return { ...questionData, myResponse: myResponse ?? null };
 };
 
 module.exports = {

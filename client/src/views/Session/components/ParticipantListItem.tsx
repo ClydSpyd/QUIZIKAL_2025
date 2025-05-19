@@ -14,10 +14,12 @@ export default function ParticipantListItem({
   name,
   userId,
   handleDelete,
+  lastItem = false,
 }: {
   name: string;
   userId: string;
   handleDelete: () => void;
+  lastItem?: boolean;
 }) {
   const { sessionCode } = useHostSession();
   const contRef = useRef<HTMLDivElement>(null);
@@ -48,7 +50,12 @@ export default function ParticipantListItem({
     <div
       key={userId}
       ref={contRef}
-      className={`w-full h-[40px] flex items-center box-border pr-[15px] border-t-2 border-black1 m-0 relative`}
+      className={cn(
+        `w-full h-[50px] flex items-center box-border pr-[15px] bg-black/30 m-0 relative`,
+        {
+          "border-b border-b-white/10": !lastItem,
+        }
+      )}
     >
       <div
         className={cn(
@@ -56,9 +63,10 @@ export default function ParticipantListItem({
           isConnected ? "bg-lime-400" : "bg-red-600"
         )}
       />
-      <div className="flex items-center justify-center w-1/3">{name}</div>
-      <div className="flex items-center justify-center w-1/4">{userId}</div>
+      <div className="flex items-center justify-start pl-10 w-2/3">{name}</div>
+      {/* <div className="flex items-center justify-center w-1/4">{userId}</div> */}
       <div className="grow flex items-center justify-end">
+        {userId}
         <div className="h-[40px] w-[40px] flex items-center justify-center">
           {!copied ? (
             <TooltipWrapper message="copy participant link">

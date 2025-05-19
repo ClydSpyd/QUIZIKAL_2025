@@ -1,0 +1,66 @@
+import { cn } from "@/utilities/cn";
+import { BsEyeFill } from "react-icons/bs";
+
+export default function QuestionPreview({
+  questionData,
+}: {
+  questionData: QuestionData | null;
+}) {
+  const isImgRound = questionData?.questionType === "PICTURE";
+  const correctIdx = questionData?.correctIndex;
+
+  const TextQuestion = ({ text, idx }: { text: string; idx: number }) => (
+    <div key={idx} className="flex gap-2 items-center text-slate-200 my-4">
+      <p
+        className={cn(
+          "text-sm h-[20px] w-[20px] rounded-full flex items-center justify-center border pb-[2px] pr-[1px]",
+          correctIdx === idx
+            ? "border-main2 text-main2"
+            : "border-main1 text-main1"
+        )}
+      >
+        {idx + 1}
+      </p>
+      <p>{text}</p>
+    </div>
+  );
+
+  return (
+    questionData && (
+      <div className="flex flex-col gap-2 rounded-lg border border-main2 bg-[#171717] p-4 w-[600px]">
+        <div className="flex gap-2 items-center text-main2">
+          <BsEyeFill className="text-main2" />
+          <h1 className="text-main2 uppercase">Active Question</h1>
+        </div>
+        <p className="font-semibold text-xl">{questionData.questionText}</p>
+        <div
+          className={cn({
+            "grid grid-cols-2 gap-5 w-fit my-4": isImgRound,
+          })}
+        >
+          {questionData.options.map((option, idx) =>
+            !isImgRound ? (
+              <TextQuestion text={option} idx={idx} key={idx} />
+            ) : (
+              <div key={idx} className="flex gap-2 items-center text-slate-200">
+                <p
+                  className={cn(
+                    "text-sm h-[20px] w-[20px] rounded-full flex items-center justify-center border pb-[2px] pr-[1px]",
+                     correctIdx === idx ? "border-main2 text-main2" : "border-main1 text-main1"
+                  )}
+                >
+                  {idx + 1}
+                </p>
+                <img
+                  src={option}
+                  alt={`Option ${idx + 1}`}
+                  className="w-[100px] h-[100px] object-cover rounded-lg"
+                />
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    )
+  );
+}
