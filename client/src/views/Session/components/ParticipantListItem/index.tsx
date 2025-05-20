@@ -1,6 +1,6 @@
 import { useHostSession } from "@/context/hostSessionContext";
 import { MdDeleteForever } from "react-icons/md";
-import { FaRegCopy } from "react-icons/fa";
+import { FaLink, FaRegCopy } from "react-icons/fa";
 import TooltipWrapper from "@/components/utilityComps/TooltipWrapper";
 import useClipboard from "@/hooks/useClipboard";
 import CircleTick from "@/components/ui/circle-tick";
@@ -9,6 +9,8 @@ import { cn } from "@/utilities/cn";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import spinner from '@/assets/loaders/spin_white.svg'
 import { useSocket } from "@/context/socketContext";
+import { BsLink } from "react-icons/bs";
+import SessionCodeBlock from "./SessionCodeBlock";
 
 export default function ParticipantListItem({
   name,
@@ -66,15 +68,15 @@ export default function ParticipantListItem({
       <div className="flex items-center justify-start pl-10 w-2/3">{name}</div>
       {/* <div className="flex items-center justify-center w-1/4">{userId}</div> */}
       <div className="grow flex items-center justify-end">
-        {userId}
+        <SessionCodeBlock userId={userId} />
         <div className="h-[40px] w-[40px] flex items-center justify-center">
           {!copied ? (
             <TooltipWrapper message="copy participant link">
               <div
                 onClick={handleCopyBtn}
-                className="border border-transparent h-[25px] w-[25px] flex items-center justify-center mx-1 rounded-md cursor-pointer transition-all duration-200 ease-out hover:border-main1"
+                className="border border-transparent h-[28px] w-[28px] flex items-center justify-center mx-1 rounded-md cursor-pointer transition-all duration-200 ease-out hover:border-main3"
               >
-                <FaRegCopy style={{ height: "15px", width: "15px" }} />
+                <FaLink style={{ height: "15px", width: "15px" }} />
               </div>
             </TooltipWrapper>
           ) : (
@@ -86,7 +88,7 @@ export default function ParticipantListItem({
             onClick={() => {
               setConfirmState(true);
             }}
-            className="border border-transparent h-[25px] w-[25px] flex items-center justify-center mx-1 rounded-md cursor-pointer transition-all duration-200 ease-out hover:border-main1"
+            className="border border-transparent h-[28px] w-[28px] flex items-center justify-center mx-1 rounded-md cursor-pointer transition-all duration-200 ease-out hover:border-main3"
           >
             <MdDeleteForever style={{ height: "20px", width: "20px" }} />
           </div>

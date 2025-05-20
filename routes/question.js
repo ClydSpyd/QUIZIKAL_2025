@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
 
 // @GET retrieve one question
 router.get("/:questionId", async (req, res) => {
-  console.log("GET QUESTION");
   const { questionId } = req.params;
   const questionData = await QuizQuestion.findById(questionId);
 
@@ -154,9 +153,8 @@ router.delete("/:quizId/:roundIdx/:questionIdx", async (req, res) => {
 
 // @POST get question for participant
 router.post("/participant", async (req, res) => {
-  console.log("GET QUESTION");
   const { userId, sessionCode, roundIdx, questionIdx } = req.body;
-  console.log({ sessionCode, roundIdx, questionIdx, userId });
+  // console.log({ sessionCode, roundIdx, questionIdx, userId });
 
   if (
     !userId ||
@@ -172,7 +170,7 @@ router.post("/participant", async (req, res) => {
     questionIdx,
     userId
   );
-  console.log({ Ö: questionData });
+  // console.log({ Ö: questionData });
   return res.json(questionData);
 });
 // router.get(

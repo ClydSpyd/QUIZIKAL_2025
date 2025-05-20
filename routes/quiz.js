@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Quiz = require("../models/Quiz");
+const QuizResult = require("../models/QuizResult");
 const QuizQuestion = require("../models/QuizQuestion");
 const {
   getQuizById,
   getQuizzesByCreator,
+  getResults,
 } = require("../utilities/QuizUtilities");
+const Session = require("../models/Session");
 
 // get all quizzes
 router.get("/", async (req, res) => {
@@ -62,7 +65,7 @@ router.post("/:quizId/update", async (req, res) => {
 // create new quiz
 router.post("/create", async (req, res) => {
   const { userId } = req.body;
-  console.log({ userId })
+  console.log({ userId });
   try {
     const newQuiz = new Quiz({
       createdBy: userId,
@@ -84,7 +87,7 @@ router.post("/:quizId/delete", async (req, res) => {
     const response = await Quiz.findByIdAndRemove(quizId);
     console.log(response);
     res.json(response);
-  } catch (error) { 
+  } catch (error) {
     res.json({ error: error.message });
   }
 });
@@ -104,4 +107,17 @@ router.post("/addRound/:quizId", async (req, res) => {
     res.json({ error: error.message });
   }
 });
+
+// get quiz results
+router.get("/results/:sessionId/:userId?", async (req, res) => {
+  const { sessionId, userId } = req.params;
+  try {
+    const quizResults = await getResults(sessionId, userId);
+    return res.json(quizResults);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ error: error.message });
+  }
+});
+
 module.exports = router;

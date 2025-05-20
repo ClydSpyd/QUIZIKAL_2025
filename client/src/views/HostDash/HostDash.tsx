@@ -44,7 +44,7 @@ const HostDash = () => {
     >
       <div className={`${styles.hostDashWrapper}`}>
         <TriviaWidget />
-        <section className="mb-4 w-full p-4 relative rounded-lg border border-main2 bg-black1">
+        <section className="mb-4 w-full p-4 relative rounded-lg border border-main2Dark bg-black1">
           <div className={`${styles.sectionTitleWrapper}`}>
             <img className="" src={sessionIcon} alt={"session-icon"} />
             <p>Active Session</p>

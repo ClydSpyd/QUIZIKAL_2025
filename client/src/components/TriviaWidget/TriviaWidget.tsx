@@ -24,7 +24,7 @@ const TriviaWidget = () => {
   
   return (
     <div
-      className={`p-4 min-w-[300px] w-full relative bg-black1 rounded-lg border border-main1 mb-4`}
+      className={`p-4 min-w-[300px] w-full relative bg-black1 rounded-lg border border-main1Dark mb-4`}
     >
       <div className={`flex items-center relative z-10`}>
         <img src={bulb} alt="bulb" className="mr-3 h-8 w-8" />

@@ -27,7 +27,7 @@ export default function QuestionPreview({
 
   return (
     questionData && (
-      <div className="flex flex-col gap-2 rounded-lg border border-main2 bg-[#171717] p-4 w-[600px]">
+      <div className="flex flex-col gap-2 rounded-lg border border-main2Dark bg-[#171717] p-4 w-[600px]">
         <div className="flex gap-2 items-center text-main2">
           <BsEyeFill className="text-main2" />
           <h1 className="text-main2 uppercase">Active Question</h1>

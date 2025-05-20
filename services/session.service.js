@@ -10,10 +10,10 @@ const socketToUserMap = {};
 const getLocalSessions = () => sessions;
 
 const getSessionByCode = async (sessionCode, populate) => {
-  console.log("GET")
+  // console.log("GET")
   const session = await Session.findOne({ sessionCode }).populate(populate).lean();
 
-  console.log(session)
+  // console.log(session)
   if (!session) {
     console.log("RETURNING ERROR RES")
     return { error: `Session ${sessionCode} not found` };
@@ -31,9 +31,9 @@ const addNewSession = (session) => {
 };
 
 const getSessionData = async (sessionCode) => {
-  console.log("GET SESSION DATA", sessionCode);
+  // console.log("GET SESSION DATA", sessionCode);
   const session = await Session.findOne({ sessionCode }).lean();
-  console.log({session})
+  // console.log({session})
   if (!session) {
     return { error: `Session ${sessionCode} not found` };
   }
@@ -89,10 +89,10 @@ const handleHostConnection = async (io, socket) => {
 };
 
 const handleClientConnection = async (socket) => {
-  console.log("HANDLE CLIENT", "ÖÖÖ");
+  // console.log("HANDLE CLIENT", "ÖÖÖ");
 
   const { sessionCode, username, userId } = socket.handshake.query;
-  console.log("öÖ", { sessionCode, username, userId });
+  // console.log("öÖ", { sessionCode, username, userId });
   connectedUsers[userId] = { id: socket.id, username, userId };
   socketToUserMap[socket.id] = userId;
 
@@ -113,7 +113,7 @@ const handleClientConnection = async (socket) => {
         sessionData.questionIdx,
         userId
       );
-      console.log("🎉 SUCCESS");
+      // console.log("🎉 SUCCESS");
       // Send only to the new connection
       socket.emit("session-data-client", {
         roundIdx: sessionData?.roundIdx,
@@ -161,19 +161,23 @@ const updateSession = async (sessionId, updateData) => {
 
 const handleQuestionResponse = async (sessionCode, username, responseIdx) => {
   const session = await getSessionByCode(sessionCode);
-  console.log("ÖÖÖÖ", { session });
   if (!session) return;
+
   console.log("Ö");
   console.log({ username, responseIdx, questionIdx: session.questionIdx });
+
   session.responses[username];
+
   if (!session.responses[username]) session.responses[username] = {};
+
   if (!session.responses[username][session.roundIdx])
     session.responses[username][session.roundIdx] = {};
 
   session.responses[username][session.roundIdx][session.questionIdx] =
-    responseIdx;
+    Number(responseIdx);
 
-  return {...session};
+  console.log("ÖÖÖÖÖ", session.responses[username][session.roundIdx]);
+  return session;
 };
 
 module.exports = {

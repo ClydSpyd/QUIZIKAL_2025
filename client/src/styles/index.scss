@@ -4,10 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  --main1: #ff8f1c;
+  --main2: #90ff2e;
+  --main3: #ffc600;
+  --main1-dark: #b95c00;
+  --main2-dark: #438509;  
+  --main3-dark: #c29800;
+}
+
 
 $main1: #ff8f1c;
+$main1-dark: #b95c00;
 $main2: #90ff2e;
+$main2-dark: #438509;
 $main3: #ffc600;
+$main3-dark: #977600;
 $black: #1a1a1a;
 $grey1: #2e2e2e;
 $grey2: #383838;

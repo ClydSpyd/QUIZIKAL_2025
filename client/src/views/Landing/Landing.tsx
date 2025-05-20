@@ -13,8 +13,7 @@ const Landing = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   // const { sessionCode } = useSelector((state: RootState) => state.quiz);
-  const { handleJoinSession, error, setError } = useSessionUtilities();
-  const [sessionCode, setSessionCode] = useState("");
+  const { handleJoinSession, error, setError, setCodeInput } = useSessionUtilities();
   const onSubmit = (e: React.FormEvent) =>
     handleJoinSession(e, nameRef, btnRef);
 
@@ -28,7 +27,7 @@ const Landing = () => {
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
         setError(null);
         console.log("ö: ", e.target.value);
-        setSessionCode(e.target.value);
+        setCodeInput(e.target.value);
       },
     },
   ];
@@ -51,15 +50,15 @@ const Landing = () => {
         btnRef={btnRef}
         titleColor="yellow"
         loading={false}
-        conditionalInput={{
-          condition: !!(sessionCode && sessionCode.length > 3),
-          input: {
-            placeholder: "your name",
-            ref: nameRef,
-            type: "text",
-            name: "nameInput",
-          },
-        }}
+        // conditionalInput={{
+        //   condition: !!(sessionCode && sessionCode.length > 3),
+        //   input: {
+        //     placeholder: "your name",
+        //     ref: nameRef,
+        //     type: "text",
+        //     name: "nameInput",
+        //   },
+        // }}
       />
     </LandingLayout>
   );

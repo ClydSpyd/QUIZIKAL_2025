@@ -4,7 +4,7 @@ const { updateSessionKeys, handleQuestionResponse, getRoundRespondees, socketToU
 
 const handleQuizEvents = async (io, socket) => {
   const { sessionCode } = socket.handshake.query;
-  console.log("Ö sessionCode: ", sessionCode);
+  // console.log("Ö sessionCode: ", sessionCode);
 
   socket.on("session-status-changed", (sessionStatus) => {
     io.emit("session-status-changed", { sessionStatus });
@@ -41,31 +41,20 @@ const handleQuizEvents = async (io, socket) => {
     const { responseIdx, roundIdx, questionIdx } = payload;
     const { sessionCode } = socket.handshake.query;
     const map = socketToUserMap
-    console.log({ sessionCode, map, id: socket.id, userId: map[socket.id] });
     
     if(responseIdx !== -1){
-      const updatedSession = await handleQuestionResponse(sessionCode, map[socket.id], responseIdx);
+      // const updatedSession = await handleQuestionResponse(sessionCode, map[socket.id], responseIdx);
 
-      console.log({ updatedSession });
-      
+      const updatePath = `responses.${map[socket.id]}.${roundIdx}.${questionIdx}`;
+
       const updated = await Session.findOneAndUpdate(
         { sessionCode },
-        { $set: updatedSession },
-        { new: true } // to return the updated document
+        { $set: { [updatePath]: Number(responseIdx) } },
+        { new: true }
       );
 
-    }
-    
-    const hostSocket = await getHostSocket(io);
-    if(hostSocket){
-      socket.broadcast
-        .to(hostSocket.id)
-        .emit("participant-response", {
-          username: socket.username,
-          roundIdx,
-          questionIdx,
-          responseIdx,
-        });
+      console.log("Updated session: ", updated);
+
     }
   })
 };

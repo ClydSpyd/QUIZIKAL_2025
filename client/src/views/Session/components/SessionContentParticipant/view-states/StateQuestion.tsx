@@ -4,12 +4,17 @@ import { useSocket } from "@/context/socketContext";
 import { cn } from "@/utilities/cn";
 import logo from "assets/images/quizikal_logo1.png";
 import { useState } from "react";
+import { FaCheck } from "react-icons/fa";
 
 export default function StateQuestion() {
   const { currentQuestion, roundIdx, questionIdx } = useParticipantSession();
   const { socket } = useSocket();
   const [selectedIdx, setSelectedIdx] = useState<null | number>(
-    currentQuestion?.myResponse ? +currentQuestion?.myResponse : null
+    currentQuestion?.myResponse !== null &&
+      currentQuestion?.myResponse !== undefined &&
+      !isNaN(Number(currentQuestion.myResponse))
+      ? +currentQuestion.myResponse
+      : null
   );
   console.log({ currentQuestion });
   const isPictureRound = currentQuestion?.questionType === "PICTURE";
@@ -31,7 +36,7 @@ export default function StateQuestion() {
     );
 
   return (
-    <div className="w-full h-fit mx-auto max-w-[950px] flex flex-col items-center gap-4 box-border mb-8">
+    <div className="w-full h-fit mx-auto max-w-[950px] flex flex-col items-center gap-4 box-border pt-10 pb-28">
       <div className={"mb-[20px] flex flex-col items-center"}>
         <img className="h-[70px]" src={logo} alt={"logo"} />
         <h4 className="m-0 text-[1.5rem] relative left-[5px] font-[700] grad-text">
@@ -69,9 +74,20 @@ export default function StateQuestion() {
             if (isPictureRound) {
               return (
                 <div
+                  onClick={() => handleSelect(idx)}
                   key={`img_${idx}`}
-                  className="h-[300px] bg-white/40 rounded-lg overflow-hidden group"
+                  className={cn(
+                    "h-[100px] md:h-[300px] bg-white/40 rounded-lg overflow-hidden group border-4 relative",
+                    selectedIdx === idx
+                      ? "border-main1 bg-[#343434]"
+                      : "border-slate-300/10 hover:border-slate-300/20 bg-[#242424]"
+                  )}
                 >
+                  {selectedIdx === idx && (
+                    <p className="absolute z-20 top-1 left-1 text-sm h-[20px] w-[20px] md:h-[30px] md:w-[30px] rounded-full flex items-center justify-center border border-main3 bg-main3 text-black1 font-bold pr-[1px]">
+                      <FaCheck className="h-[12px] w-[12px] md:h-[15px] md:w-[15px] relative left-[1px]" /> 
+                    </p>
+                  )}
                   <Image
                     src={i}
                     className={

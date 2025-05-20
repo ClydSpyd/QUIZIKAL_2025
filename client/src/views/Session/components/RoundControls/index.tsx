@@ -58,7 +58,7 @@ export default function RoundControls(){
           </div>
           <div
             onClick={handleQuestionState}
-            className="h-[45px] w-[150px] bg-black/30 text-main1 border-main1 hover:border-main3 hover:text-main3 transition-all duration-200 ease-in-out cursor-pointer rounded-md border-2 flex items-center justify-center"
+            className="h-[45px] w-[150px] bg-black/30 text-main1 border-main1Dark hover:border-main3Dark hover:text-main3 transition-all duration-200 ease-in-out cursor-pointer rounded-md border flex items-center justify-center"
           >
             {sessionStatus === "pendingRound" ? "show" : "hide"} question
           </div>

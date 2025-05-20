@@ -18,12 +18,12 @@ const getQuestionClient = async (sessionCode, roundIdx, questionIdx, userId) => 
   const questionId = session.quizData.rounds[roundIdx]?.[questionIdx];
   const questionData = await QuizQuestion.findOne(questionId).lean();
 
-  console.log({ questionData });
+  // console.log({ questionData });
   delete questionData?.correctIndex;
 
   const myResponse = session.responses[userId]?.[roundIdx][questionIdx];
 
-  console.log({ respoonses: session.responses[userId] });
+  // console.log({ respoonses: session.responses[userId] });
 
   return { ...questionData, myResponse: myResponse ?? null };
 };

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { addAnimation } from "@/utilities/addAnimation";
+import { deconstructMulticode } from "@/utilities/multicodeElements";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,17 +8,17 @@ import { useNavigate } from "react-router-dom";
 export const useSessionUtilities = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
-  const [sessionCode, setSessionCodeState] = useState<string | null>();
+  const [codeInput, setCodeInput] = useState<string | null>();
   const navigate = useNavigate();
 
-  useEffect(() => {console.log('öö: ', sessionCode)},[sessionCode])
+  useEffect(() => {console.log('öö: ', codeInput)},[codeInput])
 
   const handleExitSession = () => {
     navigate("/");
   };
 
-  const handleSessionCode = (code: string) => {
-    setSessionCodeState(code)
+  const handleCodeInout = (code: string) => {
+    setCodeInput(code)
   }
 
   const handleError = (error: string, ref: React.RefObject<any>) => {
@@ -36,7 +37,7 @@ export const useSessionUtilities = () => {
       return data;
     } catch (error) {
       const err = error as { response: { data: { error: string[] } } };
-      return err.response.data;
+      return {error: err.response.data};
     }
   };
 
@@ -46,25 +47,33 @@ export const useSessionUtilities = () => {
     btnRef: React.RefObject<HTMLInputElement>
   ) => {
     e.preventDefault();
-    console.log("CODE: ", sessionCode)
+    console.log("CODE: ", codeInput)
     const name = nameRef.current?.value;
-    if (!sessionCode || sessionCode.length < 4) {
+    if (!codeInput || codeInput.length < 4) {
       handleError("Please enter a session code", btnRef);
     } else if (name === "") {
       nameRef.current?.focus();
       handleError("Please enter your name", btnRef);
     } 
-    // else {
-    //   setLoading(true);
-    //   const { error } = await getSession(sessionCode);
-    //   if (error) {
-    //     handleError(error, btnRef);
-    //     setTimeout(() => setLoading(false), 1000);
-    //   } else {
-    //     // dispatch(setUsername(name!));
-    //     navigate(`/play/${sessionCode}`);
-    //   }
-    // }
+    else {
+      setLoading(true);
+      const { sessionCode, userId } = deconstructMulticode(codeInput);
+      const { error, session: sessionData } = await getSession(sessionCode);
+      const participantFound = !!sessionData?.responses?.[userId];
+      console.log({ sessionCode, userId, participantFound, sessionData });
+
+      if (!participantFound) {
+        handleError("Session user not found", btnRef);
+        setTimeout(() => setLoading(false), 1000);
+      } else if (error) {
+        handleError(error, btnRef);
+        setTimeout(() => setLoading(false), 1000);
+      } else {
+        // dispatch(setUsername(name!));
+        navigate(`/play/${codeInput}`);
+      }
+      setLoading(false);
+    }
   };
 
   return {
@@ -75,7 +84,7 @@ export const useSessionUtilities = () => {
     handleJoinSession,
     error,
     setError,
-    sessionCode,
-    setSessionCode: handleSessionCode,
+    codeInput,
+    setCodeInput: handleCodeInout,
   };
 };

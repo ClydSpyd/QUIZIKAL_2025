@@ -15,7 +15,7 @@ export default function SessionContentParticipant(){
       ended: <h1>ended</h1>,
     };
   return (
-    <div className="w-full h-full min-w-screen min-h-screen overflow-y-auto flex flex-col items-center justify-center">
+    <div className="w-full h-full min-w-screen min-h-screen">
       {views[sessionStatus]}
     </div>
   );
