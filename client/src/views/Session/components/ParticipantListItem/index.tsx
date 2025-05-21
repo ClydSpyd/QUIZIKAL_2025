@@ -1,6 +1,6 @@
 import { useHostSession } from "@/context/hostSessionContext";
 import { MdDeleteForever } from "react-icons/md";
-import { FaLink, FaRegCopy } from "react-icons/fa";
+import { FaLink } from "react-icons/fa";
 import TooltipWrapper from "@/components/utilityComps/TooltipWrapper";
 import useClipboard from "@/hooks/useClipboard";
 import CircleTick from "@/components/ui/circle-tick";
@@ -9,7 +9,6 @@ import { cn } from "@/utilities/cn";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import spinner from '@/assets/loaders/spin_white.svg'
 import { useSocket } from "@/context/socketContext";
-import { BsLink } from "react-icons/bs";
 import SessionCodeBlock from "./SessionCodeBlock";
 
 export default function ParticipantListItem({
@@ -116,7 +115,7 @@ export default function ParticipantListItem({
               <div className="h-[30px] absolute right-2 flex items-center gap-2">
                 <button
                   onClick={handleConfirmBtn}
-                  className="w-[80px] h-[95%] rounded-md bg-red-500 flex items-center justify-cente border-transparentr"
+                  className="text-sm w-[80px] h-[95%] rounded-md bg-red-500 flex items-center justify-center border-transparent"
                 >
                   confirm
                 </button>
@@ -124,7 +123,7 @@ export default function ParticipantListItem({
                   onClick={() => {
                     setConfirmState(false);
                   }}
-                  className="w-[80px] h-[95%] rounded-md bg-black1 flex items-center justify-center"
+                  className="text-sm w-[80px] h-[95%] rounded-md bg-black1 flex items-center justify-center"
                 >
                   cancel
                 </button>

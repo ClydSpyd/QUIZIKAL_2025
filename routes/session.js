@@ -57,6 +57,29 @@ router.get("/:sessionCode", async (req, res) => {
   }
 });
 
+// POST reset session round and question indicies
+router.post("/:sessionCode/reset", async (req, res) => {
+  const { sessionCode } = req.params;
+
+  try {
+    const session = await Session.findOne({ sessionCode });
+
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    session.roundIdx = 0;
+    session.questionIdx = 0;
+
+    await session.save();
+
+    res.json({ message: "Session reset successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // GET fetch participant session data
 router.get("/participant/:combiCode", async (req, res) => {
   const { combiCode } = req.params;

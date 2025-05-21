@@ -1,11 +1,12 @@
+import { useHostSession } from "@/context/hostSessionContext";
 import { cn } from "@/utilities/cn";
-import { BsEyeFill } from "react-icons/bs";
 
 export default function QuestionPreview({
   questionData,
 }: {
   questionData: QuestionData | null;
 }) {
+  const { sessionStatus } = useHostSession();
   const isImgRound = questionData?.questionType === "PICTURE";
   const correctIdx = questionData?.correctIndex;
 
@@ -27,15 +28,18 @@ export default function QuestionPreview({
 
   return (
     questionData && (
-      <div className="flex flex-col gap-2 rounded-lg border border-main2Dark bg-[#171717] p-4 w-[600px]">
+      <div className="w-full h-fit flex flex-col gap-1 rounded-lg border border-main2Dark bg-[#171717] p-6 py-4">
         <div className="flex gap-2 items-center text-main2">
-          <BsEyeFill className="text-main2" />
-          <h1 className="text-main2 uppercase">Active Question</h1>
+          <h1 className="text-main2 uppercase font-semibold mb-2">
+            {sessionStatus === "question" ? "Active" : "Pending"} Question
+          </h1>
         </div>
-        <p className="font-semibold text-xl">{questionData.questionText}</p>
+        <p className="font-semibold text-xl min-h-[70px]">
+          {questionData.questionText}
+        </p>
         <div
-          className={cn({
-            "grid grid-cols-2 gap-5 w-fit my-4": isImgRound,
+          className={cn("h-[200px]", {
+            "grid grid-cols-2 gap-5 w-fit": isImgRound,
           })}
         >
           {questionData.options.map((option, idx) =>
@@ -46,7 +50,9 @@ export default function QuestionPreview({
                 <p
                   className={cn(
                     "text-sm h-[20px] w-[20px] rounded-full flex items-center justify-center border pb-[2px] pr-[1px]",
-                     correctIdx === idx ? "border-main2 text-main2" : "border-main1 text-main1"
+                    correctIdx === idx
+                      ? "border-main2 text-main2"
+                      : "border-main1 text-main1"
                   )}
                 >
                   {idx + 1}
@@ -54,7 +60,7 @@ export default function QuestionPreview({
                 <img
                   src={option}
                   alt={`Option ${idx + 1}`}
-                  className="w-[100px] h-[100px] object-cover rounded-lg"
+                  className="w-[100px] h-[70px] object-cover rounded-lg"
                 />
               </div>
             )

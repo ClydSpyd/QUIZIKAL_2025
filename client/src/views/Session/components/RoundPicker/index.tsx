@@ -59,7 +59,7 @@ export default function RoundPicker() {
                   roundIdx === idx ? "bg-main1 text-black border-main1" : ""
                 )}
               >
-                <p>{idx + 1}</p>
+                <p className="text-sm font-bold">{idx + 1}</p>
               </div>
             ))}
           </div>
@@ -89,7 +89,7 @@ export default function RoundPicker() {
                         : ""
                     )}
                   >
-                    <p>{idx + 1}</p>
+                    <p className="text-sm font-bold">{idx + 1}</p>
                   </div>
                 )
               )}
@@ -100,7 +100,7 @@ export default function RoundPicker() {
       <button
         onClick={handleUpdate}
         className={cn(
-          "mx-auto transition-all duration-300 ease-out",
+          "mx-auto transition-all duration-300 ease-out text-base",
           localChange ? "opacity-100" : "opacity-60 pointer-events-none"
         )}
       >

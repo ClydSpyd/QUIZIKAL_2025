@@ -24,10 +24,13 @@ declare interface ParticipantSessionData {
 
 declare type SessionStatus =
   | "pending" // session not begun
+  | "pendingQuestion" // between questions
   | "question" // active question awaiting responses
+  | "pendingRound" // awaiting to start next round
+  | "resultRoundPending" // between rounds
   | "resultRound" // display round results to all users
-  | "pendingRound" // between rounds
   | "result" // show quiz results to all users
+  | "paused" // session is paused
   | "ended"; // session finalized
 
 declare type RoundStatus =

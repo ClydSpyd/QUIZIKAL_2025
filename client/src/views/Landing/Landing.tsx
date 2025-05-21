@@ -1,9 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import joinIcon from "assets/images/join_yellow2.png";
 import CardForm from "@/components/utilityComps/CardForm/CardForm";
-import { useSessionUtilities } from "@/hooks/useSessionUtilities";
+import { useSessionForm } from "@/hooks/useSessionForm";
 import { useAuth } from "@/context/authContext";
 import LandingLayout from "@/components/utilityComps/LandingLayout";
 
@@ -13,7 +12,7 @@ const Landing = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   // const { sessionCode } = useSelector((state: RootState) => state.quiz);
-  const { handleJoinSession, error, setError, setCodeInput } = useSessionUtilities();
+  const { handleJoinSession, error, setError, setCodeInput } = useSessionForm();
   const onSubmit = (e: React.FormEvent) =>
     handleJoinSession(e, nameRef, btnRef);
 

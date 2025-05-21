@@ -13,6 +13,7 @@ import SessionView from "./views/Session/SessionView";
 import CreateQuestion from "./components/CreateQuestion";
 import EditQuestion from "./views/EditQuestion";
 import { NotificationProvider } from "./context/notification-context";
+import ResetSessionView from "./views/ResetSession";
 
 function App() {
   return (
@@ -42,6 +43,10 @@ function App() {
                   <Route
                     path={"/host/:sessionSlug/:sidecar?"}
                     element={<SessionView isHost />}
+                  />
+                  <Route
+                    path={"/session/reset/:sessionCode"}
+                    element={<ResetSessionView />}
                   />
                 </Route>
               </Route>

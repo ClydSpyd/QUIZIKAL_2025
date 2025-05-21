@@ -109,9 +109,9 @@ export default function StateQuestion() {
                       : "border-slate-300/10 hover:border-slate-300/20 bg-[#242424]"
                   )}
                 >
-                  <p className="absolute left-5 text-sm h-[25px] w-[25px] rounded-full flex items-center justify-center border border-main3 bg-main3 text-black1 font-bold pr-[1px]">
+                  {/* <p className="absolute left-5 text-sm h-[25px] w-[25px] rounded-full flex items-center justify-center border border-main3 bg-main3 text-black1 font-bold pr-[1px]">
                     {idx + 1}
-                  </p>
+                  </p> */}
                   <h1 className="text-lg text-white">{i}</h1>
                 </div>
               );

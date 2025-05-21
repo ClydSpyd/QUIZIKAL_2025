@@ -5,7 +5,7 @@ import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const useSessionUtilities = () => {
+export const useSessionForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
   const [codeInput, setCodeInput] = useState<string | null>();
@@ -16,10 +16,6 @@ export const useSessionUtilities = () => {
   const handleExitSession = () => {
     navigate("/");
   };
-
-  const handleCodeInout = (code: string) => {
-    setCodeInput(code)
-  }
 
   const handleError = (error: string, ref: React.RefObject<any>) => {
     setLoading(false);
@@ -85,6 +81,6 @@ export const useSessionUtilities = () => {
     error,
     setError,
     codeInput,
-    setCodeInput: handleCodeInout,
+    setCodeInput,
   };
 };

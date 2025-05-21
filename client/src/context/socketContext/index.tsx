@@ -71,15 +71,13 @@ export const SocketProvider = ({
       socket.on(
         "session-data-client",
         (data: Partial<SessionClientPayload>) => {
-          console.log("ÖÖ session-data-client:", data);
-          handleSessionUpdate(data);
+          handleSessionUpdate?.(data);
           setSocketConnected(true);
         }
       );
 
       socket.on("session-data-host", (data: Partial<SessionClientPayload>) => {
-        console.log("ÖÖ session-data-host:", data);
-        hostSessionUpdate(data);
+        hostSessionUpdate?.(data);
         setSocketConnected(true);
       });
 

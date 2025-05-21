@@ -24,11 +24,11 @@ export default function Participants() {
   };
 
   return (
-    <div className="w-[700px] flex flex-col items-center">
+    <div className="w-full flex flex-col items-center">
       {/* <h3>PARTICIPANTS</h3> */}
-      <div className="w-full border-2 border-black1 rounded-lg text-sm">
+      <div className="w-full border border-main3Dark rounded-lg text-sm">
         <div
-          className={`w-full flex  bg-black1 py-[12px] px-4 justify-between border-b border-b-main1Dark rounded-t-lg`}
+          className={`w-full flex  bg-black1 py-[12px] px-4 justify-between border-b border-b-main3Dark rounded-t-lg`}
         >
           <div className="flex items-center justify-center text-lg">
             PARTICIPANTS
