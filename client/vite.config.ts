@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
           ws: true,
         },
       },
+      allowedHosts: ["fero.ngrok.dev"],
     },
     resolve: {
       alias: {

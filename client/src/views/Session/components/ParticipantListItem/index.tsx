@@ -16,11 +16,15 @@ export default function ParticipantListItem({
   userId,
   handleDelete,
   lastItem = false,
+  longestUsername,
+  hasResponded
 }: {
   name: string;
   userId: string;
   handleDelete: () => void;
   lastItem?: boolean;
+  longestUsername: number;
+  hasResponded: boolean;
 }) {
   const { sessionCode } = useHostSession();
   const contRef = useRef<HTMLDivElement>(null);
@@ -64,7 +68,20 @@ export default function ParticipantListItem({
           isConnected ? "bg-lime-400" : "bg-red-600"
         )}
       />
-      <div className="flex items-center justify-start pl-10 w-2/3">{name}</div>
+      <div className="flex items-center justify-start pl-10 w-2/3">
+        <div
+          style={{
+            width: `${longestUsername * 9}px`,
+          }}
+        >
+          {name}
+        </div>
+        {hasResponded && (
+          <div className="px-2 py-1 rounded-md bg-main2Dark text-main2 text-xs font-semibold uppercase">
+            answered
+          </div>
+        )}
+      </div>
       {/* <div className="flex items-center justify-center w-1/4">{userId}</div> */}
       <div className="grow flex items-center justify-end">
         <SessionCodeBlock userId={userId} />

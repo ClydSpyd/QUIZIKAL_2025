@@ -10,6 +10,10 @@ const {
   getSessionDataParticipant,
   getSessionData,
 } = require("../services/session.service");
+const {
+  getResults,
+  getUserQuestionRespone,
+} = require("../utilities/SessionUtilities");
 const router = express.Router();
 
 // POST create session
@@ -25,10 +29,10 @@ router.post("/create", async (req, res) => {
     quizData: quizId,
     createdBy: userId,
   });
-  
+
   // Explicitly set a non-empty default value
-  newSession.responses = { }; 
-  
+  newSession.responses = {};
+
   await newSession.save();
 
   addNewSession(newSession);
@@ -48,7 +52,7 @@ router.get("/:sessionCode", async (req, res) => {
   const { sessionCode } = req.params;
 
   try {
-   const payload = await getSessionData(sessionCode);
+    const payload = await getSessionData(sessionCode);
 
     res.json(payload);
   } catch (error) {
@@ -100,7 +104,6 @@ router.post("/:sessionCode/participant", async (req, res) => {
   const { sessionCode } = req.params;
   try {
     const session = await Session.findOne({ sessionCode }).populate("quizData");
-    console.log({ X: session });
     if (!session) {
       return res.status(404).json({ error: "Session not found" });
     }
@@ -124,7 +127,6 @@ router.post("/:sessionCode/participant", async (req, res) => {
       session.quizData.rounds.map((round) => Array(round.length).fill(null))
     );
 
-
     await session.save();
 
     res.json({ userId, username });
@@ -138,8 +140,6 @@ router.post("/:sessionCode/participant", async (req, res) => {
 router.patch("/:sessionCode/participant/:userId", async (req, res) => {
   const { sessionCode, userId } = req.params;
   const { payload } = req.body;
-
-  console.log("payload:", payload);
 
   try {
     const session = await Session.findOne({ sessionCode });
@@ -191,6 +191,79 @@ router.patch("/:sessionCode/participant/:userId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// get session results (rounds and total scores)
+router.get("/results/:sessionCode/:userId?", async (req, res) => {
+  const { sessionCode, userId } = req.params;
+  try {
+    const quizResults = await getResults(sessionCode, userId);
+    return res.json(quizResults);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ error: error.message });
+  }
+});
+
+// get all user responses for a given question
+router.get("/responses/:sessionCode", async (req, res) => {
+  const { roundidx, questionidx } = req.query;
+  const { sessionCode } = req.params;
+  try {
+    const { responses, error } = await getUserQuestionRespone(
+      sessionCode,
+      roundidx,
+      questionidx
+    );
+
+    if (error) {
+      return res.status(500).json({ error });
+    } else {
+      return res.json(responses);
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// get question and user response by userId
+router.get("/responses/review/:sessionCode/:userId", async (req, res) => {
+  const { sessionCode, userId } = req.params;
+  const { roundidx, questionidx } = req.query;
+
+  try {
+    const session = await Session.findOne({ sessionCode }).populate({
+      path: "quizData",
+      populate: {
+      path: "rounds",
+      model: "QuizQuestion", // Replace "Round" with the actual model name for rounds
+      },
+    });
+    console.log({ Ö: session.quizData.rounds[0][0] });
+    const question  = session.quizData.rounds[roundidx][questionidx];
+    console.log({ question });
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    const userResponses = session.responses.get(userId);
+    if (!userResponses) {
+      return res.status(404).json({ error: "User responses not found" });
+    }
+
+    const response = userResponses[roundidx][questionidx];
+    const roundLength = session.quizData.rounds[roundidx].length;
+    return res.json({
+      response,
+      questionidx: +questionidx,
+      question,
+      roundLength,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: error.message });
   }
 });
 

@@ -4,12 +4,17 @@ import { useState } from "react";
 import { addAnimation } from "@/utilities/addAnimation";
 // import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "usehooks-ts";
+import axios from "axios";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
   const [sessionCode, setSessionCode] = useState<string | null>();
-  // const dispatch = useDispatch();
+  const [user, setUser] = useLocalStorage<AuthUserData | null>(
+    "QUIZIKAL_USER",
+    null
+  );
   const navigate = useNavigate();
 
   const handleError = (error: string, ref: React.RefObject<any>) => {
@@ -36,12 +41,12 @@ export const useLogin = () => {
       handleError("Passwords do not match", btnRef);
     } else {
       try {
-        // const { data } = await axios.post("/api/auth/register", {
-        //   username,
-        //   password,
-        // });
+        const { data } = await axios.post("/api/auth/register", {
+          username,
+          password,
+        });
         setTimeout(() => {
-          // dispatch(loginHost(data));
+          setUser(data);
           navigate("/dashboard");
           setLoading(false);
         }, 500);

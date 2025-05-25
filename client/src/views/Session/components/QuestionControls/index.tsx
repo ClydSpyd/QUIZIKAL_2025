@@ -120,7 +120,7 @@ export default function QuestionControls() {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 mt-4 grow">
+          <div className="flex flex-col justify-center gap-4 mt-4 grow">
             <div className="flex flex-col items-center justify-center">
               <p className="text-xs w-fulltext-center text-white select-none">ROUND</p>
               <div className="flex items-center gap-1 rounded-sm p-1">

@@ -14,6 +14,7 @@ import CreateQuestion from "./components/CreateQuestion";
 import EditQuestion from "./views/EditQuestion";
 import { NotificationProvider } from "./context/notification-context";
 import ResetSessionView from "./views/ResetSession";
+import AuthLayout from "./layouts/AuthLayout";
 
 function App() {
   return (
@@ -22,6 +23,11 @@ function App() {
         <AnimatePresence mode={"wait"}>
           <NotificationProvider>
             <Routes>
+              <Route element={<AuthLayout />}>
+                <Route index element={<Landing />} />
+                <Route path={"/signup"} element={<Signup />} />
+                <Route path={"/login"} element={<HostLogin />} />
+              </Route>
               <Route element={<LogoLayout />}>
                 <Route index element={<Landing />} />
                 <Route path={"/signup"} element={<Signup />} />
@@ -41,14 +47,14 @@ function App() {
                     element={<EditQuestion />}
                   />
                   <Route
-                    path={"/host/:sessionSlug/:sidecar?"}
-                    element={<SessionView isHost />}
-                  />
-                  <Route
                     path={"/session/reset/:sessionCode"}
                     element={<ResetSessionView />}
                   />
                 </Route>
+                <Route
+                  path={"/host/:sessionSlug/:sidecar?"}
+                  element={<SessionView isHost />}
+                />
               </Route>
               <Route path={"/play/:multiCode"} element={<SessionView />} />
             </Routes>

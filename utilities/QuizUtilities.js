@@ -1,5 +1,4 @@
 const Quiz = require("../models/Quiz");
-const Session = require("../models/Session");
 
 const getQuizById = async (quizId) => {
   try {
@@ -28,72 +27,7 @@ const getQuizzesByCreator = async (userId) => {
   }
 };
 
-const getResults = async (sessionId, userId) => {
-  const session = await Session.findById(sessionId);
-  if (!session) return { error: "Session not found" };
-
-  const quiz = await Quiz.findById(session.quizData).populate({
-    path: "rounds",
-    model: QuizQuestion,
-  });
-  if (!quiz) return { error: "Quiz not found" };
-
-  const correctIndexes = quiz.rounds.map(round =>
-    round.map(q => q.correctIndex)
-  );
-
-const evaluateUser = (userResponses) =>
-  correctIndexes.map((round, i) =>
-    round.reduce((score, correctIdx, j) => {
-      const response = userResponses?.[i]?.[j];
-
-      if (
-        response !== null &&
-        response !== undefined &&
-        Number.isFinite(+response) &&
-        +response === correctIdx
-      ) {
-        return score + 1;
-      }
-
-      return score;
-    }, 0)
-  );
-
-  if (userId) {
-    const userResponses = session.responses.get(userId);
-    if (!userResponses) return { error: "User responses not found" };
-    const roundTotals = evaluateUser(userResponses);
-    return {
-      userName:
-        session.participants.get(userId)?.["username" || "defaultName"] ??
-        "USER_" + userId,
-      roundTotals: roundTotals,
-      totalScore: roundTotals.reduce((acc, score) => acc + score, 0),
-    };
-  }
-
-  // All users
-  const allResults = {};
-  for (const [userId, userResponses] of session.responses.entries()) {
-    const roundTotals = evaluateUser(userResponses);
-    allResults[userId] = {
-      userName:
-        session.participants.get(userId)?.username ??
-        session.participants.get(userId)?.defaultName ??
-        `USER_${userId}`,
-      roundTotals: roundTotals,
-      totalScore: roundTotals.reduce((acc, score) => acc + score, 0),
-    };
-  }
-
-  return allResults;
-};
-
-
-
 module.exports = {
   getQuizById,
   getQuizzesByCreator,
-  getResults,
 };

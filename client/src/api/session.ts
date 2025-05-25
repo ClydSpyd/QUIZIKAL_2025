@@ -84,4 +84,56 @@ export const sessionAPIHandlers = {
       return { error: err.message };
     }
   },
+  fetchResults: async (
+    sessionCode: string,
+    userId?: string
+  ): Promise<ApiResponse<ResultsData[]>> => {
+    try {
+      const { data } = await baseClient.get(
+        `/session/results/${sessionCode}${userId ? `/${userId}` : ""}`
+      );
+      return { data };
+    } catch (error) {
+      console.log("ERROR FETCHING RESULTS");
+      const err = error as AxiosError;
+      return { error: err.message };
+    }
+  },
+  fetchQuestionResponses: async (
+    sessionCode: string,
+    roundIdx: number,
+    questionIdx: number
+  ): Promise<
+    ApiResponse<{
+      responses: Record<string, number[]>;
+    }>
+  > => {
+    try {
+      const { data } = await baseClient.get(
+        `/session/responses/${sessionCode}?roundidx=${roundIdx}&questionidx=${questionIdx}`
+      );
+      return { data };
+    } catch (error) {
+      console.log("ERROR FETCHING QUESTION RESPONSES");
+      const err = error as AxiosError;
+      return { error: err.message };
+    }
+  },
+  fetchQuestionReview: async (
+    sessionCode: string,
+    userId: string,
+    roundIdx: number,
+    questionIdx: number
+  ): Promise<ApiResponse<QuestionReviewData>> => {
+    try {
+      const { data } = await baseClient.get(
+        `/session/responses/review/${sessionCode}/${userId}?roundidx=${roundIdx}&questionidx=${questionIdx}`
+      );
+      return { data };
+    } catch (error) {
+      console.log("ERROR FETCHING QUESTION REVIEW");
+      const err = error as AxiosError;
+      return { error: err.message };
+    }
+  }
 };

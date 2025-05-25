@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Quiz = require("../models/Quiz");
-const QuizResult = require("../models/QuizResult");
-const QuizQuestion = require("../models/QuizQuestion");
 const {
   getQuizById,
   getQuizzesByCreator,
-  getResults,
 } = require("../utilities/QuizUtilities");
 const Session = require("../models/Session");
 
@@ -102,18 +99,6 @@ router.post("/addRound/:quizId", async (req, res) => {
     quiz.rounds = [...quiz.rounds, []];
     await quiz.save();
     res.json({ quizData: quiz });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ error: error.message });
-  }
-});
-
-// get quiz results
-router.get("/results/:sessionId/:userId?", async (req, res) => {
-  const { sessionId, userId } = req.params;
-  try {
-    const quizResults = await getResults(sessionId, userId);
-    return res.json(quizResults);
   } catch (error) {
     console.log(error.message);
     res.json({ error: error.message });

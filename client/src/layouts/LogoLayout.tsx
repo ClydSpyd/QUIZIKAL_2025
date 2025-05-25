@@ -9,7 +9,7 @@ const LogoLayout = () => {
   return (
     <>
       <div
-        className={`flex items-center justify-center w-screen relative`}
+        className={`flex items-center justify-center w-screen relative mb-4`}
       >
         <Link className={"mt-[20px] flex flex-col items-center"} to={"/"}>
           <img className="h-[90px]" src={logo} alt={"logo"} />
@@ -17,22 +17,17 @@ const LogoLayout = () => {
             QUIZIKAL
           </h4>
         </Link>
-        {user?.username && (
-          <button onClick={logout} className={`flex items-center gap-[2px] right-5 text-sm px-4 py-2 center-vert rounded-md border`}>
-            Logout
-            <TbLogout2 />
-          </button>
-        )}
-        {location.pathname === "/" && (
-          <Link to={"/login"}>
+        <div className="h-fit w-full flex justify-end px-4 absolute top-4 z-20">
+          {user?.username && (
             <button
-              className={`flex items-center gap-[2px] right-5 text-sm px-4 py-2 center-vert rounded-md border`}
+              onClick={logout}
+              className={`flex items-center gap-[2px] right-5 text-sm px-4 py-2  rounded-md border`}
             >
-              Host Login
-              <TbLogin2 />
+              Logout
+              <TbLogout2 />
             </button>
-          </Link>
-        )}
+          )}
+        </div>
       </div>
       <Outlet />
     </>

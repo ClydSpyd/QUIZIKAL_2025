@@ -3,6 +3,7 @@ declare interface SessionData {
   _id: string;
   sessionName: string;
   sessionCode: string;
+  sidecarCode: string;
   roundIdx: number;
   questionIdx: number;
   participants: Record<string, Participant>; // {[userId]:[username]} userId to be UUID which serves as session access code for user.
@@ -37,6 +38,19 @@ declare type RoundStatus =
   | "pendingResponse" // user has not responded to current active round
   | "waiting" // user has responded to current active round
   | "inactive"; // round finalized
+
+declare interface ResultsData {
+  userName: string;
+  roundTotals: number[];
+  totalScore: number;
+}
+
+declare interface QuestionReviewData {
+  response: number,
+  roundLength: number,
+  questionIdx: number,
+  question: QuestionData,
+}
 
 // <--- interfaces to be used for socket
 declare interface ConnectedUser {

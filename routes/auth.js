@@ -61,7 +61,7 @@ router.post("/register", async (req, res) => {
   // remove password attribute
   delete newUser.password;
 
-  res.status(201).json(newUser);
+  res.status(201).json({ id: newUser._id, username: newUser.username });
 });
 
 router.post("/login", async (req, res) => {

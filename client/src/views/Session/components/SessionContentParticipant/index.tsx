@@ -3,6 +3,7 @@ import StatePendingSession from "./view-states/StatePendingSession";
 import StatePendingRound from "./view-states/StatePendingRound";
 import StateQuestion from "./view-states/StateQuestion";
 import StatePendingQuestion from "./view-states/StatePendingQuestion";
+import StateRoundReults from "./view-states/StateRoundResults";
 
 export default function SessionContentParticipant(){
     const { sessionStatus } = useParticipantSession();
@@ -10,11 +11,11 @@ export default function SessionContentParticipant(){
     const views: Record<SessionStatus, JSX.Element> = {
       pending: <StatePendingSession />,
       pendingRound: <StatePendingRound />,
-      question: <StateQuestion />,
       pendingQuestion: <StatePendingQuestion />,
+      question: <StateQuestion />,
       paused: <h1>paused</h1>,
-      resultRoundPending: <h1>resultRoundPending</h1>,
-      resultRound: <h1>resultRound</h1>,
+      resultRoundPending: <StateRoundReults />,
+      resultRound: <StateRoundReults showResults />,
       result: <h1>result</h1>,
       ended: <h1>ended</h1>,
     };

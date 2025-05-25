@@ -55,6 +55,12 @@ const handleQuizEvents = async (io, socket) => {
 
       console.log("Updated session: ", updated);
 
+      const hostSocket = await getHostSocket(io);
+      if (hostSocket) {
+        console.log("Host socket: ", hostSocket.id);
+        hostSocket.emit("response-received", { roundIdx, questionIdx, userId: map[socket.id], responseIdx });
+      }
+
     }
   })
 };

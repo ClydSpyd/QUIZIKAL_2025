@@ -72,7 +72,7 @@ export default function HostSessionProvider({
           roundIdx,
           questionIdx,
           quizData: sessionData.quizData,
-          sidecarCode: sessionData.session.sessionCode,
+          sidecarCode: sessionData.session.sidecarCode,
           participants: sessionData.session.participants,
           userId,
           handleSessionUpdate,
