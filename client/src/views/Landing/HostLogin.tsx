@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React, { useRef } from "react";
 import { TbLogin2 } from "react-icons/tb";
 import CardForm from "@/components/utilityComps/CardForm/CardForm";

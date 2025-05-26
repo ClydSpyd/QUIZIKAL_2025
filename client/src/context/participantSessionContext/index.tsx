@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { ParticipantSessionData } from "./types";
@@ -17,7 +18,7 @@ export default function ParticipantSessionProvider({
   children: React.ReactNode;
 }) {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
   const [roundIdx, setRoundIdx] = useState<number>(0);
   const [questionIdx, setQuestionIdx] = useState<number>(0);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionData | null>(

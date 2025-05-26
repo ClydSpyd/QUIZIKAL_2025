@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import loader from "assets/loaders/spin_orange.svg";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import CreateImageQuestion from "@/components/CreateQuestion/CreateImageQuestion/CreateImageQuestion";
 

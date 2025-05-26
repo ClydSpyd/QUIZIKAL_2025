@@ -9,7 +9,6 @@ export default function RoundControls() {
   const {
     startSession,
     setQuestion,
-    nextRound,
     handleQuestionState,
     isLastQuestion,
     isFirstQuestion,
@@ -53,7 +52,6 @@ export default function RoundControls() {
           >
             <BsForwardFill />
           </div>
-          <button onClick={nextRound}>Ö</button>
         </>
       )}
     </div>

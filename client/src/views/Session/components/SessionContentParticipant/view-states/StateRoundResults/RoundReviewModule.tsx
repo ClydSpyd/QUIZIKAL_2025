@@ -1,6 +1,6 @@
 import { useParticipantSession } from "@/context/participantSessionContext";
 import { cn } from "@/utilities/cn";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import spinner from "assets/loaders/spin_green.svg";
 
 import {

@@ -2,7 +2,6 @@ import { useHostSession } from "@/context/hostSessionContext";
 import { useSocket } from "@/context/socketContext";
 import useSessionControls from "@/hooks/useSessionControls";
 import { cn } from "@/utilities/cn";
-import { delay } from "@/utilities/delay";
 import { useEffect, useState } from "react";
 import { BsForwardFill, BsPlayCircleFill } from "react-icons/bs";
 

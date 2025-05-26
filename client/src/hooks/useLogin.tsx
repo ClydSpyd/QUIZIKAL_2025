@@ -11,7 +11,7 @@ export const useLogin = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
   const [sessionCode, setSessionCode] = useState<string | null>();
-  const [user, setUser] = useLocalStorage<AuthUserData | null>(
+  const [, setUser] = useLocalStorage<AuthUserData | null>(
     "QUIZIKAL_USER",
     null
   );

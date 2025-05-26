@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import logo from "assets/images/quizikal_logo1.png";
-import { TbLogin2, TbLogout2 } from "react-icons/tb";
+import { TbLogout2 } from "react-icons/tb";
 import { useAuth } from "@/context/authContext";
 
 const LogoLayout = () => {

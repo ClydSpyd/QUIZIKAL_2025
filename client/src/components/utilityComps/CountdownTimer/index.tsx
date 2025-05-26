@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useEffect, useState, FC, useMemo } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, FC } from 'react';
 import styles from './countdown-timer.module.scss';
 
 interface CircleCountDownProps {

@@ -8,9 +8,8 @@ interface Props {
 
 const Image = ({ src, className, Placeholder }: Props) => {
   const [isLoaded, toggleIsLoaded] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
   const handleLoaded = () => toggleIsLoaded(true);
-  const handleError = () => setError(true);
+  const handleError = (val:string) => console.error(val);
 
   return (
     <div
@@ -44,7 +43,7 @@ const Image = ({ src, className, Placeholder }: Props) => {
         }}
         src={src}
         onLoad={handleLoaded}
-        onError={handleError}
+        onError={() => handleError(`Image failed to load: ${src}`)}
       />
     </div>
   );
