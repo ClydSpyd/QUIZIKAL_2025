@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Catch-all route to serve the React app's index.html for any other routes
   app.get("*", (_, res) => {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "client/dist", "index.html"));
   });
 } 
 
