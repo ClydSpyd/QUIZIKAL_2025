@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
 const initSocket = require("./socket");
-const { swaggerUi, swaggerSpec } = require('./swagger');
+const { swaggerUi, swaggerSpec } = require("./swagger");
 
 const app = express();
 const port = process.env.PORT || 8888;
@@ -16,7 +16,7 @@ connectDB();
 app.use(cors());
 app.use(express.json({ extended: false })); //body parser
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/quiz", require("./routes/quiz"));
@@ -31,13 +31,13 @@ app.get(["/api"], (_, res) => {
 
 // Serve static files from client/build in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/build")));
+  app.use(express.static(path.join(__dirname, "client/dist")));
 
   // Catch-all route to serve the React app's index.html for any other routes
   app.get("*", (_, res) => {
     res.sendFile(path.join(__dirname, "client/dist", "index.html"));
   });
-} 
+}
 
 initSocket(server);
 
