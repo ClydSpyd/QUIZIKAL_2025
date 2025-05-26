@@ -47,6 +47,24 @@ router.post("/create", async (req, res) => {
 });
 
 // GET fetch session data
+/**
+ * @swagger
+ * /api/session/{sessionCode}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Session]
+ *     parameters:
+ *       - in: path
+ *         name: sessionCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Session Data
+ *       404:
+ *         description: Session not found
+ */
 router.get("/:sessionCode", async (req, res) => {
   console.log("get session");
   const { sessionCode } = req.params;
@@ -57,7 +75,7 @@ router.get("/:sessionCode", async (req, res) => {
     res.json(payload);
   } catch (error) {
     console.log(error);
-    res.json({ error: error });
+    res.status(404).json({ error: error });
   }
 });
 

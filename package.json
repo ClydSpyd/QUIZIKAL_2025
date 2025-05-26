@@ -7,7 +7,8 @@
     "server": " nodemon server.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "mono": "npm i && npm i --prefix client"
+    "mono": "npm i && npm i --prefix client",
+    "deploy-build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "author": "Dave Clydesdale, 2023",
   "license": "ISC",
@@ -25,6 +26,8 @@
     "nodemon": "^3.0.1",
     "openai": "^4.87.3",
     "socket.io": "^4.7.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "vite": "^6.0.11"
   }
 }
