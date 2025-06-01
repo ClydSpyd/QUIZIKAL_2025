@@ -51,7 +51,7 @@ router.post("/create", async (req, res) => {
  * @swagger
  * /api/session/{sessionCode}:
  *   get:
- *     summary: Get user by ID
+ *     summary: Get session data by sesisonCode
  *     tags: [Session]
  *     parameters:
  *       - in: path
@@ -79,7 +79,28 @@ router.get("/:sessionCode", async (req, res) => {
   }
 });
 
+
 // POST reset session round and question indicies
+/**
+ * @swagger
+ * /api/session/{sessionCode}:
+ *   post:
+ *     summary: reset session round and question indicies
+ *     tags: [Session]
+ *     parameters:
+ *       - in: path
+ *         name: sessionCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: confirmation message
+ *       404:
+ *         description: error message - user not found
+ *       500:
+ *         description: error message - internal server error
+ */
 router.post("/:sessionCode/reset", async (req, res) => {
   const { sessionCode } = req.params;
 
@@ -103,6 +124,24 @@ router.post("/:sessionCode/reset", async (req, res) => {
 });
 
 // GET fetch participant session data
+/**
+ * @swagger
+ * /api/session/participant/{combiCode}:
+ *   get:
+ *     summary: retreive participant session data
+ *     tags: [Session]
+ *     parameters:
+ *       - in: path
+ *         name: combiCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: sessionData payload
+ *       500:
+ *         description: error message - internal server error
+ */
 router.get("/participant/:combiCode", async (req, res) => {
   const { combiCode } = req.params;
   const [sessionCode, userId] = [combiCode.slice(0, 5), combiCode.slice(5)];
@@ -113,11 +152,29 @@ router.get("/participant/:combiCode", async (req, res) => {
   } catch (error) {
     console.log("ERROR!!!");
     console.log(error);
-    res.json({ error: error });
+    res.status(500).json({ error: error });
   }
 });
 
 // POST add participant to session
+/**
+ * @swagger
+ * /api/session/{sessionCode}/participant:
+ *   post:
+ *     summary: add participant to session
+ *     tags: [Session]
+ *     parameters:
+ *       - in: path
+ *         name: sessionCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: user data payload
+ *       404:
+ *         description:error message
+ */
 router.post("/:sessionCode/participant", async (req, res) => {
   const { sessionCode } = req.params;
   try {
@@ -213,6 +270,30 @@ router.patch("/:sessionCode/participant/:userId", async (req, res) => {
 });
 
 // get session results (rounds and total scores)
+/**
+ * @swagger
+ * /api/session/results/{sessionCode}/{userId}:
+ *   get:
+ *     summary: get session results (rounds and total scores)
+ *     tags: [Session]
+ *     parameters:
+ *       - in: path
+ *         name: sessionCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         description: userId is optional (in EXPRESS, not Swagger), if not provided, results for all users will be returned
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: results data payload
+ *       404:
+ *         description: error message
+ */
 router.get("/results/:sessionCode/:userId?", async (req, res) => {
   const { sessionCode, userId } = req.params;
   try {
@@ -220,7 +301,7 @@ router.get("/results/:sessionCode/:userId?", async (req, res) => {
     return res.json(quizResults);
   } catch (error) {
     console.log(error.message);
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 

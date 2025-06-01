@@ -27,6 +27,21 @@ export default function useSessionControls() {
     socket?.emit("round-update", { sessionStatus: "resultRoundPending" });
   };
 
+  const endSession = () => {
+    handleSessionUpdate({ sessionStatus: "ended" });
+    socket?.emit("round-update", { sessionStatus: "ended" });
+  };
+
+  const endSessionPending = () => {
+    handleSessionUpdate({ sessionStatus: "resultPending" });
+    socket?.emit("round-update", { sessionStatus: "resultPending" });
+  };
+
+  const displayFinalResults = () => {
+    handleSessionUpdate({ sessionStatus: "result" });
+    socket?.emit("round-update", { sessionStatus: "result" });
+  };
+
   const showRoundResults = () => {
     handleSessionUpdate({ sessionStatus: "resultRound" });
     socket?.emit("round-update", { sessionStatus: "resultRound" });
@@ -67,6 +82,19 @@ export default function useSessionControls() {
     socket?.emit("round-update", payload);
   };
 
+  const resetSessions = () => {
+    handleSessionUpdate({
+      sessionStatus: "pendingRound",
+      roundIdx: 0,
+      questionIdx: 0,
+    });
+    socket?.emit("round-update", {
+      sessionStatus: "pendingRound",
+      roundIdx: 0,
+      questionIdx: 0,
+    });
+  };
+
   return {
     startSession,
     pauseSession,
@@ -75,11 +103,15 @@ export default function useSessionControls() {
     startRound,
     endRound,
     showRoundResults,
+    endSession,
+    resetSessions,
     isLastQuestion,
     isFirstQuestion,
     isFirstRound,
     isLastRound,
     handleSessionUpdate,
     handleQuestionState,
+    endSessionPending,
+    displayFinalResults,
   };
 }

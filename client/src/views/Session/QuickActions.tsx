@@ -5,6 +5,8 @@ import { BiPause, BiPlay, BiSkipNext, BiSkipPrevious, BiStop } from "react-icons
 import { GoStop } from "react-icons/go";
 import { IconType } from "react-icons/lib";
 import { FaList } from "react-icons/fa6";
+import { VscDebugRestart } from "react-icons/vsc";
+
 
 const btnIconsMap: Record<string, IconType> = {
   startSession: () => <BiPlay className="text-white h-[35px] w-[35px]" />,
@@ -16,6 +18,7 @@ const btnIconsMap: Record<string, IconType> = {
   setRound: () => <BiPlay className="text-white h-[35px] w-[35px]" />,
   showRoundResults: () => <FaList className="text-white h-[15px] w-[15px]" />,
   endSession: () => <GoStop className="text-white h-[20px] w-[20px]" />,
+  resetSession: () => <VscDebugRestart className="text-white h-[20px] w-[20px]" />,
 };
 
 const ActionBtn = ({
@@ -54,9 +57,16 @@ export default function QuickActions() {
     endRound,
     setRound,
     showRoundResults,
+    endSessionPending,
+    displayFinalResults,
+    resetSessions,
     isFirstRound,
     isLastRound,
   } = useSessionControls();
+
+  const finalisedState = ["ended", "resultPending", "result"].includes(
+    sessionStatus
+  );
 
   return (
     <div className="w-full h-full flex flex-col gap-2 p-4">
@@ -67,7 +77,13 @@ export default function QuickActions() {
         <button onClick={startSession}>START SESSION</button>
       ) : (
         <>
-          {sessionStatus !== "paused" ? (
+          {finalisedState ? (
+            <ActionBtn
+              icon="resetSession"
+              btnText={"RESTART SESSION"}
+              onClick={resetSessions}
+            />
+          ) : sessionStatus !== "paused" ? (
             <ActionBtn
               icon="pauseSession"
               btnText={"PAUSE SESSION"}
@@ -85,7 +101,7 @@ export default function QuickActions() {
             btnText="PREV ROUND"
             onClick={() => setRound(roundIdx - 1)}
             css={
-              isFirstRound
+              isFirstRound || finalisedState
                 ? {
                     pointerEvents: "none",
                     opacity: 0.5,
@@ -98,7 +114,7 @@ export default function QuickActions() {
             btnText={"NEXT ROUND"}
             onClick={() => setRound(roundIdx + 1)}
             css={
-              isLastRound
+              isLastRound || finalisedState
                 ? {
                     pointerEvents: "none",
                     opacity: 0.5,
@@ -111,14 +127,14 @@ export default function QuickActions() {
               icon="endRound"
               btnText={"END ROUND"}
               onClick={endRound}
-              // css={
-              //   !["question", "pendingQuestion"].includes(sessionStatus)
-              //     ? {
-              //         pointerEvents: "none",
-              //         opacity: 0.5,
-              //       }
-              //     : {}
-              // }
+              css={
+                finalisedState
+                  ? {
+                      pointerEvents: "none",
+                      opacity: 0.5,
+                    }
+                  : {}
+              }
             />
           ) : (
             <ActionBtn
@@ -128,11 +144,19 @@ export default function QuickActions() {
             />
           )}
 
-          <ActionBtn
-            icon="endSession"
-            btnText={"END SESSION"}
-            onClick={() => setRound(0)}
-          />
+          {sessionStatus !== "resultPending" ? (
+            <ActionBtn
+              icon="endSession"
+              btnText={"END SESSION"}
+              onClick={endSessionPending}
+            />
+          ) : (
+            <ActionBtn
+              icon="endSession"
+              btnText={"SHOW SESSION RESULTS"}
+              onClick={displayFinalResults}
+            />
+          )}
         </>
       )}
     </div>

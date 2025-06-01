@@ -3,8 +3,10 @@ import styles from './TriviaWidget.module.scss';
 import bulb from '../../assets/images/bulb_orange.png';
 import spinner from '../../assets/loaders/spin_green.svg';
 import { ImShuffle } from 'react-icons/im';
-import { TbCopy } from 'react-icons/tb';
 import { useTrivia } from '../../context/TriviaContext';
+import TooltipWrapper from '../utilityComps/TooltipWrapper';
+import SaveQuestionBtn from './SaveQuestionBtn';
+
 
 const TriviaWidget = () => {
   const [ loading, toggleLoading] = useState<boolean>(false)
@@ -50,8 +52,10 @@ const TriviaWidget = () => {
         </div>
       </div>
       <div className={`${styles.icons}`}>
-        <TbCopy />
-        <ImShuffle onClick={handleShuffle} />
+        <SaveQuestionBtn question={currentQuestion} />
+        <TooltipWrapper message="Random Question">
+          <ImShuffle onClick={handleShuffle} />
+        </TooltipWrapper>
       </div>
     </div>
   );

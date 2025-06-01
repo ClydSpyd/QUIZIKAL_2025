@@ -4,6 +4,7 @@ import StatePendingRound from "./view-states/StatePendingRound";
 import StateQuestion from "./view-states/StateQuestion";
 import StatePendingQuestion from "./view-states/StatePendingQuestion";
 import StateRoundReults from "./view-states/StateRoundResults";
+import StateResults from "./view-states/StateResults";
 
 export default function SessionContentParticipant(){
     const { sessionStatus } = useParticipantSession();
@@ -16,8 +17,9 @@ export default function SessionContentParticipant(){
       paused: <h1>paused</h1>,
       resultRoundPending: <StateRoundReults />,
       resultRound: <StateRoundReults showResults />,
-      result: <h1>result</h1>,
-      ended: <h1>ended</h1>,
+      resultPending: <StateResults showResults={false} />,
+      result: <StateResults showResults={true} />,
+      ended: <StateResults showResults={false} />,
     };
   return (
     <div className="w-full h-full min-w-screen min-h-screen">

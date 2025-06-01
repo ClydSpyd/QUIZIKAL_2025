@@ -16,7 +16,7 @@ export default function RoundDisplay() {
   } = useHostSession();
   const { handleCopy, copied } = useClipboard();
   const handleCopyBtn = async () => {
-    const textToCopy = `${window.location.host}/host/${sessionCode}/${sidecarCode}`;
+    const textToCopy = `${window.location.host}/play/${sessionCode}QZKL/${sidecarCode}`;
     handleCopy(textToCopy);
   };
   return (

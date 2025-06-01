@@ -2,7 +2,7 @@ const strings: Record<number, string[]> = {
   1: ["Full points!", "Wow!", "Top marks!", "JURASSIC PARK!"],
   2: ["Great work!", "Excellent", "Nice!", "Back of the net!"],
   3: ["Good effort", "Not bad at all", "'A' for effort"],
-  4: ["...not great", "Room for improvement", "you tried"],
+  4: ["...not great", "Room for improvement", "You tried"],
   5: ["Did you fall asleep??", "*facepalm*"],
 };
 
@@ -13,7 +13,7 @@ const randomFromRange = (key: number) => {
   return options[Math.floor(Math.random() * options.length)];
 } 
 
-export const resultResponse = (numerator:number, denominator:number) => {
+export const resultCommentString = (numerator:number, denominator:number) => {
   const percentage = (numerator / denominator) * 100;
   let key = -1;
 
@@ -28,8 +28,8 @@ export const resultResponse = (numerator:number, denominator:number) => {
   } else {
     key = 5 // < 20
   }
-
-  console.log(percentage)
+  console.log({ numerator, denominator });
+  console.log("%: ", percentage);
   console.log('key: ', key)
   const value = randomFromRange(key);
   return value

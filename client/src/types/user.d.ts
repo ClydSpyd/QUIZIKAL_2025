@@ -30,4 +30,5 @@ declare interface SessionClientPayload {
   roundStatus: RoundStatus;
   sessionStatus: SessionStatus;
   questionData: QuestionData;
+  sidecarCode: string;
 }

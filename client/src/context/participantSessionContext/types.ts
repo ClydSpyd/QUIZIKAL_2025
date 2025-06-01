@@ -1,8 +1,9 @@
 import { RefetchOptions } from "@tanstack/react-query";
 
-export interface ParticipantSessionData {
+export interface ParticipantSessionContextData {
   sessionName: string;
   sessionCode: string;
+  sidecarCode: string;
   userData: Participant | null;
   roundIdx: number;
   questionIdx: number;

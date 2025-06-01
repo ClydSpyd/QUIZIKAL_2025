@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import spinner from "assets/loaders/spin_green.svg";
 import { IoWarning } from "react-icons/io5";
 import RoundReviewModule from "./RoundReviewModule";
+import { resultCommentString } from "@/utilities/resultCommentString";
 
 export default function RoundResults() {
   const [resultsData, setResultsData] = useState<null | ResultsData>(null);
@@ -50,14 +51,25 @@ export default function RoundResults() {
           </div>
         ) : (
           <>
-            <h2 className="text-xl font-bold text-white">
+            {/* <h2 className="text-xl font-bold text-white">
               {resultsData.userName}
+            </h2> */}
+            <div className="flex flex-col items-center">
+              <h1 className="grad-text text-[120px] font-black leading-none relative bottom-2">
+                {resultsData.roundTotals[roundIdx]}
+              </h1>
+              <h2 className="text-[25px] font-black leading-none relative bottom-2 text-main2">
+                out of {resultsData.roundLengths[roundIdx]}
+              </h2>
+            </div>
+            {/* <h2 className="text-lg font-bold m-0">Points this round</h2> */}
+            <h2 className="text-2xl text-white font-bold m-0">
+              {resultCommentString(
+                resultsData.roundTotals[roundIdx],
+                resultsData.roundLengths[roundIdx]
+              )}
             </h2>
-            <h1 className="grad-text text-[120px] font-black leading-none relative bottom-2">
-              {resultsData.roundTotals[roundIdx]}
-            </h1>
-            <h2 className="text-lg font-bold m-0">Points this round</h2>
-            <div className="flex items-center gap-1 mt-4">
+            <div className="flex items-center gap-1 mt-2">
               <p className="text-main2">cumulative score: </p>
               <h4 className="grad-text font-bold text-xl">
                 {resultsData.totalScore}

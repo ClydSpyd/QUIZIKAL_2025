@@ -52,11 +52,11 @@ function App() {
                   />
                 </Route>
                 <Route
-                  path={"/host/:sessionSlug/:sidecar?"}
+                  path={"/host/:sessionSlug"}
                   element={<SessionView isHost />}
                 />
               </Route>
-              <Route path={"/play/:multiCode"} element={<SessionView />} />
+              <Route path={"/play/:multiCode/:sidecar?"} element={<SessionView />} />
             </Routes>
           </NotificationProvider>
         </AnimatePresence>

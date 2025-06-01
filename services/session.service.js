@@ -54,9 +54,20 @@ const getSessionDataParticipant = async (sessionCode, userId) => {
     if (!session) {
       throw new Error("Session not found");
     }
-    const { roundIdx, questionIdx, sessionStatus, sessionName } = session;
+    const { roundIdx, questionIdx, sessionStatus, sessionName, sidecarCode } = session;
+    console.log("GET SESSION DATA PARTICIPANT", {
+      sessionCode,
+      userId,
+    });
+    let userData;
+    if (userId === "QZKL") { // "QZKL" is a special identifier for the sidecar
+      const firstEntry = session.participants.entries().next().value;
+      userData = firstEntry ? firstEntry[1] : undefined;
+    } else {
+      userData = session.participants.get(userId);
+    }
 
-    const userData = session.participants.get(userId);
+      console.log("USER DATA", userData);
     if (!userData || userData.status !== "active") {
       return { error: "User not found" };
     }
@@ -67,7 +78,10 @@ const getSessionDataParticipant = async (sessionCode, userId) => {
       roundIdx,
       questionIdx,
       sessionStatus,
+      sidecarCode,
     };
+
+    console.log("PAYLOAD", payload);
     return { payload };
   } catch (error) {
     return { error: error };
@@ -120,7 +134,8 @@ const handleClientConnection = async (socket) => {
         questionIdx: sessionData?.questionIdx,
         sessionStatus: sessionData?.sessionStatus,
         roundStatus: sessionData?.userData.roundStatus,
-        questionData
+        sidecarCode: sessionData?.sidecarCode,
+        questionData,
       });
 
       socket.broadcast.emit("users", Object.values(connectedUsers));

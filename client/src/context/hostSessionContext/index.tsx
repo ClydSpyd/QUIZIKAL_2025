@@ -29,7 +29,8 @@ export default function HostSessionProvider({
     isLoading,
     error: queryError,
   } = useSessionData({ sessionCode: sessionCode });
-  const { sessionSlug } = useParams();
+  const { sessionSlug, sidecar } = useParams();
+  console.log({ sessionData, isLoading, sessionCode });
 
   useEffect(() => {
     const [sessionCodeParam, userIdParam] = [
@@ -62,31 +63,29 @@ export default function HostSessionProvider({
     return <h1>{queryError?.message}</h1>;
 
   return (
-    sessionData &&
-    sessionCode && (
-      <SessionContext.Provider
-        value={{
-          sessionName: sessionData.session.sessionName,
-          sessionCode,
-          sessionStatus,
-          roundIdx,
-          questionIdx,
-          quizData: sessionData.quizData,
-          sidecarCode: sessionData.session.sidecarCode,
-          participants: sessionData.session.participants,
-          userId,
-          handleSessionUpdate,
-        }}
+    <SessionContext.Provider
+      value={{
+        sessionName: sessionData.session.sessionName,
+        sessionCode,
+        sessionStatus,
+        roundIdx,
+        questionIdx,
+        quizData: sessionData.quizData,
+        sidecarCode: sessionData.session.sidecarCode,
+        participants: sessionData.session.participants,
+        userId,
+        handleSessionUpdate,
+      }}
+    >
+      <SocketProvider
+        isHost={sidecar === undefined}
+        isSidecar={!!sidecar}
+        sessionCode={memoizedSessionCode}
+        userData={memoizedUserData}
       >
-        <SocketProvider
-          isHost
-          sessionCode={memoizedSessionCode}
-          userData={memoizedUserData}
-        >
-          {children}
-        </SocketProvider>
-      </SessionContext.Provider>
-    )
+        {children}
+      </SocketProvider>
+    </SessionContext.Provider>
   );
 }
 export const useHostSession = (): HostSessionContextData => {

@@ -21,6 +21,7 @@ declare interface ParticipantSessionData {
   sessionStatus: SessionStatus,
   sessionName: string,
   sessionCode: string,
+  sidecarCode: string,
 }
 
 declare type SessionStatus =
@@ -30,6 +31,7 @@ declare type SessionStatus =
   | "pendingRound" // awaiting to start next round
   | "resultRoundPending" // between rounds
   | "resultRound" // display round results to all users
+  | "resultPending" // session finished, awaiting results
   | "result" // show quiz results to all users
   | "paused" // session is paused
   | "ended"; // session finalized
@@ -42,7 +44,9 @@ declare type RoundStatus =
 declare interface ResultsData {
   userName: string;
   roundTotals: number[];
+  roundLengths: number[];
   totalScore: number;
+  userStatus: "active" | "inactive";
 }
 
 declare interface QuestionReviewData {

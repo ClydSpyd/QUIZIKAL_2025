@@ -3,6 +3,8 @@ import ParticipantSessionProvider, {
 } from "@/context/participantSessionContext";
 import ParticipantNameView from "./components/ParticipantNameView";
 import SessionContentParticipant from "./components/SessionContentParticipant";
+import { useParams } from "react-router-dom";
+import SidecarView from "../Sidecar";
 
 function Content() {
   const { userData, loading, roundIdx, questionIdx } = useParticipantSession();
@@ -27,9 +29,10 @@ function Content() {
 }
 
 export default function SessionViewParticipant() {
+  const { sidecar } = useParams();
   return (
     <ParticipantSessionProvider>
-        <Content />
+       {sidecar ? <SidecarView /> : <Content />}
     </ParticipantSessionProvider>
   );
 }

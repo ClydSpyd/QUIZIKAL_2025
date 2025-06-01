@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { ParticipantSessionData } from "./types";
+import { ParticipantSessionContextData } from "./types";
 import { useParticipantSessionData } from "@/queries/sessionData";
 import { useNavigate, useParams } from "react-router-dom";
 import { RefetchOptions } from "@tanstack/react-query";
 import { SocketProvider } from "../socketContext";
 import { API } from "@/api";
 
-const ParticipantContext = createContext<ParticipantSessionData>(
-  {} as ParticipantSessionData
+const ParticipantContext = createContext<ParticipantSessionContextData>(
+  {} as ParticipantSessionContextData
 );
 
 export default function ParticipantSessionProvider({
@@ -33,6 +33,7 @@ export default function ParticipantSessionProvider({
   }, []);
 
   const { multiCode } = useParams();
+  console.log("MULTICODE", multiCode);
   const {
     data,
     error: queryError,
@@ -95,6 +96,7 @@ export default function ParticipantSessionProvider({
         userData: data?.userData ?? null,
         sessionName: data?.sessionName ?? "",
         sessionCode: data?.sessionCode ?? "",
+        sidecarCode: data?.sidecarCode ?? "",
         roundIdx,
         questionIdx,
         currentQuestion,
@@ -115,7 +117,7 @@ export default function ParticipantSessionProvider({
   );
 }
 
-export const useParticipantSession = (): ParticipantSessionData => {
+export const useParticipantSession = (): ParticipantSessionContextData => {
   const context = useContext(ParticipantContext);
   if (!context) {
     throw new Error(

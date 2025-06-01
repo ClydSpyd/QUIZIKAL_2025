@@ -50,41 +50,6 @@ const AnswerBlockText = ({
   );
 };
 
-const AnswerBlockPic = ({
-  title,
-  imgUrl,
-  isCorrect,
-}:{
-  title: string;
-  imgUrl: string;
-  isCorrect: boolean;
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 rounded-xl px-5 py-4",
-        isCorrect ? "bg-[#181c18]" : "bg-[#2d1a1a]"
-      )}
-    >
-      <span className="text-xs text-gray-400 font-bold tracking-wide mb-1">
-        {title}
-      </span>
-      <div className="flex items-center relative mx-auto w-fit">
-        {isCorrect ? (
-          <IoIosCheckmarkCircle className="absolute top-3 right-3 z-10 h-[30px] w-[30px]  text-lime-400" />
-        ) : (
-          <TiDelete className="absolute top-3 right-3 z-10 h-[30px] w-[30px] text-red-400" />
-        )}
-        <img
-          src={imgUrl}
-          alt={title}
-          className="w-full max-w-[300px] h-auto object-cover rounded-md"
-        />
-      </div>
-    </div>
-  );
-}
-
 export default function RoundReviewModule() {
   const { roundIdx, sessionCode, userData } = useParticipantSession();
   const [questionIdx, setQuestionIndex] = useState(0);
@@ -160,51 +125,25 @@ export default function RoundReviewModule() {
                 {questionReviewData?.question?.questionText}
               </span>
             </div>
-            {questionReviewData?.question?.questionType === "PICTURE" ? (
-              <AnswerBlockPic
-                title="Your Answer"
-                imgUrl={
-                  questionReviewData?.question?.options[
-                    questionReviewData?.response
-                  ] ?? ""
-                }
-                isCorrect={answeredCorrectly}
-              />
-            ) : (
+            <AnswerBlockText
+              title="Your Answer"
+              answerText={
+                questionReviewData?.question?.options[
+                  questionReviewData?.response
+                ] ?? "No Answer Given"
+              }
+              isCorrect={answeredCorrectly}
+            />
+            {!answeredCorrectly && (
               <AnswerBlockText
-                title="Your Answer"
+                title="Correct Answer"
                 answerText={
                   questionReviewData?.question?.options[
-                    questionReviewData?.response
-                  ] ?? "No Answer Given"
+                    questionReviewData?.question?.correctIndex
+                  ] ?? ""
                 }
-                isCorrect={answeredCorrectly}
+                isCorrect={true}
               />
-            )}
-            {!answeredCorrectly && (
-              <>
-                {questionReviewData?.question?.questionType === "PICTURE" ? (
-                  <AnswerBlockPic
-                    title="Correct Answer"
-                    imgUrl={
-                      questionReviewData?.question?.options[
-                        questionReviewData?.question?.correctIndex
-                      ] ?? ""
-                    }
-                    isCorrect={true}
-                  />
-                ) : (
-                  <AnswerBlockText
-                    title="Correct Answer"
-                    answerText={
-                      questionReviewData?.question?.options[
-                        questionReviewData?.question?.correctIndex
-                      ] ?? "No Correct Answer"
-                    }
-                    isCorrect={true}
-                  />
-                )}
-              </>
             )}
           </>
         )}

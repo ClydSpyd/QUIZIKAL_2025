@@ -21,6 +21,7 @@ export const useSocket = () => {
 
 export const SocketProvider = ({
   isHost,
+  isSidecar,
   userData,
   sessionCode,
   children,
@@ -28,6 +29,7 @@ export const SocketProvider = ({
   sessionCode: string;
   userData: { username: string; userId: string };
   isHost?: boolean;
+  isSidecar?: boolean;
   children: React.ReactNode;
 }) => {
   const [socketConected, setSocketConnected] = useState(false);
@@ -46,6 +48,7 @@ export const SocketProvider = ({
         username: userData.username,
         userId: userData.userId,
         isHost: !!isHost,
+        isSidecar: !!isSidecar,
       };
 
       const socket = io(baseUrl, {

@@ -12,6 +12,8 @@ export function getStatusString(status: SessionStatus): string {
       return "Results Pending";
     case "resultRound":
       return "Round results";
+    case "resultPending":
+      return "End Results Pending";
     case "result":
       return "Quiz Results";
     case "paused":

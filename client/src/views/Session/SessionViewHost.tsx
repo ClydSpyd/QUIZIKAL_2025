@@ -8,16 +8,16 @@ import RoundDisplay from "./components/RoundDisplay";
 import QuestionPreview from "./components/QuestionPreview";
 import QuickActions from "./QuickActions";
 import QuestionControls from "./components/QuestionControls";
-import { useParams } from "react-router-dom";
-import SidecarView from "../Sidecar";
+// import { useParams } from "react-router-dom";
+// import SidecarView from "../Sidecar";
 
 const Content = () => {
-  const { roundIdx, questionIdx, quizData, sidecarCode } = useHostSession();
-  const { sidecar } = useParams();
+  const { roundIdx, questionIdx, quizData } = useHostSession();
+  // const { sidecar } = useParams();
 
-  if (sidecar) {
-    return sidecar === sidecarCode ? <SidecarView /> : <h1>Ö</h1>;
-  }
+  // if (sidecar) {
+  //   return sidecar === sidecarCode ? <SidecarView /> : <h1>Ö</h1>;
+  // }
 
   return (
     <div className="w-screen max-w-[1300px] grid lg:grid-cols-4 box-border gap-3 pt-2 pb-20 px-4">

@@ -77,12 +77,14 @@ const evaluateUser = (userResponses) =>
     const userResponses = session.responses.get(userId);
     if (!userResponses) return { error: "User responses not found" };
     const roundTotals = evaluateUser(userResponses);
+    const roundLengths = quiz.rounds.map(round => round.length);
     return [
       {
         userName:
           session.participants.get(userId)?.["username" || "defaultName"] ??
           "USER_" + userId,
         roundTotals: roundTotals,
+        roundLengths: roundLengths,
         totalScore: roundTotals.reduce((acc, score) => acc + score, 0),
       },
     ];
@@ -92,13 +94,16 @@ const evaluateUser = (userResponses) =>
   const allResults = {};
   for (const [userId, userResponses] of session.responses.entries()) {
     const roundTotals = evaluateUser(userResponses);
+    const roundLengths = quiz.rounds.map(round => round.length);
     allResults[userId] = {
       userName:
         session.participants.get(userId)?.username ??
         session.participants.get(userId)?.defaultName ??
         `USER_${userId}`,
       roundTotals: roundTotals,
+      roundLengths: roundLengths,
       totalScore: roundTotals.reduce((acc, score) => acc + score, 0),
+      userStatus: session.participants.get(userId)?.status || "active",
     };
   }
 
