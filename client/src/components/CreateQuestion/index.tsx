@@ -58,6 +58,7 @@ const CreateQuestion = () => {
   const components = {
     PICTURE: <CreateImageQuestion {...props} />,
     MULTI_TEXT: <CreateTextQuestion {...props} />,
+    PIC_TEXT: <h1>PIC_TEXT Q</h1>,
     REUSE: <ExistingQuestionsPicker />,
   };
 

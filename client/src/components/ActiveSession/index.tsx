@@ -5,6 +5,7 @@ import { BsArrowRightSquareFill } from "react-icons/bs";
 import { useUserData } from "@/queries/userData";
 import LoadingScreen from "@/components/utilityComps/LoadingScreen/LoadingScreen";
 import shuttle from "assets/images/shuttle_white.png";
+import { FaUsers } from "react-icons/fa";
 
 const ActiveSession = () => {
   const navigate = useNavigate();
@@ -26,7 +27,19 @@ const ActiveSession = () => {
       </div>
       {userData?.activeSession ? (
         <div className="my-2 flex items-center w-full justify-between">
-          <h3 className="text-xl">{userData.activeSession.sessionName}</h3>
+          <div className="flex items-center gap-4 ">
+            <h3 className="text-xl">{userData.activeSession.sessionName}</h3>
+            <div className="flex gap-1 items-center opacity-50">
+              <FaUsers className="text-white" />
+              <p>
+                {
+                  Object.values(userData.activeSession.participants).filter(
+                    (i: Participant) => i.status === "active"
+                  ).length
+                }
+              </p>
+            </div>
+          </div>
           <button className="!text-sm bg-black" onClick={goToSession}>
             <p className="!text-sm">Go To Session</p>{" "}
             <BsArrowRightSquareFill className={`h-[18px] w-[18px] ml-2`} />

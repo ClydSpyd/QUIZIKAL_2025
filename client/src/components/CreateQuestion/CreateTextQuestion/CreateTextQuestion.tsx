@@ -7,6 +7,7 @@ import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import axios from "axios";
 import loader from "assets/loaders/spin_orange.svg";
 import { QuestionProps } from "../config";
+import SavedQuestionsSelector from "./SavedQuestionsSelector";
 
 const CreateTextQuestion = ({
   questionData,
@@ -93,6 +94,23 @@ const CreateTextQuestion = ({
     toggleLoading(false);
   };
 
+  const handleSavedQuestion = async (question: {
+    questionText: string;
+    options: string[];
+    correctIdx: number;
+  }) => {
+    refs.forEach((item: RefObject<HTMLInputElement>, idx: number) => {
+      if (item.current) item.current.value = question.options[idx];
+    });
+    questionRef.current!.value = question.questionText;
+    setQuestionData({
+      ...questionData,
+      questionText: question.questionText!,
+      options: question.options,
+      correctIndex: question.correctIdx,
+    });
+  };
+
   return (
     <div className={`${styles.textQuestionWrapper}`}>
       <div className={`${styles.inputs} ${loading && styles.loading}`}>
@@ -137,6 +155,7 @@ const CreateTextQuestion = ({
         {optionsComplete && confText}
       </div>
       <div className={`${styles.btnsBottom}`}>
+        <SavedQuestionsSelector handleSelect={handleSavedQuestion} />
         {!isEdit && (
           <div
             onClick={handleRandomQuestion}

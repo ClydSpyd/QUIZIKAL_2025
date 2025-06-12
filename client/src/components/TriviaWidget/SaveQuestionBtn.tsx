@@ -1,3 +1,4 @@
+import styles from './TriviaWidget.module.scss';
 import { BiSave } from "react-icons/bi";
 import TooltipWrapper from "../utilityComps/TooltipWrapper";
 import { useState } from "react";
@@ -33,7 +34,7 @@ export default function SaveQuestionBtn({
   return (
     <div
       onClick={handleSave}
-      className="h-[35px] w-[35px] flex items-center justify-center"
+      className={`flex items-center justify-center ${styles.iconContainer}`}
     >
       {!saved ? (
         <TooltipWrapper message="Save Question For Later">

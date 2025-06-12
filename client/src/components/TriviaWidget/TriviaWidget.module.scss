@@ -31,7 +31,7 @@ h6 {
   justify-content: flex-end;
   gap: 8px;
 
-  svg {
+  .iconContainer {
     cursor: pointer;
     height: 30px;
     width: 30px;
@@ -39,6 +39,12 @@ h6 {
     border-radius: 4px;
     padding: 5px;
     transition: .3s ease border-color;
+    gap: 8px;
+
+    svg{
+      width: 18px;
+      height: 18px;
+    }
 
     &:hover {
       border-color: $main1;

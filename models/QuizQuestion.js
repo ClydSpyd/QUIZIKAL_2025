@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
   questionType: {
     type: String,
-    enum: ["PICTURE", "MULTI_TEXT"],
+    enum: ["PICTURE", "MULTI_TEXT", 'PIC_TEXT'],
     required: true,
   },
   questionText: {
@@ -12,11 +12,15 @@ const schema = new mongoose.Schema({
   },
   options: {
     type: [String],
-    required: this.type !== "TEXT",
+    required: true,
+  },
+  imgUrl: {
+    type: String,
+    require: this.questionType === 'PIC_TEXT'
   },
   correctIndex: {
     type: Number,
-    required: this.type !== "TEXT",
+    required: true,
   },
   myResponse: {
     type: String,

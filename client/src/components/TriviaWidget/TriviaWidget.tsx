@@ -54,7 +54,9 @@ const TriviaWidget = () => {
       <div className={`${styles.icons}`}>
         <SaveQuestionBtn question={currentQuestion} />
         <TooltipWrapper message="Random Question">
-          <ImShuffle onClick={handleShuffle} />
+          <div onClick={handleShuffle} className={styles.iconContainer}>
+            <ImShuffle />
+          </div>
         </TooltipWrapper>
       </div>
     </div>
