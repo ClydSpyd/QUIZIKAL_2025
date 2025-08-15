@@ -11,7 +11,7 @@ import { IoSearch } from "react-icons/io5";
 import { TiDelete } from "react-icons/ti";
 import { debounce } from "@/utilities/debounce";
 
-const icons: Record<QuestionType, string> = {
+const icons: Partial<Record<QuestionType, string>> = {
   MULTI_TEXT: textIcon,
   PICTURE: imageIcon,
 };
